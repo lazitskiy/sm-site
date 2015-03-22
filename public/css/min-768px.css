@@ -1,0 +1,14 @@
+.container {
+  width: 750px;
+}
+.home-content,
+#movie-content {
+  padding-top: 40px;
+  padding-bottom: 30px;
+}
+.main-content {
+  top: 60px;
+}
+.col-sm-5 {
+  width: 25%;
+}

@@ -1,0 +1,466 @@
+@import vendor
+
+$font = Arimo, Arial, Helvetica, "Lucida Grande", sans-serif
+$background-color-black = #1d1d1d
+$background-color-black2 = #171717
+
+$text-color-main = #919191
+$text-color-second = #fff
+$text-color-third = #ccc
+
+$color-theme-1 = #36bce6
+$color-theme-2 = #2071F0
+
+$font-size-16 = 16px
+$font-size-14 = 14px
+$font-size-12 = 12px
+$font-size-24 = 24px
+
+/** * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/) * http://cssreset.com */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video
+  margin 0
+  padding 0
+  border 0
+  font-size 100%
+  font inherit
+  vertical-align baseline
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section
+  display block
+
+body
+  line-height 1
+
+ol, ul
+  list-style none
+
+blockquote, q
+  quotes none
+
+blockquote:before, blockquote:after, q:before, q:after
+  content ''
+  content none
+
+table
+  border-collapse collapse
+  border-spacing 0
+
+a
+  border 0
+  text-decoration: none !important;
+
+html
+  font-family sans-serif
+  text-size-adjust(100%)
+  font-size 10px
+
+label
+  font-weight: bold
+
+body
+  line-height 1.42857143
+  font-family $font
+  letter-spacing -.03em
+  font-size $font-size-16
+  margin 0 auto
+  background-color $background-color-black
+  text-align center
+  -webkit-font-smoothing antialiased
+  color #fff
+
+.super-black
+  background-color: $background-color-black2
+
+.nagivation
+  height 51px
+  padding-top 8px
+  margin 0px auto
+  width 100%
+  top 0
+  position fixed
+  z-index 8
+  background $background-color-black
+  overflow hidden
+  color $text-color-main
+  border-bottom 1px solid #2f2f2f
+  backface-visibility(hidden)
+
+.logo
+  margin-left 5%
+  float left
+
+.slogan
+  font-size 1.2em
+  margin-left 2%
+  margin-top 7px
+  float left
+
+.left
+  float left
+
+.right
+  float right
+
+.clear
+  clear both
+
+.main-nav-links
+  margin-right 5%
+  float right
+
+#quick-search
+  margin-top 5px
+  float left
+
+#quick-search-container
+  position relative
+  margin-right 10px
+
+#quick-search-input
+  width 250px
+  height 35px
+  font-size .85em
+  font-weight bold
+  color $text-color-main
+  border 2px solid #333
+  border-radius(20px)
+  padding 4px 30px
+  background transparent
+
+.nav-links
+  padding-top 15px
+  display inline-block
+  float left
+
+.nav-links li
+  display inline
+  margin-right 20px
+
+.nav-links li a, .admin-nav a
+  overflow hidden
+  display inline-block
+  font-size .85em
+  font-weight bold
+  color $text-color-main
+  transition(color .25s ease-in-out)
+
+.nav-links li a:hover, .admin-nav a:hover
+  color $text-color-second
+
+.nav-link-guest a
+  color $text-color-second !important
+
+#background-overlay, #background-image
+  top 60px
+  height 580px
+
+#background-overlay
+  position absolute
+  left 0
+  right 0
+  z-index 6
+  width 100%
+  background -moz-linear-gradient(top, rgba(29, 29, 29, 0.65) 0, rgba(29, 29, 29, 1) 100%)
+  background -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(29, 29, 29, 0.5)), color-stop(100%, rgba(29, 29, 29, 1)))
+  background -webkit-linear-gradient(top, rgba(29, 29, 29, 0.65) 0, rgba(29, 29, 29, 1) 100%)
+  background -o-linear-gradient(top, rgba(29, 29, 29, 0.65) 0, rgba(29, 29, 29, 1) 100%)
+  background -ms-linear-gradient(top, rgba(29, 29, 29, 0.65) 0, rgba(29, 29, 29, 1) 100%)
+  background linear-gradient(to bottom, rgba(29, 29, 29, 0.65) 0, rgba(29, 29, 29, 1) 100%)
+  filter unquote('progid:DXImageTransform.Microsoft.gradient(startColorstr"#801d1d1d",endColorstr="#1d1d1d",GradientType=0)')
+
+#background-image
+  position absolute
+  left 0
+  right 0
+  z-index 1
+  display block
+  width 100%
+
+.main-content
+  position absolute
+  left 0
+  right 0
+  z-index 7
+  margin 0 auto
+
+.container
+  margin-right auto
+  margin-left auto
+  padding-left 15px
+  padding-right 15px
+
+.home-content h1
+  font-size 2.75em
+  font-weight 700
+  text-shadow 0 2px 2px rgba(0, 0, 0, .4)
+  margin-bottom 35px
+  margin-top 30px
+
+.home-content p
+  font-size .95em
+  color $text-color-third
+  width 650px
+  margin 0 auto
+  line-height 21px
+  margin-bottom 50px
+
+.featured-blog a
+  color $color-theme-1
+  transition(color .15s ease-in-out)
+
+.featured-blog a:hover
+  color $color-theme-2
+.row
+  margin-left -15px
+  margin-right -15px
+
+.home-content #popular-downloads h2
+  font-size 1.15em
+  font-weight 700
+  border-bottom 1px solid rgba(255, 255, 255, 0.2)
+  padding-bottom 20px
+  margin-bottom 25px
+
+.browse-movie-wrap
+  margin-bottom 15px
+
+.col-sm-5, .col-md-10, .col-xs-20
+  position relative
+  min-height 1px
+  float: left
+
+.col-xs-20 {
+  width 100%
+}
+
+.col-md-10
+  padding-left: 15px;
+  padding-right: 15px;
+
+.browse-movie-link
+  display inline-block
+  max-width 220px
+  border 5px solid $text-color-second
+  transition(border .15s ease-in-out)
+  border-radius(4px)
+  font-size $font-size-24
+
+.browse-movie-link:hover
+  border 5px solid $color-theme-1
+
+.smooter
+  overflow hidden
+  position relative
+  width 100%
+  margin 0
+  background $background-color-black !important
+
+.img-responsive
+  display block
+  max-width 100%
+  height auto
+
+.smooter, .smootercaption
+  display block
+
+.browse-movie-link:hover .smootercaption
+  opacity 1
+
+.browse-movie-link:hover .smooter img
+  opacity .2
+
+.browse-movie-link:hover span.button-1-download-big
+  -moz-transform translateY(-35px)
+  -webkit-transform translateY(-35px)
+  transform translateY(-35px)
+
+.smooter img
+  width 100%
+  transition(opacity .15s ease-in-out)
+
+.home-content .smootercaption
+  padding-top 40px
+
+.smootercaption
+  color $text-color-second
+  height 100%
+  left 0
+  opacity 0
+  position absolute
+  right 0
+  top 0
+  z-index 2
+  width 100%
+  transition(all 300ms)
+  transition-delay(100ms)
+  padding-top 20px
+
+.smootercaption span.icon-star
+  position relative
+  width 100%
+  color $color-theme-1
+  transition(all 300ms ease)
+
+.smooter .smootercaption .rating
+  margin-bottom 20px
+
+.smooter .smootercaption h4
+  font-size 25px
+  position relative
+  width 100%
+  padding-left 0 !important
+  padding-right 0 !important
+  font-weight bold
+  color $text-color-second
+
+.home-content .smooter .smootercaption .button-1-download-big
+  margin-top 40px
+
+.button-1-download-big
+  background $color-theme-1
+  cursor pointer
+  border-radius(3px)
+  display block
+  font-weight bold
+  color $text-color-second
+  top 35px
+  font-size 16px
+  position relative
+  width 130px
+  padding 7px 0
+  margin 0 auto
+  transition(all 300ms ease)
+
+.button-1-download-big:hover
+  background $color-theme-2
+
+.browse-movie-bottom
+  margin 0 auto
+  padding 0 5px
+  max-width 220px
+  text-align left
+
+.browse-movie-title, .browse-movie-title:focus, #comments-box a
+  color $text-color-second
+  font-weight 700
+  display block
+  transition(color .15s ease-in-out)
+  white-space nowrap
+  overflow hidden
+  text-overflow ellipsis
+
+.browse-movie-year
+  font-size .85em
+  color $text-color-main
+
+.browse-movie-tags
+  overflow hidden
+
+.browse-movie-tags a
+  background #111
+  display inline-block
+  color #575656
+  font-weight 700
+  border-radius(4px)
+  transition(color .15s ease-in-out)
+
+.browse-movie-tags a:hover
+  color $text-color-second
+
+.content-dark
+  background #171717
+  width: 100%
+
+.home-content .home-movies h2
+  font-size: 1.15em;
+  font-weight: 700;
+  padding: 0 15px;
+  margin-bottom: 25px;
+  text-align: left;
+
+.home-content .home-movies h2 a
+  float: right;
+  font-size: 14px;
+  font-weight: bold;
+  color: $text-color-main;
+  transition(color .25s ease-in-out)
+
+footer
+  background: #171717;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-top: 1px solid #2f2f2f;
+
+footer ul
+  padding-top: 10px;
+  display: inline-block;
+
+footer ul li
+  display: inline;
+  margin-right: 5px;
+
+footer ul li a
+  font-size: .85em;
+  font-weight: bold;
+  color: $text-color-main
+  transition(color .25s ease-in-out)
+
+footer ul li a:hover
+  color $text-color-second
+
+#info-page {
+  text-align: left;
+  margin-bottom: 50px;
+  margin-top: 25px;
+}
+
+#info-page h2, .green-title {
+  color: $color-theme-1
+  font-size: 1.7em;
+  margin-bottom: 35px;
+  margin-top: 10px;
+}
+
+#info-page label, #info-page p {
+  color: $text-color-third
+  font-size: .95em;
+  margin-bottom: 0;
+}
+
+.input {
+  font-size: .95em;
+  color: $text-color-third
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  background: #282828;
+  border: 0;
+  padding: 11px;
+  border-radius(3px)
+}
+
+.just-link
+  display: inline-block;
+  margin-top: 15px;
+
+.just-link a
+  display: block;
+  color $color-theme-1
+  transition(color .25s ease-in-out)
+
+.just-link a:hover
+  color $color-theme-2
+
+#info-page .send-btn
+  display: inline-block;
+  vertical-align: top;
+  float: right;
+  margin-top: 20px;
+
+#info-page .button-1-download-big
+  width: auto;
+  padding-left: 7px;
+  padding-right: 7px;
+  position: static;
+  border: 0;
