@@ -192,28 +192,6 @@ body {
   margin-right: 5%;
   float: right;
 }
-#quick-search {
-  margin-top: 5px;
-  float: left;
-}
-#quick-search-container {
-  position: relative;
-  margin-right: 10px;
-}
-#quick-search-input {
-  width: 250px;
-  height: 35px;
-  font-size: 0.85em;
-  font-weight: bold;
-  color: #919191;
-  border: 2px solid #333;
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  -ms-border-radius: 20px;
-  border-radius: 20px;
-  padding: 4px 30px;
-  background: transparent;
-}
 .nav-links {
   padding-top: 15px;
   display: inline-block;

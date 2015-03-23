@@ -42,6 +42,84 @@ class Fasttorrent extends ParserBase
 
     }
 
+
+    /**
+     * Получаем все ссылки и сохраняем в базу без парсинга
+     */
+    public function parseLinks()
+    {
+        $film_main_pages = $this->getFilmLinks(10);
+        $kolvo = $this->storeNewFilmLinks($film_main_pages, $this->provider_id);
+
+        echo "\n" . 'Save ' . $kolvo . ' new links';
+    }
+
+
+    public function parseFilm()
+    {
+        $film_id = $this->get('param');
+        $provider_id = $this->provider_id;
+        $film_model = new Axon('film');
+        $film = $film_model->afindone('id=' . $film_id . ' AND provider_id=' . $provider_id);
+
+        if (!$film) {
+            echo "This film ID not fount. Abort\n";
+            return;
+        }
+
+        $urls[] = $film['url'];
+        $films = $this->parseFilmsByUrls($urls);
+        file_put_contents(dirname(__FILE__) . '/../tmp/film' . $film['id'] . '.txt', print_r($films, true));
+        vvd('ok');
+
+    }
+
+    /**
+     * Это главная хрень. Дать массив с УРЛами на фильмы
+     * @param array $film_main_pages
+     * @return array
+     *
+     */
+    public function parseFilmsByUrls(array $film_main_pages)
+    {
+        while (count($results) < count($film_main_pages)) {
+            $mcurl = new MCurl;
+            $mcurl->threads = 40;
+            $mcurl->timeout = 50000;
+            unset($results);
+            $mcurl->multiget($film_main_pages, $results);
+            $total_res = count($results);
+            echo 'stranic ' . count($film_main_pages) . ' iz ' . count($results) . "\n";
+            myflush();
+        }
+
+        foreach ($results as $res) {
+            $z++;
+            unset($film_current);
+            echo "---------- " . $z . " of " . $total_res . "----------\n";
+            myflush();
+            //vvtr($res);
+            $film_main = new nokogiri($res);
+
+            unset($this->errors);
+            //Название фильма, постер и ссылка
+            $film_current = $this->titles_film_get($film_main);
+            //Торренты скачки
+            $film_current['torrents'] = $this->torrents_film_get($film_main);
+
+            if ($this->errors['general']) {
+                $film_current['errors'] = $this->errors['general'];
+            }
+
+            $films[] = $film_current;
+
+        }
+
+        return $films;
+
+    }
+
+
     /**
      * Список ссылок на фильмы
      * http://fast-torrent.ru/new-torrent/1.html
@@ -121,13 +199,21 @@ class Fasttorrent extends ParserBase
             //Торрент фаил
             //$torrName = urldecode($d['table'][0]['tr'][0]['td'][6]['a']['href']);
 
-            $url = preg_replace('/.*download\/torrent\//', '', urldecode($d['div'][0]['div'][6]['a']['href']));
+            $delta = 0;
+            if (count($d['div'][0]['div']) == 8) {
+                $delta = 1;
+                $sezon = trim($d['div'][0]['div'][1]['#text']);
+            }
+
+            $url = preg_replace('/.*download\/torrent\//', '', urldecode($d['div'][0]['div'][6 + $delta]['a']['href']));
 
             $text = $d['div'][0]['div'][0]['em'][0]['title'];
             if (!$text) {
                 $text = $d['div'][0]['div'][0]['em'][1]['title'];
             }
             $_q = explode('::', $text);
+
+
             $torrent[] = array(
                 'id' => $d['obj'],
                 'quality' => array(
@@ -139,12 +225,13 @@ class Fasttorrent extends ParserBase
                         'src' => $d['table'][0]['tr'][0]['td'][0]['div'][1]['img']['src']
                     )*/
                 ),
-                'perevod' => $d['div'][0]['div'][1]['#text'],
+                'sezon' => $sezon,
+                'perevod' => $d['div'][0]['div'][1 + $delta]['#text'],
                 'size' => $d['size'],
                 'date_add' => $d['date'],
-                'downloads' => $d['div'][0]['div'][4]['#text'],
-                'seaders' => preg_replace('#\D#', '', $d['div'][0]['div'][5]['font'][0]['#text']),
-                'leachers' => preg_replace('#\D#', '', $d['div'][0]['div'][5]['font'][1]['#text']),
+                'downloads' => $d['div'][0]['div'][4 + $delta]['#text'],
+                'seaders' => preg_replace('#\D#', '', $d['div'][0]['div'][5 + $delta]['font'][0]['#text']),
+                'leachers' => preg_replace('#\D#', '', $d['div'][0]['div'][5 + $delta]['font'][1]['#text']),
                 'url' => $url,
                 'images' => $torrent_images
 
@@ -223,8 +310,8 @@ class Fasttorrent extends ParserBase
         $film_current['date_relises'] = $relises;
 
         // Жанр
-        if (preg_match('/<p>(.+?)жанр(.+?)<\/p>/sui', $content, $genre_match)) {
-            preg_match_all('/href="\/([^"]+)?\/"[^>]*>([^"]+)?<\/a>/siu', $genre_match[0], $genres, PREG_SET_ORDER);
+        if (preg_match('/<p>[^"]+жанр(.+?)<\/p>/sui', $content, $genre_match)) {
+            preg_match_all('/href="\/([^"]+)?\/"[^>]*>([^"]+)?<\/a>/siu', $genre_match[1], $genres, PREG_SET_ORDER);
             foreach ($genres as $genre) {
                 $arr_genr[] = [
                     'name' => $genre[2],
@@ -252,7 +339,7 @@ class Fasttorrent extends ParserBase
 
         //Теги
         if (preg_match('/<p>(.+?)\/tag(.+?)<\/p>/sui', $content, $tag_match)) {
-            preg_match_all('/video\/tag\/(.+?)\/(.+?)em>(.+?)<\/a/siu', $tag_match[0], $tags, PREG_SET_ORDER);
+            preg_match_all('/[video|tv]\/tag\/(.+?)\/(.+?)em>(.+?)<\/a/siu', $tag_match[0], $tags, PREG_SET_ORDER);
             foreach ($tags as $tag) {
                 $arr_tag[] = [
                     'name' => $tag[3],
@@ -273,6 +360,34 @@ class Fasttorrent extends ParserBase
         }
         $film_current['last'] = $last;
 
+        // Компания
+        if (preg_match('/info[^}]+<p[^"]+компания(.+?)<\/p>/sui', $content, $company_match)) {
+            preg_match_all('/href="\/company\/([^"]+)?\/"[^>]*>([^"]+)?<\/a>/siu', $company_match[1], $companies, PREG_SET_ORDER);
+            foreach ($companies as $company) {
+                $arr_company[] = [
+                    'name' => $company[2],
+                    'url' => $company[1]
+                ];
+            }
+        } else {
+            $this->errors['general'][] = 'Company not set';
+        }
+        $film_current['companies'] = $arr_company;
+
+        // Канал
+        if (preg_match('/info[^}]+<p[^"]+канал(.+?)<\/p>/sui', $content, $channel_match)) {
+            preg_match_all('/href="\/channel\/([^"]+)?\/"[^>]*>([^"]+)?<\/a>/siu', $channel_match[1], $channels, PREG_SET_ORDER);
+            foreach ($channels as $channel) {
+                $arr_channel[] = [
+                    'name' => $channel[2],
+                    'url' => $channel[1]
+                ];
+            }
+        } else {
+            $this->errors['general'][] = 'Channel not set';
+        }
+        $film_current['channels'] = $arr_channel;
+
 
         //  ДОп
         if (preg_match('/<p align.+(Экранизация по.+?)<.*?actor\/(.+?)\/.+?m>(.+?)<\/a>/sui', $content, $ekran)) {
@@ -284,33 +399,53 @@ class Fasttorrent extends ParserBase
         }
         $film_current['info'] = $info;
 
-        //Режиссер
-        if (preg_match('/режиссер<.*?actor\/(.+?)\/.+?>(.+?)<\/a>/sui', $content, $director)) {
-            $directors[] = [
-                'name' => $director[2],
-                'url' => Transliterator::transliterateActor($director[2])
-            ];
-        } else {
-            $this->errors['general'][] = 'Directors not set';
-        }
-        $film_current['directors'] = $directors;
-
-
-        //В ролях
-
-        preg_match('/в ролях<.*?<\/p>/sui', $content, $role_match);
-
-        if (preg_match_all('/actor\/(.+?)\/(.+?)>(.+?)<\/a>/', $role_match[0], $roles, PREG_SET_ORDER)) {
-            foreach ($roles as $role) {
-                $arr_role[] = [
-                    'name' => $role[3],
-                    'url' => Transliterator::transliterateActor($role[3])
+        // Режиссеры
+        if (preg_match('/info[^}]+<p[^}]+режиссер(.+?)<\/p>/sui', $content, $people_match)) {
+            preg_match_all('/href="\/video\/actor\/([^"]+)?\/"[^>]*>([^"]+)?<\/a>/siu', $people_match[1], $peoples, PREG_SET_ORDER);
+            foreach ($peoples as $people) {
+                $arr_people[] = [
+                    'name' => $people[2],
+                    'url' => Transliterator::transliterateActor($people[1])
                 ];
             }
         } else {
-            $this->errors['general'][] = 'Actors not set';
+            $this->errors['general'][] = 'Directors not set';
         }
-        $film_current['roles'] = $arr_role;
+        $film_current['directors'] = $arr_people;
+
+        unset($arr_people);
+        unset($peoples);
+        unset($people_match);
+        // Продюсеры
+        if (preg_match('/info[^}]+<p[^}]+продюсер(.+?)<\/p>/sui', $content, $people_match)) {
+            preg_match_all('/href="\/video\/actor\/([^"]+)?\/"[^>]*>([^"]+)?<\/a>/siu', $people_match[1], $peoples, PREG_SET_ORDER);
+            foreach ($peoples as $people) {
+                $arr_people[] = [
+                    'name' => $people[2],
+                    'url' => Transliterator::transliterateActor($people[1])
+                ];
+            }
+        } else {
+            $this->errors['general'][] = 'Directors not set';
+        }
+        $film_current['producers'] = $arr_people;
+
+        unset($arr_people);
+        unset($peoples);
+        unset($people_match);
+        // В ролях
+        if (preg_match('/info[^}]+<p[^}]+в ролях(.+?)<\/p>/sui', $content, $people_match)) {
+            preg_match_all('/href="\/video\/actor\/([^"]+)?\/"[^>]*>([^"]+)?<\/a>/siu', $people_match[1], $peoples, PREG_SET_ORDER);
+            foreach ($peoples as $people) {
+                $arr_people[] = [
+                    'name' => $people[2],
+                    'url' => Transliterator::transliterateActor($people[1])
+                ];
+            }
+        } else {
+            $this->errors['general'][] = 'Roles not set';
+        }
+        $film_current['roles'] = $arr_people;
 
 
         //Описание
@@ -530,80 +665,23 @@ class Fasttorrent extends ParserBase
 
     }
 
-    public function parseFilmsByUrls(array $film_main_pages)
-    {
-        while (count($results) < count($film_main_pages)) {
-            $mcurl = new MCurl;
-            $mcurl->threads = 40;
-            $mcurl->timeout = 50000;
-            unset($results);
-            $mcurl->multiget($film_main_pages, $results);
-            $total_res = count($results);
-            echo 'stranic ' . count($film_main_pages) . ' iz ' . count($results) . "\n";
-            myflush();
-        }
-
-        foreach ($results as $res) {
-            $z++;
-            unset($film_current);
-            echo "---------- " . $z . " of " . $total_res . "----------\n";
-            myflush();
-            //vvtr($res);
-            $film_main = new nokogiri($res);
-
-            unset($this->errors);
-            //Название фильма, постер и ссылка
-            $film_current = $this->titles_film_get($film_main);
-            //Торренты скачки
-            $film_current['torrents'] = $this->torrents_film_get($film_main);
-
-            if ($this->errors['general']) {
-                $film_current['errors'] = $this->errors['general'];
-            }
-
-            $films[] = $film_current;
-
-        }
-
-        return $films;
-
-    }
-
-
-    /**
-     * Дергаем все ссылки на фильмы на сайте
-     */
-    public function parseAll()
-    {
-        $film_main_pages = $this->getFilmLinks();
-        $this->run($film_main_pages);
-    }
-
-    /**
-     * Получаем все ссылки и сохраняем в базу без парсинга
-     */
-    public function parseLinks()
-    {
-        $film_main_pages = $this->getFilmLinks();
-        $kolvo = $this->storeNewFilmLinks($film_main_pages, $this->provider_id);
-
-        echo "\n" . 'Save ' . $kolvo . ' new links';
-    }
-
 
     /**
      * Получаем ссылки на фильльмы
      */
-    public function getFilmLinks()
+    public function getFilmLinks($pages)
     {
         $html = file_get_contents('http://fast-torrent.ru/new/all/1.html');
         $saw = new nokogiri($html);
         $paginator_ul = $saw->get('ul.paginator a')->toArray();
         $last_page = $paginator_ul[2]['#text'] ? $paginator_ul[2]['#text'] : 1;
 
-        //Мультискачка  ######################################
         $end = $last_page;
-        $end = 10;
+        //Мультискачка  ######################################
+        if (is_numeric($pages)) {
+            $end = $pages;
+        }
+
         $ho = 0;
 
         unset($pages);

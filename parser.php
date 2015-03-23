@@ -24,12 +24,11 @@ function vvd($data)
 }
 
 $app = require_once 'lib/base.php';
-require 'lib/geo.php';
 require 'lib/db.php';
 
 
-$app->config('conf/config.cfg');
-$app->config('conf/routes.cfg');
+$app->config('app/config/config.cfg');
+$app->config('app/config/routes.cfg');
 
 $app->set('DB', new DB($app->get('DSN'), $app->get('us'), $app->get('pwd')));
 
@@ -46,6 +45,11 @@ if ($argv[1]) {
         $provider = ucfirst($provider);
 
         $all = $argv[2];
+        if ($argv[3]) {
+            $app->set('param', $argv[3]);
+        }
+
+
         $app->route('GET parser.php' . $provider_low, $provider . '->parse' . $all);
 
     }

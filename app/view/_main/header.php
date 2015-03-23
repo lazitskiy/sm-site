@@ -30,13 +30,7 @@ $_ = $this->get('_');
     <span class="slogan"><?php echo $_['Slogan'] ?></span>
 
     <div class="main-nav-links">
-        <form method="GET" id="quick-search" name="quick-search">
-            <div id="quick-search-container">
-                <input id="quick-search-input" name="query" type="search" value="<?php echo $_['Fast search'] ?>">
 
-                <div class="ajax-spinner" style="background-position: -176px 0px;"></div>
-            </div>
-        </form>
         <ul class="nav-links">
             <li><a href="/"><?php echo $_['Main'] ?></a></li>
             <li><a href="/movies"><?php echo $_['Movies'] ?></a></li>

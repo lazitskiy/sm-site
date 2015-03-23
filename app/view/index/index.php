@@ -12,16 +12,20 @@ $_ = $this->get('_');
     <div class="hidden-xs hidden-sm">
         <h1><?php echo $_['Do slogan'] ?></h1>
 
-        <p>Добро пожаловать на официальный сайт YTS. Здесь вы найдете фильмы в великолепном 720p, 1080p и 3D качестве, все с малым размером.</p>
+        <p><?php echo $_['Intro'] ?></p>
 
-        <p class="featured-blog">
-            Новое сообщение: <a href="https://yts.to/blog/important-new-domain-for-yts"> IMPORTANT - New domain for YTS </a>
-        </p>
+        <!--<p class="featured-blog">
+            Новое сообщение: <a href="/">link</a>
+        </p>-->
     </div>
     <div id="popular-downloads">
         <div class="row">
             <h2>
-                <span class="icon-star"></span>Популярные фильмы <a href="https://yts.to/rss-guide"><img title="RSS" src="https://s.ynet.io/assets/images/website/rss-icon.png" alt="RSS"></a>
+                <span class="icon-star"></span>
+                <?php echo $_['Popular movies'] ?>
+                <a href="rss">
+                    <img title="RSS" src="https://s.ynet.io/assets/images/website/rss-icon.png" alt="RSS">
+                </a>
             </h2>
         </div>
         <div class="row">
@@ -139,7 +143,8 @@ $_ = $this->get('_');
         <div class="home-movies">
             <div class="row">
                 <h2>
-                    Последние загруженные <a href="https://yts.to/browse-movies">Просмотр всех</a>
+                    <?php echo $_['Last uploaded'] ?>
+                    <a href="/movies"><?php echo $_['All'] ?></a>
                 </h2>
             </div>
             <div class="row">
@@ -360,7 +365,10 @@ $_ = $this->get('_');
 
     <div class="home-movies">
         <div class="row">
-            <h2>Скоро будут доступны <a href="https://yts.to/requests">Заказать фильм</a></h2>
+            <h2>
+                <?php echo $_['Soon films'] ?>
+                <a href="/requests"><?php echo $_['Report when release'] ?></a>
+            </h2>
         </div>
         <div class="row">
             <div class="browse-movie-wrap col-sm-5">
