@@ -54,8 +54,8 @@ $soons = $this->get('soons');
 
                         <div class="browse-movie-year">2014</div>
                         <div class="browse-movie-tags">
-                            <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
-                            <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
+                            <a href="<?php echo $popular['url'] ?>">720p</a>
+                            <a href="<?php echo $popular['url'] ?>">1080p</a>
                         </div>
                     </div>
                 </div>
@@ -99,8 +99,8 @@ $soons = $this->get('soons');
 
                             <div class="browse-movie-year">2014</div>
                             <div class="browse-movie-tags">
-                                <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
-                                <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
+                                <a href="<?php echo $popular['url'] ?>">720p</a>
+                                <a href="<?php echo $popular['url'] ?>">1080p</a>
                             </div>
                         </div>
                     </div>
@@ -129,8 +129,8 @@ $soons = $this->get('soons');
 
                             <div class="browse-movie-year">2014</div>
                             <div class="browse-movie-tags">
-                                <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
-                                <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
+                                <a href="<?php echo $popular['url'] ?>">720p</a>
+                                <a href="<?php echo $popular['url'] ?>">1080p</a>
                             </div>
                         </div>
                     </div>
@@ -173,8 +173,8 @@ $soons = $this->get('soons');
 
                         <div class="browse-movie-year">2014</div>
                         <div class="browse-movie-tags">
-                            <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
-                            <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
+                            <a href="<?php echo $popular['url'] ?>">720p</a>
+                            <a href="<?php echo $popular['url'] ?>">1080p</a>
                         </div>
                     </div>
                 </div>

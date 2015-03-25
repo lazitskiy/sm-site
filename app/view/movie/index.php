@@ -6,5 +6,6 @@
  */
 ?>
 
-<div class="container">
+<div class="container home-content">
+    <h1>Я фильм</h1>
 </div>
