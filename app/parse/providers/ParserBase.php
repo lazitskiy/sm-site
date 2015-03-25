@@ -37,7 +37,7 @@ class ParserBase extends F3instance
 
         $film_model = new Axon('film');
         $film_model->load('provider_id=' . $provider_id . ' AND provider_film_id=' . $provider_film_id);
-        if ($film_model->id) {
+        if ($film_model->id && $film_model->aka_trans) {
             return $film_model->id;
         }
 
@@ -53,9 +53,13 @@ class ParserBase extends F3instance
         $film_model->last = $f['last'];
         $film_model->description = $f['description'];
         $film_model->spoiler = $f['spoilers'];
+        $film_model->kinopoisk_id = $f['kinopoisk_id'];
+        $film_model->imdb_id = $f['imdb_id'];
+        $film_model->info = serialize($f['info']);
+        $film_model->warning = serialize($f['errors']);
         $film_model->save();
 
-        return $film_model->_id;
+        return $film_model->id;
     }
 
     /**
@@ -129,7 +133,6 @@ class ParserBase extends F3instance
                 $country_id = $country_model->_id;
             }
 
-
             $film_country->load('film_id=' . $film_id . ' AND country_id=' . $country_id);
             if ($film_country->id) {
                 continue;
@@ -141,37 +144,65 @@ class ParserBase extends F3instance
         }
     }
 
+    public function tags_store($tags, $film_id)
+    {
+        $tag_model = new Axon('tag');
+        $film_tag = new Axon('film_tag');
+
+        foreach ($tags as $tag) {
+
+            $tag_model->load('url="' . $tag['url'] . '"');
+            if ($tag_model->id) {
+                $tag_id = $tag_model->id;
+            } else {
+                $tag_model->aka_ru = $tag['name'];
+                $tag_model->url = $tag['url'];
+                $tag_model->save();
+                $tag_id = $tag_model->_id;
+            }
+
+            $film_tag->load('film_id=' . $film_id . ' AND tag_id=' . $tag_id);
+            if ($film_tag->id) {
+                continue;
+            }
+
+            $film_tag->film_id = $film_id;
+            $film_tag->tag_id = $tag_id;
+            $film_tag->save();
+        }
+    }
+
     /**
      * Инсерт категорий жанров
      *
      * @param mixed $f
      */
 
-    public function companies_store($f, $last_id)
+    public function companies_store($companies, $film_id)
     {
-        if ($f['companies']) {
-            foreach ($f['companies'] as $company) {
-                $is = $this->db->sql('SELECT * FROM companies WHERE aka="' . trim($company['aka']) . '"');
-                $obj_id = $is[0]['id'];
-                if (!$is) {
-                    $str = 'INSERT INTO companies VALUES(NULL,"' . $company['aka'] . '","' . str_replace('/company', '', $company['href']) . '")';
-                    $comp = $this->db->sql($str);
-                    if (!$comp) {
-                        $this->db->sql("INSERT INTO _log(type,text) VALUES('company','" . $str . "')");
-                    }
-                    $obj = $this->db->sql('SELECT MAX(id) id FROM companies ');
-                    $obj_id = $obj[0]['id'];
-                }
-                //Если нет связи
-                $is_xref = $this->db->sql('SELECT * FROM film_company_xref WHERE film_id=' . $last_id . ' AND company_id=' . $obj_id);
-                if (!$is_xref) {
-                    $str = 'INSERT INTO film_company_xref VALUES(NULL,' . $last_id . ',' . $obj_id . ')';
-                    $xref = $this->db->sql();
-                    if (!$xref) {
-                        $this->db->sql("INSERT INTO _log(type,text) VALUES('company_xref','" . $str . "')");
-                    }
-                }
+        $company_model = new Axon('company');
+        $film_company = new Axon('film_company');
+
+        foreach ($companies as $company) {
+
+            $company_model->load('url="' . $company['url'] . '"');
+            if ($company_model->id) {
+                $company_id = $company_model->id;
+            } else {
+                $company_model->aka_en = $company['name'];
+                $company_model->url = $company['url'];
+                $company_model->save();
+                $company_id = $company_model->_id;
             }
+
+            $film_company->load('film_id=' . $film_id . ' AND company_id=' . $company_id);
+            if ($film_company->id) {
+                continue;
+            }
+
+            $film_company->film_id = $film_id;
+            $film_company->company_id = $company_id;
+            $film_company->save();
         }
     }
 
@@ -181,31 +212,31 @@ class ParserBase extends F3instance
      * @param mixed $f
      * @param mixed $last_id
      */
-    public function channels_store($f, $last_id)
+    public function channels_store($channels, $film_id)
     {
-        if ($f['channels']) {
-            foreach ($f['channels'] as $company) {
-                $is = $this->db->sql('SELECT * FROM channels WHERE aka="' . trim($company['aka']) . '"');
-                $obj_id = $is[0]['id'];
-                if (!$is) {
-                    $str = ' INSERT INTO channels VALUES(NULL,"' . $company['aka'] . '","' . str_replace('/company', '', $company['href']) . '")';
-                    $chan = $this->db->sql($str);
-                    if (!$chan) {
-                        $this->db->sql("INSERT INTO _log(type,text,date) VALUES('channel','" . $str . "','" . date('Y-m-d') . "')");;
-                    }
-                    $obj = $this->db->sql('SELECT MAX(id) id FROM channels ');
-                    $obj_id = $obj[0]['id'];
-                }
-                //Если нет связи
-                $is_xref = $this->db->sql('SELECT * FROM film_channel_xref WHERE film_id=' . $last_id . ' AND company_id=' . $obj_id);
-                if (!$is_xref) {
-                    $str = 'INSERT INTO film_channel_xref VALUES(NULL,' . $last_id . ',' . $obj_id . ')';
-                    $chan = $this->db->sql($str);
-                    if (!$chan) {
-                        $this->db->sql("INSERT INTO _log(type,text,date) VALUES('channel_xref','" . $str . "','" . date('Y-m-d') . "')");;
-                    }
-                }
+        $channel_model = new Axon('channel');
+        $film_channel = new Axon('film_channel');
+
+        foreach ($channels as $channel) {
+
+            $channel_model->load('url="' . $channel['url'] . '"');
+            if ($channel_model->id) {
+                $channel_id = $channel_model->id;
+            } else {
+                $channel_model->aka_en = $channel['name'];
+                $channel_model->url = $channel['url'];
+                $channel_model->save();
+                $channel_id = $channel_model->_id;
             }
+
+            $film_channel->load('film_id=' . $film_id . ' AND channel_id=' . $channel_id);
+            if ($film_channel->id) {
+                continue;
+            }
+
+            $film_channel->film_id = $film_id;
+            $film_channel->channel_id = $channel_id;
+            $film_channel->save();
         }
     }
 
@@ -284,6 +315,7 @@ class ParserBase extends F3instance
                 $torrent_model->provider_id = $provider_id;
                 $torrent_model->provider_torrent_id = $provider_torrent_id;
                 $torrent_model->quality_id = $quality_id;
+                $torrent_model->sezon = $torrent['sezon'];
                 $torrent_model->perevod = $torrent['perevod'];
                 $torrent_model->size = $torrent['size'];
                 $torrent_model->date_add = $torrent['date_add'];
@@ -301,6 +333,9 @@ class ParserBase extends F3instance
             foreach ($torrent['images'] as $image) {
                 //Если есть что качать
 
+                if (!$image) {
+                    continue;
+                }
 
                 $image_model->load('aka="' . $image . '"');
                 if ($image_model->id) {
@@ -326,21 +361,42 @@ class ParserBase extends F3instance
 
         //Сохраняем новый фильм или выбираем если есть возврат ИД
         $last_id = $this->film_store($f, $provider_id);
-
-        $this->images_store($f['images'], $last_id);
         $this->genres_store($f['genres'], $last_id);
+        if ($f['countries']) {
+            $this->countries_store($f['countries'], $last_id);
+        }
+        if ($f['tags']) {
+            $this->tags_store($f['tags'], $last_id);
+        }
+        if ($f['companies']) {
+            $this->companies_store($f['companies'], $last_id);
+        }
+        if ($f['channels']) {
+            $this->channels_store($f['channels'], $last_id);
+        }
+        if ($f['directors']) {
+            $this->peoples_store($f['directors'], $last_id, 'director');
+        }
+        if ($f['producers']) {
+            $this->peoples_store($f['producers'], $last_id, 'producer');
+        }
+        if ($f['roles']) {
+            $this->peoples_store($f['roles'], $last_id, 'actor');
+        }
 
-        // хз че это
-        //$this->companies_store($f, $last_id);
-        ################### Каналы ################
-        //  и это
-        //$this->channels_store($f, $last_id);
-        $this->countries_store($f['countries'], $last_id);
+        if ($f['images']) {
+            $this->images_store($f['images'], $last_id);
+        }
 
-        $this->peoples_store($f['directors'], $last_id, 'director');
-        $this->peoples_store($f['roles'], $last_id, 'actor');
 
-        $this->torrents_images_store($f['torrents'], $last_id, $provider_id);
+        if ($f['torrents']) {
+            $this->torrents_images_store($f['torrents'], $last_id, $provider_id);
+            $film_model = new Axon('film');
+            $film_model->load('id=' . $last_id);
+            $film_model->uploaded = 1;
+            $film_model->save();
+        }
+
     }
 
     public function storeNewFilmLinks($links, $provider_id)

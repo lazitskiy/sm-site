@@ -55,6 +55,9 @@ class Fasttorrent extends ParserBase
     }
 
 
+    /**
+     * Парсим кино по айдишнику
+     */
     public function parseFilm()
     {
         $film_id = $this->get('param');
@@ -66,13 +69,54 @@ class Fasttorrent extends ParserBase
             echo "This film ID not fount. Abort\n";
             return;
         }
+        $parsed = $this->parseFilmsByUrls(array($film['url']));
 
-        $urls[] = $film['url'];
-        $films = $this->parseFilmsByUrls($urls);
-        file_put_contents(dirname(__FILE__) . '/../tmp/film' . $film['id'] . '.txt', print_r($films, true));
+        $this->storeFilm($parsed[0], $this->provider_id);
+        echo "Saved \n";
+        myflush();
+        //file_put_contents(dirname(__FILE__) . '/../tmp/film' . $film_id . '.txt', print_r($parsed, true));
+
+    }
+
+
+    /**
+     * Парсим кино по айдишнику
+     */
+    public function parseFilms()
+    {
+        $limit = $this->get('param');
+        $provider_id = $this->provider_id;
+
+        $film_model = new Axon('film');
+        $films = $film_model->afind('provider_id=' . $provider_id . ' AND uploaded="0"', 'id DESC', $limit);
+
+        if (!$films) {
+            echo "There is not unparsed films. Abort\n";
+            return;
+        }
+
+        $urls = array_map(function ($el) {
+            return $el['url'];
+        }, $films);
+
+        $parsed = $this->parseFilmsByUrls($urls);
+
+        $total = count($parsed);
+        $i = 1;
+
+        foreach ($parsed as $film) {
+            $this->storeFilm($film, $this->provider_id);
+            echo "Saved " . $i . " / " . $total . "\n";
+            myflush();
+            $i++;
+        }
+
+
+        //file_put_contents(dirname(__FILE__) . '/../tmp/film' . $film_id . '.txt', print_r($parsed, true));
         vvd('ok');
 
     }
+
 
     /**
      * Это главная хрень. Дать массив с УРЛами на фильмы
@@ -202,7 +246,7 @@ class Fasttorrent extends ParserBase
             $delta = 0;
             if (count($d['div'][0]['div']) == 8) {
                 $delta = 1;
-                $sezon = trim($d['div'][0]['div'][1]['#text']);
+                $sezon = preg_replace('/\s{2,}/u', '', trim($d['div'][0]['div'][1]['#text']));
             }
 
             $url = preg_replace('/.*download\/torrent\//', '', urldecode($d['div'][0]['div'][6 + $delta]['a']['href']));
@@ -309,6 +353,18 @@ class Fasttorrent extends ParserBase
         }
         $film_current['date_relises'] = $relises;
 
+        //Рейтинги
+        if (preg_match('/user_vote1[^}]+\/(\d+)\.gif/sui', $content, $kinopoisk_match)) {
+            $kinopoisk_id = $kinopoisk_match[1];
+        }
+        $film_current['kinopoisk_id'] = $kinopoisk_id;
+
+        if (preg_match('/user_vote1[^}]+\/(\d+)\.png/sui', $content, $imdb_match)) {
+            $imdb_id = $imdb_match[1];
+        }
+        $film_current['imdb_id'] = $imdb_id;
+
+
         // Жанр
         if (preg_match('/<p>[^"]+жанр(.+?)<\/p>/sui', $content, $genre_match)) {
             preg_match_all('/href="\/([^"]+)?\/"[^>]*>([^"]+)?<\/a>/siu', $genre_match[1], $genres, PREG_SET_ORDER);
@@ -353,8 +409,8 @@ class Fasttorrent extends ParserBase
 
 
         //Продолжительноситб
-        if (preg_match('/(Продолжительность[^"]+)[^"]+(\d{2}\:\d{2})/sui', $content, $last)) {
-            $last = $last[2];
+        if (preg_match('/продолжительность[^"]+\:[^\d](.+?)[^:\d]+/sui', $content, $last)) {
+            $last = $last[1];
         } else {
             $this->errors['general'][] = 'Last not set';
         }
@@ -426,7 +482,7 @@ class Fasttorrent extends ParserBase
                 ];
             }
         } else {
-            $this->errors['general'][] = 'Directors not set';
+            $this->errors['general'][] = 'Producer not set';
         }
         $film_current['producers'] = $arr_people;
 

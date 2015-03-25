@@ -4,6 +4,11 @@ $films = $this->get('films');
 
 $_ = $this->get('_');
 
+$populars = $this->get('populars');
+$last_uploads = $this->get('last_uploads');
+$soons = $this->get('soons');
+
+
 ?>
 
 
@@ -29,107 +34,32 @@ $_ = $this->get('_');
             </h2>
         </div>
         <div class="row">
-            <div class="browse-movie-wrap col-sm-5">
-                <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-link">
-                    <div class="smooter">
-                        <img class="img-responsive" src="https://s.ynet.io/assets/images/movies/interstellar_2014/medium-cover.jpg" alt="Interstellar (2014) download">
+            <?php foreach ($populars as $popular) { ?>
+                <div class="browse-movie-wrap col-sm-5">
+                    <a href="<?php echo $popular['url'] ?>" title="<?php echo $popular['aka_ru'] ?>" class="browse-movie-link">
+                        <div class="smooter">
+                            <img class="img-responsive" src="<?php echo $popular['poster'] ?>">
+                            <div class="smootercaption">
+                                <span class="icon-star">d</span>
+                                <h4 class="rating">8.8 / 10</h4>
+                                <h4>Приключения</h4>
+                                <h4>Фантастика</h4>
+                                <span class="button-1-download-big">Подробнее</span>
+                            </div>
+                        </div>
+                    </a>
 
-                        <div class="smootercaption">
-                            <span class="icon-star">d</span>
-                            <h4 class="rating">8.8 / 10</h4>
-                            <h4>Приключения</h4>
-                            <h4>Фантастика</h4>
-                            <span class="button-1-download-big">Подробнее</span>
+                    <div class="browse-movie-bottom">
+                        <a href="<?php echo $popular['url'] ?>" class="browse-movie-title"><?php echo $popular['aka_ru'] ?></a>
+
+                        <div class="browse-movie-year">2014</div>
+                        <div class="browse-movie-tags">
+                            <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
+                            <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
                         </div>
                     </div>
-                </a>
-
-                <div class="browse-movie-bottom">
-                    <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-title">Interstellar</a>
-
-                    <div class="browse-movie-year">2014</div>
-                    <div class="browse-movie-tags">
-                        <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
-                        <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
-                    </div>
                 </div>
-            </div>
-
-            <div class="browse-movie-wrap col-sm-5">
-                <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-link">
-                    <div class="smooter">
-                        <img class="img-responsive" src="https://s.ynet.io/assets/images/movies/interstellar_2014/medium-cover.jpg" alt="Interstellar (2014) download">
-
-                        <div class="smootercaption">
-                            <span class="icon-star">d</span>
-                            <h4 class="rating">8.8 / 10</h4>
-                            <h4>Приключения</h4>
-                            <h4>Фантастика</h4>
-                            <span class="button-1-download-big">Подробнее</span>
-                        </div>
-                    </div>
-                </a>
-
-                <div class="browse-movie-bottom">
-                    <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-title">Interstellar</a>
-
-                    <div class="browse-movie-year">2014</div>
-                    <div class="browse-movie-tags">
-                        <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
-                        <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
-                    </div>
-                </div>
-            </div>
-            <div class="browse-movie-wrap col-sm-5">
-                <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-link">
-                    <div class="smooter">
-                        <img class="img-responsive" src="https://s.ynet.io/assets/images/movies/interstellar_2014/medium-cover.jpg" alt="Interstellar (2014) download">
-
-                        <div class="smootercaption">
-                            <span class="icon-star">d</span>
-                            <h4 class="rating">8.8 / 10</h4>
-                            <h4>Приключения</h4>
-                            <h4>Фантастика</h4>
-                            <span class="button-1-download-big">Подробнее</span>
-                        </div>
-                    </div>
-                </a>
-
-                <div class="browse-movie-bottom">
-                    <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-title">Interstellar</a>
-
-                    <div class="browse-movie-year">2014</div>
-                    <div class="browse-movie-tags">
-                        <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
-                        <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
-                    </div>
-                </div>
-            </div>
-            <div class="browse-movie-wrap col-sm-5">
-                <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-link">
-                    <div class="smooter">
-                        <img class="img-responsive" src="https://s.ynet.io/assets/images/movies/interstellar_2014/medium-cover.jpg" alt="Interstellar (2014) download">
-
-                        <div class="smootercaption">
-                            <span class="icon-star">d</span>
-                            <h4 class="rating">8.8 / 10</h4>
-                            <h4>Приключения</h4>
-                            <h4>Фантастика</h4>
-                            <span class="button-1-download-big">Подробнее</span>
-                        </div>
-                    </div>
-                </a>
-
-                <div class="browse-movie-bottom">
-                    <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-title">Interstellar</a>
-
-                    <div class="browse-movie-year">2014</div>
-                    <div class="browse-movie-tags">
-                        <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
-                        <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
-                    </div>
-                </div>
-            </div>
+            <?php } ?>
 
         </div>
 
@@ -148,211 +78,63 @@ $_ = $this->get('_');
                 </h2>
             </div>
             <div class="row">
-                <div class="browse-movie-wrap col-sm-5">
-                    <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-link">
-                        <div class="smooter">
-                            <img class="img-responsive" src="https://s.ynet.io/assets/images/movies/interstellar_2014/medium-cover.jpg" alt="Interstellar (2014) download">
 
-                            <div class="smootercaption">
-                                <span class="icon-star">d</span>
-                                <h4 class="rating">8.8 / 10</h4>
-                                <h4>Приключения</h4>
-                                <h4>Фантастика</h4>
-                                <span class="button-1-download-big">Подробнее</span>
+                <?php foreach ($populars as $popular) { ?>
+                    <div class="browse-movie-wrap col-sm-5">
+                        <a href="<?php echo $popular['url'] ?>" title="<?php echo $popular['aka_ru'] ?>" class="browse-movie-link">
+                            <div class="smooter">
+                                <img class="img-responsive" src="<?php echo $popular['poster'] ?>">
+                                <div class="smootercaption">
+                                    <span class="icon-star">d</span>
+                                    <h4 class="rating">8.8 / 10</h4>
+                                    <h4>Приключения</h4>
+                                    <h4>Фантастика</h4>
+                                    <span class="button-1-download-big">Подробнее</span>
+                                </div>
+                            </div>
+                        </a>
+
+                        <div class="browse-movie-bottom">
+                            <a href="<?php echo $popular['url'] ?>" class="browse-movie-title"><?php echo $popular['aka_ru'] ?></a>
+
+                            <div class="browse-movie-year">2014</div>
+                            <div class="browse-movie-tags">
+                                <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
+                                <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
                             </div>
                         </div>
-                    </a>
-
-                    <div class="browse-movie-bottom">
-                        <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-title">Interstellar</a>
-
-                        <div class="browse-movie-year">2014</div>
-                        <div class="browse-movie-tags">
-                            <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
-                            <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
-                        </div>
                     </div>
-                </div>
-
-                <div class="browse-movie-wrap col-sm-5">
-                    <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-link">
-                        <div class="smooter">
-                            <img class="img-responsive" src="https://s.ynet.io/assets/images/movies/interstellar_2014/medium-cover.jpg" alt="Interstellar (2014) download">
-
-                            <div class="smootercaption">
-                                <span class="icon-star">d</span>
-                                <h4 class="rating">8.8 / 10</h4>
-                                <h4>Приключения</h4>
-                                <h4>Фантастика</h4>
-                                <span class="button-1-download-big">Подробнее</span>
-                            </div>
-                        </div>
-                    </a>
-
-                    <div class="browse-movie-bottom">
-                        <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-title">Interstellar</a>
-
-                        <div class="browse-movie-year">2014</div>
-                        <div class="browse-movie-tags">
-                            <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
-                            <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="browse-movie-wrap col-sm-5">
-                    <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-link">
-                        <div class="smooter">
-                            <img class="img-responsive" src="https://s.ynet.io/assets/images/movies/interstellar_2014/medium-cover.jpg" alt="Interstellar (2014) download">
-
-                            <div class="smootercaption">
-                                <span class="icon-star">d</span>
-                                <h4 class="rating">8.8 / 10</h4>
-                                <h4>Приключения</h4>
-                                <h4>Фантастика</h4>
-                                <span class="button-1-download-big">Подробнее</span>
-                            </div>
-                        </div>
-                    </a>
-
-                    <div class="browse-movie-bottom">
-                        <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-title">Interstellar</a>
-
-                        <div class="browse-movie-year">2014</div>
-                        <div class="browse-movie-tags">
-                            <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
-                            <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="browse-movie-wrap col-sm-5">
-                    <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-link">
-                        <div class="smooter">
-                            <img class="img-responsive" src="https://s.ynet.io/assets/images/movies/interstellar_2014/medium-cover.jpg" alt="Interstellar (2014) download">
-
-                            <div class="smootercaption">
-                                <span class="icon-star">d</span>
-                                <h4 class="rating">8.8 / 10</h4>
-                                <h4>Приключения</h4>
-                                <h4>Фантастика</h4>
-                                <span class="button-1-download-big">Подробнее</span>
-                            </div>
-                        </div>
-                    </a>
-
-                    <div class="browse-movie-bottom">
-                        <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-title">Interstellar</a>
-
-                        <div class="browse-movie-year">2014</div>
-                        <div class="browse-movie-tags">
-                            <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
-                            <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
-                        </div>
-                    </div>
-                </div>
+                <?php } ?>
 
             </div>
             <div class="row">
-                <div class="browse-movie-wrap col-sm-5">
-                    <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-link">
-                        <div class="smooter">
-                            <img class="img-responsive" src="https://s.ynet.io/assets/images/movies/interstellar_2014/medium-cover.jpg" alt="Interstellar (2014) download">
 
-                            <div class="smootercaption">
-                                <span class="icon-star">d</span>
-                                <h4 class="rating">8.8 / 10</h4>
-                                <h4>Приключения</h4>
-                                <h4>Фантастика</h4>
-                                <span class="button-1-download-big">Подробнее</span>
+                <?php foreach ($populars as $popular) { ?>
+                    <div class="browse-movie-wrap col-sm-5">
+                        <a href="<?php echo $popular['url'] ?>" title="<?php echo $popular['aka_ru'] ?>" class="browse-movie-link">
+                            <div class="smooter">
+                                <img class="img-responsive" src="<?php echo $popular['poster'] ?>">
+                                <div class="smootercaption">
+                                    <span class="icon-star">d</span>
+                                    <h4 class="rating">8.8 / 10</h4>
+                                    <h4>Приключения</h4>
+                                    <h4>Фантастика</h4>
+                                    <span class="button-1-download-big">Подробнее</span>
+                                </div>
+                            </div>
+                        </a>
+
+                        <div class="browse-movie-bottom">
+                            <a href="<?php echo $popular['url'] ?>" class="browse-movie-title"><?php echo $popular['aka_ru'] ?></a>
+
+                            <div class="browse-movie-year">2014</div>
+                            <div class="browse-movie-tags">
+                                <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
+                                <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
                             </div>
                         </div>
-                    </a>
-
-                    <div class="browse-movie-bottom">
-                        <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-title">Interstellar</a>
-
-                        <div class="browse-movie-year">2014</div>
-                        <div class="browse-movie-tags">
-                            <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
-                            <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
-                        </div>
                     </div>
-                </div>
-
-                <div class="browse-movie-wrap col-sm-5">
-                    <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-link">
-                        <div class="smooter">
-                            <img class="img-responsive" src="https://s.ynet.io/assets/images/movies/interstellar_2014/medium-cover.jpg" alt="Interstellar (2014) download">
-
-                            <div class="smootercaption">
-                                <span class="icon-star">d</span>
-                                <h4 class="rating">8.8 / 10</h4>
-                                <h4>Приключения</h4>
-                                <h4>Фантастика</h4>
-                                <span class="button-1-download-big">Подробнее</span>
-                            </div>
-                        </div>
-                    </a>
-
-                    <div class="browse-movie-bottom">
-                        <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-title">Interstellar</a>
-
-                        <div class="browse-movie-year">2014</div>
-                        <div class="browse-movie-tags">
-                            <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
-                            <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="browse-movie-wrap col-sm-5">
-                    <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-link">
-                        <div class="smooter">
-                            <img class="img-responsive" src="https://s.ynet.io/assets/images/movies/interstellar_2014/medium-cover.jpg" alt="Interstellar (2014) download">
-
-                            <div class="smootercaption">
-                                <span class="icon-star">d</span>
-                                <h4 class="rating">8.8 / 10</h4>
-                                <h4>Приключения</h4>
-                                <h4>Фантастика</h4>
-                                <span class="button-1-download-big">Подробнее</span>
-                            </div>
-                        </div>
-                    </a>
-
-                    <div class="browse-movie-bottom">
-                        <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-title">Interstellar</a>
-
-                        <div class="browse-movie-year">2014</div>
-                        <div class="browse-movie-tags">
-                            <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
-                            <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="browse-movie-wrap col-sm-5">
-                    <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-link">
-                        <div class="smooter">
-                            <img class="img-responsive" src="https://s.ynet.io/assets/images/movies/interstellar_2014/medium-cover.jpg" alt="Interstellar (2014) download">
-
-                            <div class="smootercaption">
-                                <span class="icon-star">d</span>
-                                <h4 class="rating">8.8 / 10</h4>
-                                <h4>Приключения</h4>
-                                <h4>Фантастика</h4>
-                                <span class="button-1-download-big">Подробнее</span>
-                            </div>
-                        </div>
-                    </a>
-
-                    <div class="browse-movie-bottom">
-                        <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-title">Interstellar</a>
-
-                        <div class="browse-movie-year">2014</div>
-                        <div class="browse-movie-tags">
-                            <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
-                            <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
-                        </div>
-                    </div>
-                </div>
+                <?php } ?>
 
             </div>
 
@@ -371,107 +153,32 @@ $_ = $this->get('_');
             </h2>
         </div>
         <div class="row">
-            <div class="browse-movie-wrap col-sm-5">
-                <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-link">
-                    <div class="smooter">
-                        <img class="img-responsive" src="https://s.ynet.io/assets/images/movies/interstellar_2014/medium-cover.jpg" alt="Interstellar (2014) download">
+            <?php foreach ($populars as $popular) { ?>
+                <div class="browse-movie-wrap col-sm-5">
+                    <a href="<?php echo $popular['url'] ?>" title="<?php echo $popular['aka_ru'] ?>" class="browse-movie-link">
+                        <div class="smooter">
+                            <img class="img-responsive" src="<?php echo $popular['poster'] ?>">
+                            <div class="smootercaption">
+                                <span class="icon-star">d</span>
+                                <h4 class="rating">8.8 / 10</h4>
+                                <h4>Приключения</h4>
+                                <h4>Фантастика</h4>
+                                <span class="button-1-download-big">Подробнее</span>
+                            </div>
+                        </div>
+                    </a>
 
-                        <div class="smootercaption">
-                            <span class="icon-star">d</span>
-                            <h4 class="rating">8.8 / 10</h4>
-                            <h4>Приключения</h4>
-                            <h4>Фантастика</h4>
-                            <span class="button-1-download-big">Подробнее</span>
+                    <div class="browse-movie-bottom">
+                        <a href="<?php echo $popular['url'] ?>" class="browse-movie-title"><?php echo $popular['aka_ru'] ?></a>
+
+                        <div class="browse-movie-year">2014</div>
+                        <div class="browse-movie-tags">
+                            <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
+                            <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
                         </div>
                     </div>
-                </a>
-
-                <div class="browse-movie-bottom">
-                    <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-title">Interstellar</a>
-
-                    <div class="browse-movie-year">2014</div>
-                    <div class="browse-movie-tags">
-                        <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
-                        <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
-                    </div>
                 </div>
-            </div>
-
-            <div class="browse-movie-wrap col-sm-5">
-                <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-link">
-                    <div class="smooter">
-                        <img class="img-responsive" src="https://s.ynet.io/assets/images/movies/interstellar_2014/medium-cover.jpg" alt="Interstellar (2014) download">
-
-                        <div class="smootercaption">
-                            <span class="icon-star">d</span>
-                            <h4 class="rating">8.8 / 10</h4>
-                            <h4>Приключения</h4>
-                            <h4>Фантастика</h4>
-                            <span class="button-1-download-big">Подробнее</span>
-                        </div>
-                    </div>
-                </a>
-
-                <div class="browse-movie-bottom">
-                    <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-title">Interstellar</a>
-
-                    <div class="browse-movie-year">2014</div>
-                    <div class="browse-movie-tags">
-                        <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
-                        <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
-                    </div>
-                </div>
-            </div>
-            <div class="browse-movie-wrap col-sm-5">
-                <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-link">
-                    <div class="smooter">
-                        <img class="img-responsive" src="https://s.ynet.io/assets/images/movies/interstellar_2014/medium-cover.jpg" alt="Interstellar (2014) download">
-
-                        <div class="smootercaption">
-                            <span class="icon-star">d</span>
-                            <h4 class="rating">8.8 / 10</h4>
-                            <h4>Приключения</h4>
-                            <h4>Фантастика</h4>
-                            <span class="button-1-download-big">Подробнее</span>
-                        </div>
-                    </div>
-                </a>
-
-                <div class="browse-movie-bottom">
-                    <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-title">Interstellar</a>
-
-                    <div class="browse-movie-year">2014</div>
-                    <div class="browse-movie-tags">
-                        <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
-                        <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
-                    </div>
-                </div>
-            </div>
-            <div class="browse-movie-wrap col-sm-5">
-                <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-link">
-                    <div class="smooter">
-                        <img class="img-responsive" src="https://s.ynet.io/assets/images/movies/interstellar_2014/medium-cover.jpg" alt="Interstellar (2014) download">
-
-                        <div class="smootercaption">
-                            <span class="icon-star">d</span>
-                            <h4 class="rating">8.8 / 10</h4>
-                            <h4>Приключения</h4>
-                            <h4>Фантастика</h4>
-                            <span class="button-1-download-big">Подробнее</span>
-                        </div>
-                    </div>
-                </a>
-
-                <div class="browse-movie-bottom">
-                    <a href="https://yts.to/movie/interstellar-2014" class="browse-movie-title">Interstellar</a>
-
-                    <div class="browse-movie-year">2014</div>
-                    <div class="browse-movie-tags">
-                        <a href="https://yts.to/torrent/download/6E88B3F25BA49D483D740A652BF013C341BC5373.torrent">720p</a>
-                        <a href="https://yts.to/torrent/download/89599BF4DC369A3A8ECA26411C5CCF922D78B486.torrent">1080p</a>
-                    </div>
-                </div>
-            </div>
+            <?php } ?>
 
         </div>
 

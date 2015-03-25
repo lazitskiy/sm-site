@@ -44,11 +44,19 @@ if ($argv[1]) {
         $provider_low = $provider;
         $provider = ucfirst($provider);
 
+        /**
+         * Спарсить фильм по IDшнику
+         * php parser.php fasttorrent film 3
+         */
         $all = $argv[2];
         if ($argv[3]) {
             $app->set('param', $argv[3]);
         }
 
+        /**
+         * Спарсить 10 фильмов по порядку со статутом не спармено uploaded=0
+         * php parser.php fasttorrent films 10
+         */
 
         $app->route('GET parser.php' . $provider_low, $provider . '->parse' . $all);
 
