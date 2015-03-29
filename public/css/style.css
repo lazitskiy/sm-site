@@ -132,6 +132,7 @@ html {
   -webkit-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
+  -o-text-size-adjust: 100%;
   text-size-adjust: 100%;
   font-size: 10px;
 }
@@ -144,13 +145,17 @@ body {
   letter-spacing: -0.03em;
   font-size: 16px;
   margin: 0 auto;
-  background-color: #1d1d1d;
+  background-color: #000;
   text-align: center;
   -webkit-font-smoothing: antialiased;
   color: #fff;
 }
+h3 {
+  font-size: 1.25em;
+  font-weight: bold;
+}
 .super-black {
-  background-color: #171717;
+  background-color: #000;
 }
 .nagivation {
   height: 51px;
@@ -160,13 +165,14 @@ body {
   top: 0;
   position: fixed;
   z-index: 8;
-  background: #1d1d1d;
+  background: #000;
   overflow: hidden;
   color: #919191;
   border-bottom: 1px solid #2f2f2f;
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
   -ms-backface-visibility: hidden;
+  -o-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 .logo {
@@ -183,7 +189,7 @@ body {
   float: left;
 }
 .right {
-  float: right;
+  float: right !important;
 }
 .clear {
   clear: both;
@@ -196,6 +202,17 @@ body {
   padding-top: 15px;
   display: inline-block;
   float: left;
+}
+a.theme {
+  -webkit-transition: color 0.25s ease-in-out;
+  -moz-transition: color 0.25s ease-in-out;
+  -ms-transition: color 0.25s ease-in-out;
+  -o-transition: color 0.25s ease-in-out;
+  transition: color 0.25s ease-in-out;
+  color: #36bce6;
+}
+a.theme:hover {
+  color: #2071f0;
 }
 .nav-links li {
   display: inline;
@@ -211,6 +228,7 @@ body {
   -webkit-transition: color 0.25s ease-in-out;
   -moz-transition: color 0.25s ease-in-out;
   -ms-transition: color 0.25s ease-in-out;
+  -o-transition: color 0.25s ease-in-out;
   transition: color 0.25s ease-in-out;
 }
 .nav-links li a:hover,
@@ -223,7 +241,7 @@ body {
 #background-overlay,
 #background-image {
   top: 60px;
-  height: 580px;
+  height: 780px;
 }
 #background-overlay {
   position: absolute;
@@ -280,6 +298,7 @@ body {
   -webkit-transition: color 0.15s ease-in-out;
   -moz-transition: color 0.15s ease-in-out;
   -ms-transition: color 0.15s ease-in-out;
+  -o-transition: color 0.15s ease-in-out;
   transition: color 0.15s ease-in-out;
 }
 .featured-blog a:hover {
@@ -300,11 +319,13 @@ body {
   margin-bottom: 15px;
 }
 .col-sm-5,
+.col-sm-6,
 .col-md-10,
-.col-xs-20 {
+.col-xs-20,
+col-lg-5,
+col-xs-10 {
   position: relative;
   min-height: 1px;
-  float: left;
 }
 .col-xs-20 {
   width: 100%;
@@ -313,6 +334,9 @@ body {
   padding-left: 15px;
   padding-right: 15px;
 }
+.col-sm-5 {
+  float: left;
+}
 .browse-movie-link {
   display: inline-block;
   max-width: 220px;
@@ -320,10 +344,12 @@ body {
   -webkit-transition: border 0.15s ease-in-out;
   -moz-transition: border 0.15s ease-in-out;
   -ms-transition: border 0.15s ease-in-out;
+  -o-transition: border 0.15s ease-in-out;
   transition: border 0.15s ease-in-out;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
+  -o-border-radius: 4px;
   border-radius: 4px;
   font-size: 24px;
 }
@@ -335,7 +361,7 @@ body {
   position: relative;
   width: 100%;
   margin: 0;
-  background: #1d1d1d !important;
+  background: #000 !important;
 }
 .img-responsive {
   display: block;
@@ -362,6 +388,7 @@ body {
   -webkit-transition: opacity 0.15s ease-in-out;
   -moz-transition: opacity 0.15s ease-in-out;
   -ms-transition: opacity 0.15s ease-in-out;
+  -o-transition: opacity 0.15s ease-in-out;
   transition: opacity 0.15s ease-in-out;
 }
 .home-content .smootercaption {
@@ -380,10 +407,12 @@ body {
   -webkit-transition: all 300ms;
   -moz-transition: all 300ms;
   -ms-transition: all 300ms;
+  -o-transition: all 300ms;
   transition: all 300ms;
   -webkit-transition-delay: 100ms;
   -moz-transition-delay: 100ms;
   -ms-transition-delay: 100ms;
+  -o-transition-delay: 100ms;
   transition-delay: 100ms;
   padding-top: 20px;
 }
@@ -394,6 +423,7 @@ body {
   -webkit-transition: all 300ms ease;
   -moz-transition: all 300ms ease;
   -ms-transition: all 300ms ease;
+  -o-transition: all 300ms ease;
   transition: all 300ms ease;
 }
 .smooter .smootercaption .rating {
@@ -417,6 +447,7 @@ body {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
+  -o-border-radius: 3px;
   border-radius: 3px;
   display: block;
   font-weight: bold;
@@ -430,6 +461,7 @@ body {
   -webkit-transition: all 300ms ease;
   -moz-transition: all 300ms ease;
   -ms-transition: all 300ms ease;
+  -o-transition: all 300ms ease;
   transition: all 300ms ease;
 }
 .button-1-download-big:hover {
@@ -450,6 +482,7 @@ body {
   -webkit-transition: color 0.15s ease-in-out;
   -moz-transition: color 0.15s ease-in-out;
   -ms-transition: color 0.15s ease-in-out;
+  -o-transition: color 0.15s ease-in-out;
   transition: color 0.15s ease-in-out;
   white-space: nowrap;
   overflow: hidden;
@@ -470,10 +503,12 @@ body {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
+  -o-border-radius: 4px;
   border-radius: 4px;
   -webkit-transition: color 0.15s ease-in-out;
   -moz-transition: color 0.15s ease-in-out;
   -ms-transition: color 0.15s ease-in-out;
+  -o-transition: color 0.15s ease-in-out;
   transition: color 0.15s ease-in-out;
 }
 .browse-movie-tags a:hover {
@@ -498,6 +533,7 @@ body {
   -webkit-transition: color 0.25s ease-in-out;
   -moz-transition: color 0.25s ease-in-out;
   -ms-transition: color 0.25s ease-in-out;
+  -o-transition: color 0.25s ease-in-out;
   transition: color 0.25s ease-in-out;
 }
 footer {
@@ -521,6 +557,7 @@ footer ul li a {
   -webkit-transition: color 0.25s ease-in-out;
   -moz-transition: color 0.25s ease-in-out;
   -ms-transition: color 0.25s ease-in-out;
+  -o-transition: color 0.25s ease-in-out;
   transition: color 0.25s ease-in-out;
 }
 footer ul li a:hover {
@@ -556,6 +593,7 @@ footer ul li a:hover {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
+  -o-border-radius: 3px;
   border-radius: 3px;
 }
 .just-link {
@@ -568,6 +606,7 @@ footer ul li a:hover {
   -webkit-transition: color 0.25s ease-in-out;
   -moz-transition: color 0.25s ease-in-out;
   -ms-transition: color 0.25s ease-in-out;
+  -o-transition: color 0.25s ease-in-out;
   transition: color 0.25s ease-in-out;
 }
 .just-link a:hover {
@@ -585,4 +624,119 @@ footer ul li a:hover {
   padding-right: 7px;
   position: static;
   border: 0;
+}
+#movie-poster {
+  padding-right: 16px;
+}
+#movie-poster img {
+  border: 5px solid #fff;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+}
+#movie-info {
+  float: left;
+  text-align: left;
+}
+#movie-info h1,
+#movie-info h2,
+#mobile-movie-info h1,
+#mobile-movie-info h2,
+#info-page h1 {
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 2px 2px rgba(0,0,0,0.4);
+  margin: 0;
+}
+#movie-info h1 {
+  font-size: 2.5em;
+  margin-bottom: 24px;
+  line-height: 42px;
+}
+#background-image {
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -ms-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  z-index: -2;
+}
+#background-overlay {
+  position: absolute;
+  top: 0;
+  z-index: -1;
+}
+.p {
+  margin-top: 10px;
+}
+.pb {
+  margin-top: 30px;
+}
+.w25 {
+  width: 25%;
+  float: left;
+}
+.w75 {
+  width: 75%;
+  float: left;
+}
+.movie-images img {
+  float: left;
+}
+#movie-content {
+  text-align: left;
+}
+#movie-content h3 {
+  margin-bottom: 14px;
+}
+.quality {
+  width: 160px;
+  margin: 0px auto;
+  text-align: center;
+  font-size: 1.8em;
+  color: #fff;
+  -webkit-transition: color 0.15s ease-in-out;
+  -moz-transition: color 0.15s ease-in-out;
+  -ms-transition: color 0.15s ease-in-out;
+  -o-transition: color 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out;
+}
+.table .even {
+  background-color: #111;
+}
+.table .odd {
+  background-color: #222;
+}
+.table .head {
+  border-top: 1px solid #555;
+  border-bottom: 1px solid #555;
+}
+.table .body {
+  border-bottom: 1px solid #333;
+}
+.table .tr {
+  padding: 12px 0;
+  width: 100%;
+}
+.table .th,
+.table .td {
+  float: left;
+}
+.table .th {
+  color: #fff;
+}
+.table .td {
+  color: #ccc;
+}
+.table .w5 {
+  width: 60px;
+}
+.table .w6 {
+  width: 100px;
 }

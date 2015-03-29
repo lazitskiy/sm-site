@@ -1,8 +1,8 @@
 @import vendor
 
 $font = Arimo, Arial, Helvetica, "Lucida Grande", sans-serif
-$background-color-black = #1d1d1d
-$background-color-black2 = #171717
+$background-color-black = #000
+$background-color-black2 = #000
 
 $text-color-main = #919191
 $text-color-second = #fff
@@ -69,6 +69,10 @@ body
   -webkit-font-smoothing antialiased
   color #fff
 
+h3
+  font-size: 1.25em;
+  font-weight: bold;
+
 .super-black
   background-color: $background-color-black2
 
@@ -100,7 +104,7 @@ body
   float left
 
 .right
-  float right
+  float right !important
 
 .clear
   clear both
@@ -113,6 +117,13 @@ body
   padding-top 15px
   display inline-block
   float left
+
+a.theme
+  transition(color .25s ease-in-out)
+  color $color-theme-1
+
+a.theme:hover
+  color $color-theme-2
 
 .nav-links li
   display inline
@@ -134,7 +145,7 @@ body
 
 #background-overlay, #background-image
   top 60px
-  height 580px
+  height 780px
 
 #background-overlay
   position absolute
@@ -192,6 +203,7 @@ body
 
 .featured-blog a:hover
   color $color-theme-2
+
 .row
   margin-left -15px
   margin-right -15px
@@ -206,10 +218,10 @@ body
 .browse-movie-wrap
   margin-bottom 15px
 
-.col-sm-5, .col-md-10, .col-xs-20
-  position relative
-  min-height 1px
-  float: left
+.col-sm-5, .col-sm-6
+.col-md-10, .col-xs-20, col-lg-5, col-xs-10
+  position: relative;
+  min-height: 1px;
 
 .col-xs-20 {
   width 100%
@@ -218,6 +230,9 @@ body
 .col-md-10
   padding-left: 15px;
   padding-right: 15px;
+
+.col-sm-5
+  float left
 
 .browse-movie-link
   display inline-block
@@ -445,3 +460,103 @@ footer ul li a:hover
   padding-right: 7px;
   position: static;
   border: 0;
+
+#movie-poster
+  padding-right 16px
+
+#movie-poster img
+  border: 5px solid #fff;
+  border-radius(4px);
+
+#movie-info
+  float: left
+  text-align left
+
+#movie-info h1, #movie-info h2, #mobile-movie-info h1, #mobile-movie-info h2, #info-page h1 {
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, .4);
+  margin: 0;
+}
+
+#movie-info h1
+  font-size: 2.5em;
+  margin-bottom: 24px;
+  line-height: 42px;
+
+#background-image
+  background-repeat no-repeat
+  background-position center center;
+  background-size(cover);
+  position absolute
+  top: 0
+  z-index -2
+
+#background-overlay
+  position absolute
+  top: 0
+  z-index -1
+
+.p
+  margin-top 10px;
+
+.pb
+  margin-top 30px;
+
+.w25
+  width 25%
+  float left
+
+.w75
+  width 75%
+  float left
+
+.movie-images img
+  float left
+
+#movie-content
+  text-align left
+
+#movie-content h3
+  margin-bottom: 14px;
+
+.quality {
+  width 160px;
+  margin 0px auto
+  text-align center
+  font-size: 1.8em;
+  color: #fff;
+  transition(color .15s ease-in-out)
+}
+
+.table .even
+  background-color #111
+
+.table .odd
+  background-color #222
+
+.table .head
+  border-top: 1px solid #555
+  border-bottom: 1px solid #555
+
+.table .body
+  border-bottom: 1px solid #333;
+
+.table .tr
+  padding 12px 0
+  width 100%
+
+.table .th, .table .td
+  float left
+
+.table .th
+  color $text-color-second
+
+.table .td
+  color $text-color-third
+
+.table .w5
+  width 60px
+
+.table .w6
+  width 100px

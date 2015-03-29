@@ -11,8 +11,11 @@ $soons = $this->get('soons');
 
 ?>
 
+<!--
+<div id="background-image" style="background-image: url(https://s.ynet.io/assets/images/movies/interstellar_2014/background.jpg)"></div>
+<div id="background-overlay"></div>
 
-
+-->
 <div class="container home-content">
     <div class="hidden-xs hidden-sm">
         <h1><?php echo $_['Do slogan'] ?></h1>

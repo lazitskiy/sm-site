@@ -1,17 +1,6 @@
 <?php
 ini_set('memory_limit', '3200M');
 
-function myflush($timee = null)
-{
-    if (ob_get_contents()) {
-        ob_flush();
-        ob_clean();
-        flush();
-        if ($timee) {
-            sleep($timee);
-        }
-    }
-}
 
 //phpinfo();
 class Fasttorrent extends ParserBase
@@ -70,8 +59,8 @@ class Fasttorrent extends ParserBase
             return;
         }
         $parsed = $this->parseFilmsByUrls(array($film['url']));
-
         $this->storeFilm($parsed[0], $this->provider_id);
+
         echo "Saved \n";
         myflush();
         //file_put_contents(dirname(__FILE__) . '/../tmp/film' . $film_id . '.txt', print_r($parsed, true));
@@ -95,6 +84,10 @@ class Fasttorrent extends ParserBase
             return;
         }
 
+        $film_isd = array_map(function ($el) {
+            return $el['id'];
+        }, $films);
+
         $urls = array_map(function ($el) {
             return $el['url'];
         }, $films);
@@ -111,6 +104,12 @@ class Fasttorrent extends ParserBase
             $i++;
         }
 
+        $poster_urls = array_map(function ($el) {
+            return $el['poster_from'];
+        }, $films);
+
+
+        $this->poster_download($poster_urls, 1, $film_isd);
 
         //file_put_contents(dirname(__FILE__) . '/../tmp/film' . $film_id . '.txt', print_r($parsed, true));
         vvd('ok');
@@ -303,6 +302,7 @@ class Fasttorrent extends ParserBase
             $this->errors['general'][] = 'Poster not set';
         }
 
+
         $content = $film_main->toXml();
         preg_match('/film_controll.+?obj_id="(\d+?)"/sui', $content, $id_match);
 
@@ -310,6 +310,9 @@ class Fasttorrent extends ParserBase
         if (!$id_match[1]) {
             $this->errors['general'][] = 'ID not set';
         }
+
+
+        $content = $film_main->get('.film_page')->toXml();
 
         preg_match('/<h1>[^"]+itemprop.+?">+(.+?)<\//sui', $content, $aka_ru_match);
         $film_current['aka_rus'] = $aka_ru_match[1];
@@ -339,7 +342,7 @@ class Fasttorrent extends ParserBase
         /**
          * Остальное инфо
          */
-        $content = $film_main->toxml();
+
         //Дата выхода
         if (preg_match_all('/(дата выхода[^\<]+)[^"]+(\d{2}\.\d{2}\.\d{4})/sui', $content, $date_relises, PREG_SET_ORDER)) {
             foreach ($date_relises as $date_relise) {
@@ -394,8 +397,7 @@ class Fasttorrent extends ParserBase
         $film_current['countries'] = $arr_country;
 
         //Теги
-        if (preg_match('/<p>(.+?)\/tag(.+?)<\/p>/sui', $content, $tag_match)) {
-            preg_match_all('/[video|tv]\/tag\/(.+?)\/(.+?)em>(.+?)<\/a/siu', $tag_match[0], $tags, PREG_SET_ORDER);
+        if (preg_match_all('/[video|tv|documentary]\/tag\/(.+?)\/(.+?)em>(.+?)<\/a/siu', $content, $tags, PREG_SET_ORDER)) {
             foreach ($tags as $tag) {
                 $arr_tag[] = [
                     'name' => $tag[3],
@@ -409,7 +411,7 @@ class Fasttorrent extends ParserBase
 
 
         //Продолжительноситб
-        if (preg_match('/продолжительность[^"]+\:[^\d](.+?)[^:\d]+/sui', $content, $last)) {
+        if (preg_match('/продолжительность[^"\d]+([\d:]+)[^\d]/sui', $content, $last)) {
             $last = $last[1];
         } else {
             $this->errors['general'][] = 'Last not set';
@@ -432,7 +434,8 @@ class Fasttorrent extends ParserBase
 
         // Канал
         if (preg_match('/info[^}]+<p[^"]+канал(.+?)<\/p>/sui', $content, $channel_match)) {
-            preg_match_all('/href="\/channel\/([^"]+)?\/"[^>]*>([^"]+)?<\/a>/siu', $channel_match[1], $channels, PREG_SET_ORDER);
+            //preg_match_all('/href="\/channel\/([^"]+)?\/"[^>]*>([^"]+)?<\/a>/siu', $channel_match[1], $channels, PREG_SET_ORDER);
+            preg_match_all('/href="[^"]+channel\/([^"]+)?\/"[^>]*>([^"]+)?<\/a>/siu', $channel_match[1], $channels, PREG_SET_ORDER);
             foreach ($channels as $channel) {
                 $arr_channel[] = [
                     'name' => $channel[2],
@@ -505,11 +508,11 @@ class Fasttorrent extends ParserBase
 
 
         //Описание
-        if (preg_match('/<p item.+?description[^>]+>(.*?)<\/p>/sui', $content, $description)) {
-            $description = strip_tags($description[1]);
+        if (preg_match('/<p item.+?description[^>]+>(.*?)</sui', $content, $description)) {
+            $description = ($description[1]);
             if (!$description[1]) {
-                preg_match('/<p item.+?description[^>]+>(.*?)<\/p><p>(.*?)<\/p>/sui', $content, $description);
-                $description = strip_tags($description[2]);
+                preg_match('/<p item.+?description[^>]+>(.*?)<\/p><p>(.*?)</sui', $content, $description);
+                $description = ($description[2]);
             }
 
             $film_current['description'] = trim(str_replace(array("\r", "\n"), "", html_entity_decode($description)));
@@ -552,7 +555,7 @@ class Fasttorrent extends ParserBase
         /*echo "   --START IMAGES--\n";
         myflush();*/
         foreach ($images as $img) {
-            $arr_fimages[] = strtolower(preg_replace('/.*files\//', '', $img['href']));
+            $arr_fimages[] = preg_replace('/.*files\//', '', $img['href']);
         }
 
         $film_current['images'] = $arr_fimages;
@@ -565,35 +568,51 @@ class Fasttorrent extends ParserBase
      * Выкачка постеров
      *
      */
-    public function poster_download()
+    public function poster_download($poster, $provider_id = false, $film_ids = false)
     {
-        $films_poster = $this->db->sql('SELECT poster_from,id FROM films WHERE date="' . date('Y-m-d') . '"');
-
-        unset($from_poster);
-        foreach ($films_poster as $poster) {
-            $from_poster[] = $poster['poster_from'];
+        if (!$provider_id) {
+            return;
         }
+        if (!$film_ids) {
+            return;
+        }
+        if ($provider_id == 1) {
+            $prefix = 'http://media.fast-torrent.ru/media/files/';
+        }
+        foreach ($poster as $poster) {
+            $poster_urls_back[] = strtolower($poster);
+            $poster_urls[] = $prefix . $poster;
+        }
+
 
         $mcurl = new MCurl;
         $mcurl->threads = 100;
         $mcurl->timeout = 50000;
-        unset($results);
-        $mcurl->multiget($from_poster, $results);
-        foreach ($results as $k => $v) {
 
-            $dir = $this->toimg . '/images/film-' . $films_poster[$k]['id'];
+        $mcurl->multiget($poster_urls, $results);
 
-            if (!is_dir($dir)) {
-                mkdir($dir);
-            }
-            $f_name = $dir . '/img-poster.jpg';
-            if (file_put_contents($f_name, $v)) {
-                $this->db->sql('UPDATE films SET filesize=' . filesize($f_name) . ' WHERE id="' . $films_poster[$k]['id'] . '"');
-                echo "OK --- " . $dir . "\n";
-                myflush();
+        foreach ($results as $k => $image) {
+            //  Типа картинка загрузилась
+            $image_name = $poster_urls_back[$k];
+            $film_id = $film_ids[$k];
+
+            if (strlen($image) > 1024 * 5) {
+                $file_path = dirname(__FILE__) . '/../../../static/poster/' . $poster_urls_back[$k];
+                $dirname = dirname($file_path);
+
+                if (!is_dir($dirname)) {
+                    mkdir($dirname, 0777, true);
+                }
+                file_put_contents($file_path, $image);
+                $status = 1;
             } else {
-                $this->db->sql("INSERT INTO _log(type,text,date) VALUES('ima_download','/film-" . $films_poster[$k]['id'] . "','" . date('Y-m-d') . "')");
+                $status = 2;
             }
+
+            $image_model = new Axon('film');
+            $image_model->load('id=' . $film_id);
+            $image_model->poster_uploaded = $status;
+            $image_model->save();
         }
     }
 

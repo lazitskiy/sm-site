@@ -12,3 +12,7 @@
 .col-sm-5 {
   width: 25%;
 }
+.col-sm-6 {
+  width: 30%;
+  float: left;
+}

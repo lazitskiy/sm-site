@@ -7,6 +7,8 @@
     <meta name="keywords" content="">
     <meta name="robots" content="all">
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
     <link rel="stylesheet" type="text/css" href="/public/css/style.css">
 
     <link rel="stylesheet" media="(min-width: 768px)" href="/public/css/min-768px.css">
@@ -44,11 +46,6 @@ $_ = $this->get('_');
     </div>
 
 </header>
-
-<?php if ($_SERVER['REQUEST_URI'] == '/') { ?>
-    <div id="background-image" style="background: url(https://s.ynet.io/assets/images/movies/interstellar_2014/background.jpg) no-repeat center center; background-size: cover; -webkit-background-size: cover;-moz-background-size: cover; -o-background-size: cover;"></div>
-    <div id="background-overlay"></div>
-<?php } ?>
 
 <div class="main-content">
 
