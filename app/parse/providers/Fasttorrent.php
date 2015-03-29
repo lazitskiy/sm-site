@@ -62,7 +62,7 @@ class Fasttorrent extends ParserBase
         $this->storeFilm($parsed[0], $this->provider_id);
 
         echo "Saved \n";
-        myflush();
+
         //file_put_contents(dirname(__FILE__) . '/../tmp/film' . $film_id . '.txt', print_r($parsed, true));
 
     }
@@ -84,7 +84,7 @@ class Fasttorrent extends ParserBase
             return;
         }
 
-        $film_isd = array_map(function ($el) {
+        $film_ids = array_map(function ($el) {
             return $el['id'];
         }, $films);
 
@@ -104,12 +104,15 @@ class Fasttorrent extends ParserBase
             $i++;
         }
 
+
+        $films = $film_model->afind('id IN(' . "'" . implode("','", $film_ids) . "'" . ')');
         $poster_urls = array_map(function ($el) {
             return $el['poster_from'];
         }, $films);
+        array_unique($poster_urls);
 
 
-        $this->poster_download($poster_urls, 1, $film_isd);
+        $this->poster_download($poster_urls, 1, $film_ids);
 
         //file_put_contents(dirname(__FILE__) . '/../tmp/film' . $film_id . '.txt', print_r($parsed, true));
         vvd('ok');
@@ -140,7 +143,7 @@ class Fasttorrent extends ParserBase
             $z++;
             unset($film_current);
             echo "---------- " . $z . " of " . $total_res . "----------\n";
-            myflush();
+
             //vvtr($res);
             $film_main = new nokogiri($res);
 
@@ -579,15 +582,16 @@ class Fasttorrent extends ParserBase
         if ($provider_id == 1) {
             $prefix = 'http://media.fast-torrent.ru/media/files/';
         }
-        foreach ($poster as $poster) {
-            $poster_urls_back[] = strtolower($poster);
-            $poster_urls[] = $prefix . $poster;
+        foreach ($poster as $po) {
+            $poster_urls_back[] = strtolower($po);
+            $poster_urls[] = $prefix . $po;
         }
 
 
         $mcurl = new MCurl;
         $mcurl->threads = 100;
         $mcurl->timeout = 50000;
+        unset($result);
 
         $mcurl->multiget($poster_urls, $results);
 
@@ -645,10 +649,10 @@ class Fasttorrent extends ParserBase
             if (file_put_contents($f_name, $v)) {
                 $this->db->sql('UPDATE film_images SET filesize=' . filesize($f_name) . ' WHERE id="' . $films_images[$k]['id'] . '"');
                 echo "OK --- " . $f_name . "\n";
-                myflush();
+
             } else {
                 $this->db->sql("INSERT INTO _log(type,text,date) VALUES('ima_film_download','" . $films_images[$k]['aka'] . "','" . date('Y-m-d') . "')");
-                myflush();
+
 
             }
         }
@@ -679,7 +683,7 @@ class Fasttorrent extends ParserBase
 
             }
             echo 'torrent -' . count($from_tor) . "\n";
-            myflush();
+
 
             $mcurl = new MCurl;
             $mcurl->threads = 100;
@@ -694,7 +698,7 @@ class Fasttorrent extends ParserBase
                     $this->db->sql('UPDATE torrents SET  filesize=' . filesize($t_name) . ' WHERE id="' . $torrents[$k]['id'] . '"');
 
                     echo "OK --- " . $torrents[$k]['aka'] . "\n";
-                    myflush();
+
 
                 }
             }
@@ -731,7 +735,7 @@ class Fasttorrent extends ParserBase
             if (file_put_contents($f_name, $v)) {
                 $this->db->sql('UPDATE torrent_images SET filesize=' . filesize($f_name) . ' WHERE id="' . $tims[$k]['id'] . '"');
                 echo "OK --- " . '/images/film-' . $tims[$k]['film_id'] . '/' . $tims[$k]['tor_id'] . '/img-' . $tims[$k]['id'] . '.jpg' . "\n";
-                myflush();
+
             } else {
                 $this->db->sql("INSERT INTO _log(type,text,date) VALUES('torr_imag','" . $f_name . "','" . date('Y-m-d') . "')");
             }
@@ -763,7 +767,6 @@ class Fasttorrent extends ParserBase
         for ($i = $ho * $end + 1; $i <= $end * $ho + $end; $i++) {
             $pages[] = 'http://fast-torrent.ru/new/all/' . $i . '.html';
             echo "http://fast-torrent.ru/new/all/" . $i . ".html\n";
-            myflush();
         }
         $ho++;
 
@@ -775,7 +778,6 @@ class Fasttorrent extends ParserBase
             unset($results);
             $mcurl->multiget($pages, $results);
             echo 'stranic - ' . count($pages) . ' iz -' . count($results);
-            myflush();
         }
 
         //Это страницы с фльмами по 15 штук
@@ -828,7 +830,7 @@ class Fasttorrent extends ParserBase
 
             $this->storeFilm($film, $this->provider_id);
             echo "Saved " . $i . " / " . $total . "\n";
-            myflush();
+
 
             $i++;
         }

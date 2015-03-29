@@ -44,8 +44,6 @@ class MCurl
             $urls_pack[] = array_slice($urls, $i, $threads);
         }
         foreach ($urls_pack as $pack) {
-            echo count($urls) - $p * ($threads) . "\n";
-            myflush();
             $mh = curl_multi_init();
             unset($conn);
             foreach ($pack as $i => $url) {

@@ -26,7 +26,7 @@ class ImageModel extends BaseModel
             }
 
             $image_urls_backup[] = strtolower($image['url']);
-            $image_urls[] = $prefix.$image['url'];
+            $image_urls[] = $prefix . urlencode($image['url']);
         }
 
         if (!$image_urls) {

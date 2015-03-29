@@ -15,6 +15,8 @@ class MovieController extends BaseController
 
     public function indexAction()
     {
+        $this->set('title', 'Хуй');
+
         $film_id = array_pop(explode('-', $this->get('PARAMS.film_trans_id')));
         if (!$film_id) {
             return;
@@ -137,7 +139,7 @@ class MovieController extends BaseController
 
         TorrentModel::getInfo($torrents[0]['url'], 1);
 
-        $this->set('title', 'Хуй');
+
         $this->set('film', $film);
 
         echo $this->render($this->get('_header'));

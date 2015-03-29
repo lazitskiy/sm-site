@@ -47,7 +47,7 @@ class TorrentModel extends BaseModel
             }
 
             $torrent_urls_backup[] = $torrent['provider_torrent_id'];
-            $torrent_urls[] = $prefix . $torrent['url'];
+            $torrent_urls[] = $prefix . urlencode($torrent['url']);
         }
 
         if (!$torrent_urls) {
@@ -55,18 +55,19 @@ class TorrentModel extends BaseModel
         }
 
         $mcurl = new MCurl();
-        $mcurl->threads = 100;
+        $mcurl->threads = 10;
         $mcurl->timeout = 50000;
+        //unset($results);
+        //vvd($torrent_urls);
         $mcurl->multiget($torrent_urls, $results);
         foreach ($results as $k => $torrent) {
             //  Типа торрент загрузилась
             $provider_torrent_id = $torrent_urls_backup[$k];
             $t = new Torrent($torrent);
-
             $hash = $t->hash_info();
 
             if ($hash) {
-                $file_path = dirname(__FILE__) . '/../../static/download/' . $film_id . '/' . $hash.'.torrent';
+                $file_path = dirname(__FILE__) . '/../../static/download/' . $film_id . '/' . $hash . '.torrent';
                 $dirname = dirname($file_path);
 
                 if (!is_dir($dirname)) {

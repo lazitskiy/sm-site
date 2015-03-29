@@ -26,7 +26,7 @@ $_ = $this->get('_');
 <header class="nagivation">
     <div class="logo">
         <a href="/">
-            <img src="http://s.ynet.io/assets/images/website/logo-YTS.svg" alt="">
+            <img src="/images/logo.png" height="50" alt="">
         </a>
     </div>
     <span class="slogan"><?php echo $_['Slogan'] ?></span>
