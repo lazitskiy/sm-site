@@ -43,7 +43,7 @@ class MovieController extends BaseController
         $rows = $this->db->sql($sql);
 
         $images = [];
-        $categories = [];
+        $genres = [];
         $countries = [];
         $tags = [];
         $actors = [];
@@ -70,8 +70,8 @@ class MovieController extends BaseController
             }
 
             if ($row['cid']) {
-                $categories[$row['cid']]['name'] = $row['cname'];
-                $categories[$row['cid']]['url'] = $row['curl'];
+                $genres[$row['cid']]['name'] = $row['cname'];
+                $genres[$row['cid']]['url'] = $row['curl'];
             }
 
             if ($row['coid']) {
@@ -93,7 +93,7 @@ class MovieController extends BaseController
         }
 
         $film['images'] = $images;
-        $film['genres'] = $categories;
+        $film['genres'] = $genres;
         $film['countries'] = $countries;
         $film['tags'] = $tags;
         $film['actors'] = $actors;

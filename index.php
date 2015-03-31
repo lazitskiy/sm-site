@@ -27,7 +27,6 @@ function hl($str)
 }
 
 $app = require_once 'lib/base.php';
-require_once 'lib/icu.php';
 require_once 'lib/paginator.php';
 
 

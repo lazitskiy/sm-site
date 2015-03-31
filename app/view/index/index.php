@@ -38,7 +38,7 @@ $soons = $this->get('soons');
         </div>
         <div class="row">
             <?php foreach ($populars as $popular) { ?>
-                <div class="browse-movie-wrap col-sm-5">
+                <div class="movie-list-big-item">
                     <a href="<?php echo $popular['url'] ?>" title="<?php echo $popular['aka_ru'] ?>" class="browse-movie-link">
                         <div class="smooter">
                             <img class="img-responsive" src="<?php echo $popular['poster'] ?>">
@@ -83,7 +83,7 @@ $soons = $this->get('soons');
             <div class="row">
 
                 <?php foreach ($populars as $popular) { ?>
-                    <div class="browse-movie-wrap col-sm-5">
+                    <div class="movie-list-big-item">
                         <a href="<?php echo $popular['url'] ?>" title="<?php echo $popular['aka_ru'] ?>" class="browse-movie-link">
                             <div class="smooter">
                                 <img class="img-responsive" src="<?php echo $popular['poster'] ?>">
@@ -113,7 +113,7 @@ $soons = $this->get('soons');
             <div class="row">
 
                 <?php foreach ($populars as $popular) { ?>
-                    <div class="browse-movie-wrap col-sm-5">
+                    <div class="movie-list-big-item">
                         <a href="<?php echo $popular['url'] ?>" title="<?php echo $popular['aka_ru'] ?>" class="browse-movie-link">
                             <div class="smooter">
                                 <img class="img-responsive" src="<?php echo $popular['poster'] ?>">
@@ -157,7 +157,7 @@ $soons = $this->get('soons');
         </div>
         <div class="row">
             <?php foreach ($populars as $popular) { ?>
-                <div class="browse-movie-wrap col-sm-5">
+                <div class="movie-list-big-item">
                     <a href="<?php echo $popular['url'] ?>" title="<?php echo $popular['aka_ru'] ?>" class="browse-movie-link">
                         <div class="smooter">
                             <img class="img-responsive" src="<?php echo $popular['poster'] ?>">
