@@ -4,7 +4,7 @@
  * Date: 31.03.15
  * Time: 5:26
  */
-$movies = $this->get('movies');
+$movies = $this->get('data')['movies'];
 ?>
 <div class="movie-container">
     <?php foreach ($movies as $movie) { ?>

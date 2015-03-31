@@ -27,11 +27,12 @@ function hl($str)
 }
 
 $app = require_once 'lib/base.php';
+//$app_cache = require_once 'lib/base.3.4.0.php';
 require_once 'lib/paginator.php';
 
 
 $languages = [
-    'ru-RU'
+    'ru-RU' => 'ru-RU'
 ];
 $browser_language = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE'])[0];
 
@@ -40,6 +41,8 @@ if ($languages[$browser_language]) {
 } else {
     $lang = 'en-GB';
 }
+
+
 $lang = require_once 'app/language/' . $browser_language . '.php';
 $app->set('_', $lang);
 
@@ -49,7 +52,6 @@ $app->config('app/config/routes.cfg');
 
 
 $app->set('DB', new DB($app->get('DSN'), $app->get('us'), $app->get('pwd')));
-
 //$app->route('GET /@controller/@action','{{@PARAMS.controller}}->{{@PARAMS.action}}');
 
 $app->run();

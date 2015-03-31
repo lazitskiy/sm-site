@@ -36,6 +36,9 @@ $_ = $this->get('_');
         <ul class="nav-links">
             <li><a href="/"><?php echo $_['Main'] ?></a></li>
             <li><a href="/movies"><?php echo $_['Movies'] ?></a></li>
+            <li><a href="/serials"><?php echo $_['Serials'] ?></a></li>
+            <li><a href="/cartoons"><?php echo $_['Cartoons'] ?></a></li>
+            <li><a href="/documentaru"><?php echo $_['Documentary'] ?></a></li>
         </ul>
         <ul class="nav-links nav-link-guest">
             <li>

@@ -13,4 +13,9 @@ class BaseModel extends F3instance
         $power = $size > 0 ? floor(log($size, 1024)) : 0;
         return number_format($size / pow(1024, $power), 2, '.', ',') . ' ' . $units[$power];
     }
+
+    public static function getIds()
+    {
+
+    }
 }
