@@ -18,12 +18,12 @@ class MovieModel extends BaseModel
         $ids = "'" . implode("','", $film_id) . "'";
 
         $sql = '
-        SELECT f.id fid, f.aka_ru fname, f.aka_en fname_en, f.kinopoisk_id, f.imdb_id, f.poster_from,
+        SELECT f.id fid, f.aka_ru fname, f.aka_en fname_en, f.aka_trans, f.kinopoisk_id, f.imdb_id, f.poster_from,
         c.id cid, c.url curl, c.aka_ru cname
         FROM film f
         LEFT JOIN film_category fc ON fc.film_id = f.id
         LEFT JOIN category c ON fc.category_id = c.id
-        WHERE f.id IN(' . $ids . ')';
+        WHERE f.id IN(' . $ids . ') ORDER BY f.id DESC';
         $rows = F3::ref('DB')->sql($sql);
 
         $films = [];
@@ -33,6 +33,7 @@ class MovieModel extends BaseModel
             $films[$row['fid']]['name_en'] = $row['fname_en'];
             $films[$row['fid']]['name_full'] = $row['fname'] . '<br/>' . $row['fname_en'];
             $films[$row['fid']]['poster'] = '/static/poster/' . $row['poster_from'];
+            $films[$row['fid']]['url'] = '/movie/' . $row['aka_trans'] . '-' . $row['fid'];
 
             if ($row['cid']) {
                 $films[$row['fid']]['genres'][$row['cid']]['name'] = $row['cname'];
