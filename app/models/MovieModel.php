@@ -61,7 +61,6 @@ class MovieModel extends BaseModel
         WHERE UNIX_TIMESTAMP(NOW())-3600*24*' . $days . ' < date_added
         ORDER BY f.downloads DESC LIMIT ' . $limit * 6;
         $rows = F3::ref('DB')->sql($sql);
-
         $films = MovieModel::resultsetToArray($rows);
         return array_chunk($films, $limit)[0];
 

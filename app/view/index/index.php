@@ -91,7 +91,7 @@ $soons = $this->get('soons');
 
                                 <div class="smootercaption">
                                     <span class="icon-star">d</span>
-                                    <h4 class="rating">8.8 / 10</h4>
+                                    <h4 class="rating"><?php echo $popular['rating'] ?></h4>
                                     <h4>Приключения</h4>
                                     <h4>Фантастика</h4>
                                     <span class="button-1-download-big">Подробнее</span>
