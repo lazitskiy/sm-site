@@ -15,7 +15,7 @@ $movies = $this->get('data')['movies'];
 
                     <div class="smootercaption">
                         <span class="icon-star">d</span>
-                        <h4 class="rating">8.8 / 10</h4>
+                        <h4 class="rating"><?php echo $movie['rating'] ?></h4>
                         <h4>Приключения</h4>
                         <h4>Фантастика</h4>
                         <span class="button-1-download-big">Подробнее</span>
@@ -26,7 +26,7 @@ $movies = $this->get('data')['movies'];
             <div class="browse-movie-bottom">
                 <a href="<?php echo $movie['url'] ?>" class="browse-movie-title"><?php echo $movie['name_ru'] ?></a>
 
-                <div class="browse-movie-year">2014</div>
+                <div class="browse-movie-year"><?php echo $movie['year'] ?></div>
                 <div class="browse-movie-tags">
                     <a href="<?php echo $movie['url'] ?>">720p</a>
                     <a href="<?php echo $movie['url'] ?>">1080p</a>

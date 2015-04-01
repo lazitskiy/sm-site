@@ -8,7 +8,7 @@
 class BaseController extends F3instance
 {
 
-    protected $db;
+    public $db;
     protected $trans;
     protected $space;
 

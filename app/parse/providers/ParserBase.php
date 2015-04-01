@@ -51,6 +51,7 @@ class ParserBase extends F3instance
         $film_model->poster_from = $f['poster_from'];
         $film_model->uploaded = 0;
         $film_model->reliz = $f['date_relises'][0]['date'];
+        $film_model->year = array_pop(explode('.', $film_model->reliz));
         $film_model->last = $f['last'];
         $film_model->description = $f['description'];
         $film_model->spoiler = $f['spoilers'];
@@ -61,7 +62,6 @@ class ParserBase extends F3instance
 
 
         $film_model->save();
-
 
 
         return $film_model->id;

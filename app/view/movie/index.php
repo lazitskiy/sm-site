@@ -49,7 +49,7 @@ $_ = $this->get('_');
                         <a class="theme" href="<?php echo $genre['url'] ?>"><?php echo $genre['name'] ?></a>
                     <?php } ?>
                 </h2>
-                <?php echo $_['Last'] ?><?php echo $film['last'] ?>
+                <?php echo $_['Lasted'] ?><?php echo $film['last'] ?>
             </div>
 
             <div class="p">

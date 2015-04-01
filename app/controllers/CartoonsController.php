@@ -2,28 +2,26 @@
 
 /**
  * User: vaso
- * Date: 29.03.15
- * Time: 23:59
+ * Date: 01.04.15
+ * Time: 0:14
  */
-class MoviesController extends BaseController
+class CartoonsController extends BaseController
 {
     public function indexAction()
     {
         $this->set('title', 'Хуй');
 
-        $data = MovieModel::getIds($this, 'movies');
+        $data = MovieModel::getIds($this, 'cartoons');
         $movies = MovieModel::getPreviewByIds($data['ids']);
 
         $data['total'] = $data['total'];
         $data['movies'] = $movies;
         $data['paginator'] = $data['paginator'];
-        $data['genres'] = $this->genres['movies']['items'];
+        $data['genres'] = $this->genres['cartoons']['items'];
 
         $this->set('data', $data);
 
         echo $this->render($this->get('_header'));
         echo $this->render('/app/view/movies/index.php');
-
     }
-
 }

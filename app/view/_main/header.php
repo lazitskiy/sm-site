@@ -29,7 +29,7 @@ $_ = $this->get('_');
             <img src="/images/logo.png" height="50" alt="">
         </a>
     </div>
-    <span class="slogan"><?php echo $_['Slogan'] ?></span>
+    <!--<span class="slogan"><?php /*echo $_['Slogan'] */?></span>-->
 
     <div class="main-nav-links">
 
@@ -38,14 +38,14 @@ $_ = $this->get('_');
             <li><a href="/movies"><?php echo $_['Movies'] ?></a></li>
             <li><a href="/serials"><?php echo $_['Serials'] ?></a></li>
             <li><a href="/cartoons"><?php echo $_['Cartoons'] ?></a></li>
-            <li><a href="/documentaru"><?php echo $_['Documentary'] ?></a></li>
+            <li><a href="/documentary"><?php echo $_['Documentary'] ?></a></li>
         </ul>
-        <ul class="nav-links nav-link-guest">
+        <!--<ul class="nav-links nav-link-guest">
             <li>
-                <a class="login-nav-btn" href="/login"> <?php echo $_['Login'] ?></a> |
-                <a class="register-nav-btn" href="/register"><?php echo $_['Register'] ?></a>
+                <a class="login-nav-btn" href="/login"> <?php /*echo $_['Login'] */?></a> |
+                <a class="register-nav-btn" href="/register"><?php /*echo $_['Register'] */?></a>
             </li>
-        </ul>
+        </ul>-->
     </div>
 
 </header>

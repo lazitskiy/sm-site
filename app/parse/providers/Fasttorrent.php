@@ -105,17 +105,61 @@ class Fasttorrent extends ParserBase
         }
 
 
-        $films = $film_model->afind('id IN(' . "'" . implode("','", $film_ids) . "'" . ')');
+        $films = $film_model->afind('id IN(' . "'" . implode("','", $film_ids) . "'" . ')', 'id DESC');
         $poster_urls = array_map(function ($el) {
             return $el['poster_from'];
         }, $films);
-        array_unique($poster_urls);
-
 
         $this->poster_download($poster_urls, 1, $film_ids);
 
+
+        $kinopoisk_raiting_urls = array_map(function ($el) {
+            return 'http://rating.kinopoisk.ru/' . $el['kinopoisk_id'] . '.xml';
+        }, $films);
+        $this->parse_raiting($kinopoisk_raiting_urls, $film_ids);
+
+
         //file_put_contents(dirname(__FILE__) . '/../tmp/film' . $film_id . '.txt', print_r($parsed, true));
         vvd('ok');
+
+    }
+
+    public function parse_raiting($kinopoisk_raiting_urls, $film_ids)
+    {
+
+        $mcurl = new MCurl;
+        $mcurl->threads = 25;
+        $mcurl->timeout = 50000;
+        unset($result);
+
+        $mcurl->multiget($kinopoisk_raiting_urls, $results);
+
+        foreach ($results as $k => $xml) {
+            //  Типа картинка загрузилась
+            $film_id = $film_ids[$k];
+
+            $kp_votes = '';
+            $kp_raiting = '';
+            $imdb_votes = '';
+            $imdb_raiting = '';
+            if (preg_match('/kp_rating[^"]+"(.+?)">(.+?)</', $xml, $kp_matches)) {
+                $kp_votes = $kp_matches[1];
+                $kp_raiting = $kp_matches[2];
+
+            }
+            if (preg_match('/imdb_rating[^"]+"(.+?)">(.+?)</', $xml, $imdb_matches)) {
+                $imdb_votes = $imdb_matches[1];
+                $imdb_raiting = $imdb_matches[2];
+            }
+
+            $image_model = new Axon('film');
+            $image_model->load('id=' . $film_id);
+            $image_model->kinopoisk_rating = $kp_raiting;
+            $image_model->kinopoisk_votes = $kp_votes;
+            $image_model->imdb_rating = $imdb_raiting;
+            $image_model->imdb_votes = $imdb_votes;
+            $image_model->save();
+        }
 
     }
 
@@ -367,6 +411,10 @@ class Fasttorrent extends ParserBase
 
         if (preg_match('/user_vote1[^}]+\/(\d+)\.png/sui', $content, $imdb_match)) {
             $imdb_id = $imdb_match[1];
+            while (strlen($imdb_id) < 7) {
+                $imdb_id = '0' . $imdb_id;
+            }
+            $imdb_id = 'tt' . $imdb_id;
         }
         $film_current['imdb_id'] = $imdb_id;
 
