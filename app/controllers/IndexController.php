@@ -12,34 +12,14 @@ class IndexController extends BaseController
     {
         $this->set('title', 'Хуй');
 
+        $popular_month = MovieModel::getPopular();
+        $this->set('populars', $popular_month);
 
-        $cats = $this->db->sql('SELECT * FROM category ORDER BY aka_ru');
-        $this->set('cats', $cats);
 
-        $sql = 'SELECT f.id,
-                f.poster_from poster,
-                f.aka_ru,
-                f.aka_en,
-                f.aka_trans
-                FROM film f
-                WHERE uploaded=1
-                ORDER BY RAND()
-                LIMIT 4
-            ';
-        $films = $this->db->sql($sql);
+        $most_downloaded = MovieModel::mostDownloaded();
+        $this->set('most_downloaded', $most_downloaded);
 
-        foreach ($films as $film) {
-            $film['id'] = $film['id'];
-            $film['poster'] = '/static/poster/' . $film['poster'];
-            $film['aka_ru'] = $film['aka_ru'];
-            $film['aka_en'] = $film['aka_en'];
-            $film['aka_trans'] = $film['aka_trans'];
-            $film['url'] = '/movie/' . $film['aka_trans'] . '-' . $film['id'];
-            $arr_films[] = $film;
-        }
-        $this->set('populars', $arr_films);
 
-        $this->set('last_uploads', $arr_films);
         $this->set('soons', $arr_films);
 
 

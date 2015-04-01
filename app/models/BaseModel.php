@@ -87,4 +87,39 @@ class BaseModel extends F3instance
 
         return $return;
     }
+
+
+    public static function resultsetToArray($rows)
+    {
+        $films = [];
+        foreach ($rows as $row) {
+            $films[$row['fid']]['id'] = $row['fid'];
+            $films[$row['fid']]['name_ru'] = $row['fname'];
+            $films[$row['fid']]['name_en'] = $row['fname_en'];
+            $films[$row['fid']]['name_full'] = $row['fname'] . '<br/>' . $row['fname_en'];
+            $films[$row['fid']]['poster'] = '/static/poster/' . $row['poster_from'];
+            $films[$row['fid']]['year'] = $row['year'];
+
+            $raiting = round($row['kinopoisk_rating'], 2);
+            if (!$raiting) {
+                $raiting = round($row['imdb_rating'], 2);
+            }
+            if (!$raiting) {
+                $raiting = 'n/a';
+                $raiting_int = $raiting;
+            } else {
+                $raiting .= ' / 10';
+            }
+
+            $films[$row['fid']]['rating'] = $raiting;
+            $films[$row['fid']]['rating_int'] = $raiting_int;
+            $films[$row['fid']]['url'] = '/movie/' . $row['aka_trans'] . '-' . $row['fid'];
+
+            if ($row['cid']) {
+                $films[$row['fid']]['genres'][$row['cid']]['name'] = $row['cname'];
+                $films[$row['fid']]['genres'][$row['cid']]['url'] = $row['curl'];
+            }
+        }
+        return $films;
+    }
 }

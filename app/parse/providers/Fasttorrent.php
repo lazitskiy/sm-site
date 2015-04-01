@@ -119,10 +119,61 @@ class Fasttorrent extends ParserBase
         $this->parse_raiting($kinopoisk_raiting_urls, $film_ids);
 
 
+        $torrent_model = new Axon('torrent');
+        $torrents = $torrent_model->afind('film_id IN(' . "'" . implode("','", $film_ids) . "'" . ')', 'id DESC');
+        $torrent_urls = array_map(function ($el) {
+            return 'http://fast-torrent.ru/download/torrent/' . urlencode($el['url']);
+        }, $torrents);
+
+        $torrent_ids = array_map(function ($el) {
+            return $el['id'];
+        }, $torrents);
+
+        $this->torrent_download($torrent_urls, $torrent_ids);
+
         //file_put_contents(dirname(__FILE__) . '/../tmp/film' . $film_id . '.txt', print_r($parsed, true));
         vvd('ok');
+    }
+
+    public function torrent_download($torrent_urls, $torrent_ids)
+    {
+        $mcurl = new MCurl;
+        $mcurl->threads = 25;
+        $mcurl->timeout = 50000;
+        unset($result);
+
+        $mcurl->multiget($torrent_urls, $results);
+
+        foreach ($results as $k => $torrent) {
+            $torrent_id = $torrent_ids[$k];
+
+            $torrent_model = new Axon('torrent');
+            $torrent_model->load('id=' . $torrent_id);
+
+            $film_id = $torrent_model->film_id;
+            $t = new Torrent($torrent);
+            $hash = $t->hash_info();
+            if ($hash) {
+                $trans = Transliterator::transliterate(str_replace($torrent_model->provider_torrent_id . '/', '', $torrent_model->url));
+                $file_path = dirname(__FILE__) . '/../../../static/download/' . $film_id . '/' . $trans . '.torrent';
+                $dirname = dirname($file_path);
+
+                if (!is_dir($dirname)) {
+                    mkdir($dirname, 0777, true);
+                }
+                file_put_contents($file_path, $torrent);
+                $status = 1;
+            } else {
+                $status = 2;
+            }
+            $torrent_model->uploaded = $status;
+            $torrent_model->name = $trans;
+            $torrent_model->hash = $hash;
+            $torrent_model->save();
+        }
 
     }
+
 
     public function parse_raiting($kinopoisk_raiting_urls, $film_ids)
     {
@@ -196,6 +247,16 @@ class Fasttorrent extends ParserBase
             $film_current = $this->titles_film_get($film_main);
             //Торренты скачки
             $film_current['torrents'] = $this->torrents_film_get($film_main);
+
+            $downloads = array_sum(array_map(function ($el) {
+                return $el['downloads'];
+            }, $film_current['torrents']));
+            $film_current['downloads'] = $downloads;
+
+            $date_added = min(array_map(function ($el) {
+                return $el['date_add'];
+            }, $film_current['torrents']));
+            $film_current['date_added'] = $date_added;
 
             if ($this->errors['general']) {
                 $film_current['errors'] = $this->errors['general'];
@@ -668,130 +729,6 @@ class Fasttorrent extends ParserBase
         }
     }
 
-    /**
-     * Выкачка картинок к фильму
-     *
-     */
-    public function images_download()
-    {
-
-        $films_images = $this->db->sql('SELECT * FROM film_images WHERE filesize<=218 AND  date="' . date('Y-m-d') . '"');
-
-        unset($from);
-        foreach ($films_images as $img) {
-            $from[] = $img['from'];
-        }
-        $urls = $pages;
-        $mcurl = new MCurl;
-        $mcurl->threads = 100;
-        $mcurl->timeout = 50000; //
-        unset($results); // очищаем массив $results (если он использовался раньше где-то в коде)
-        $mcurl->multiget($from, $results);
-        foreach ($results as $k => $v) {
-            $dir = $this->toimg . '/images/film-' . $films_images[$k]['film_id'];
-            if (is_dir(!$dir)) {
-                mkdir($dir);
-            }
-            $f_name = $dir . $films_images[$k]['aka'];
-
-            if (file_put_contents($f_name, $v)) {
-                $this->db->sql('UPDATE film_images SET filesize=' . filesize($f_name) . ' WHERE id="' . $films_images[$k]['id'] . '"');
-                echo "OK --- " . $f_name . "\n";
-
-            } else {
-                $this->db->sql("INSERT INTO _log(type,text,date) VALUES('ima_film_download','" . $films_images[$k]['aka'] . "','" . date('Y-m-d') . "')");
-
-
-            }
-        }
-    }
-
-    /**
-     * Выкачка тарентов
-     *
-     */
-    public function torrents_download()
-    {
-
-        $torrents = $this->db->sql("SELECT * FROM torrents WHERE filesize<=218 AND date='" . date('Y-m-d') . "'");
-        $iteration = 0;
-        while ($torrents) {
-            if ($iteration > 20) break;
-            $iteration++;
-            unset($from_tor);
-            foreach ($torrents as $tor) {
-                if ($tor['filesize'] <= 218) {
-                    $from_tor[] = str_replace(' ', '%20', $tor['from']);
-                }
-                if (!is_dir($this->toimg . '/download/torrent/film-' . $tor['film_id']))
-                    mkdir($this->toimg . '/download/torrent/film-' . $tor['film_id']);
-
-                if (!is_dir($this->toimg . '/download/torrent/film-' . $tor['film_id'] . '/' . $tor['id']))
-                    mkdir($this->toimg . '/download/torrent/film-' . $tor['film_id'] . '/' . $tor['id']);
-
-            }
-            echo 'torrent -' . count($from_tor) . "\n";
-
-
-            $mcurl = new MCurl;
-            $mcurl->threads = 100;
-            $mcurl->timeout = 50000;
-            unset($results);
-
-            $mcurl->multiget($from_tor, $results);
-            foreach ($results as $k => $v) {
-
-                $t_name = $this->toimg . '/download/torrent/film-' . $torrents[$k]['film_id'] . '/' . $torrents[$k]['id'] . '/' . $torrents[$k]['aka'];
-                if (file_put_contents($t_name, $v)) {
-                    $this->db->sql('UPDATE torrents SET  filesize=' . filesize($t_name) . ' WHERE id="' . $torrents[$k]['id'] . '"');
-
-                    echo "OK --- " . $torrents[$k]['aka'] . "\n";
-
-
-                }
-            }
-            $torrents = $this->db->sql("SELECT * FROM torrents WHERE filesize<=218 AND date='" . date('Y-m-d') . "'");
-        }
-    }
-
-    /**
-     * Выкачка картинок торрента
-     *
-     */
-    public function torrents_images_download()
-    {
-
-        $tims = $this->db->sql("SELECT i.id, i.from, i.path, i.aka, t.film_id, t.id tor_id FROM torrent_images i
-                LEFT JOIN torrents t ON t.id=i.torrent_id
-                WHERE i.filesize<=218 AND i.date='" . date('Y-m-d') . "' ORDER BY i.id");
-
-        unset($from_tim);
-        foreach ($tims as $tim) {
-            $from_tim[] = $tim['from'];
-            if (!is_dir($this->toimg . '/images/film-' . $tim['film_id'] . '/' . $tim['tor_id']))
-                mkdir($this->toimg . '/images/film-' . $tim['film_id'] . '/' . $tim['tor_id']);
-        }
-
-        $mcurl = new MCurl;
-        $mcurl->threads = 100;
-        $mcurl->timeout = 50000; //
-        unset($results); // очищаем массив $results (если он использовался раньше где-то в коде)
-        $mcurl->multiget($from_tim, $results);
-        $y = 0;
-        foreach ($results as $k => $v) {
-            $f_name = $this->toimg . '/images/film-' . $tims[$k]['film_id'] . '/' . $tims[$k]['tor_id'] . '/img-' . $tims[$k]['id'] . '.jpg';
-            if (file_put_contents($f_name, $v)) {
-                $this->db->sql('UPDATE torrent_images SET filesize=' . filesize($f_name) . ' WHERE id="' . $tims[$k]['id'] . '"');
-                echo "OK --- " . '/images/film-' . $tims[$k]['film_id'] . '/' . $tims[$k]['tor_id'] . '/img-' . $tims[$k]['id'] . '.jpg' . "\n";
-
-            } else {
-                $this->db->sql("INSERT INTO _log(type,text,date) VALUES('torr_imag','" . $f_name . "','" . date('Y-m-d') . "')");
-            }
-            $y++;
-        }
-
-    }
-
 
     /**
      * Получаем ссылки на фильльмы
@@ -831,62 +768,6 @@ class Fasttorrent extends ParserBase
         //Это страницы с фльмами по 15 штук
         //Список ссылок на фильмы
         return $this->films_link_get($results);
-    }
-
-    public function parseMedia()
-    {
-        #################################################
-        //Постеры
-        $this->poster_download();
-        #################################################
-        //Картинки к фильму
-        $this->images_download();
-        #################################################
-        //Торренты
-        $this->torrents_download();
-        #################################################
-        //Картинки к торрентам
-        $this->torrents_images_download();
-    }
-
-    public function run($film_main_pages)
-    {
-
-        //Конфигггггг
-
-        $set_films_by_category = true;
-        $parse_images = true;
-
-
-        //Мультискачка фильма
-        //http://fasttorrent.ru/film/127-chasov.html
-        //$film_main_pages = ['http://www.fast-torrent.ru/film/nachalo-1.html', 'http://www.fast-torrent.ru/film/nachalo-1.html'];
-
-        $direct_urls = array_map(function ($el) {
-            return $el['url'];
-        }, $film_main_pages);
-
-
-        $parsed = $this->parseFilmsByUrls($direct_urls);
-
-        //file_put_contents(__DIR__ . '/../../temp/film.html', print_r($parsed, true));
-
-        $total = count($parsed);
-        $i = 1;
-        foreach ($parsed as $film) {
-
-
-            $this->storeFilm($film, $this->provider_id);
-            echo "Saved " . $i . " / " . $total . "\n";
-
-
-            $i++;
-        }
-
-
-        if ($parse_images) {
-            $this->parseMedia();
-        }
     }
 
 

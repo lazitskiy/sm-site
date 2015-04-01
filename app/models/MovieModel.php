@@ -26,37 +26,45 @@ class MovieModel extends BaseModel
         WHERE f.id IN(' . $ids . ') ORDER BY f.id DESC';
         $rows = F3::ref('DB')->sql($sql);
 
-        $films = [];
-        foreach ($rows as $row) {
-            $films[$row['fid']]['id'] = $row['fid'];
-            $films[$row['fid']]['name_ru'] = $row['fname'];
-            $films[$row['fid']]['name_en'] = $row['fname_en'];
-            $films[$row['fid']]['name_full'] = $row['fname'] . '<br/>' . $row['fname_en'];
-            $films[$row['fid']]['poster'] = '/static/poster/' . $row['poster_from'];
-            $films[$row['fid']]['year'] = $row['year'];
-
-            $raiting = round($row['kinopoisk_rating'], 2);
-            if (!$raiting) {
-                $raiting = round($row['imdb_rating'], 2);
-            }
-            if (!$raiting) {
-                $raiting = 'n/a';
-                $raiting_int = $raiting;
-            } else {
-                $raiting .= ' / 10';
-            }
-
-            $films[$row['fid']]['rating'] = $raiting;
-            $films[$row['fid']]['rating_int'] = $raiting_int;
-            $films[$row['fid']]['url'] = '/movie/' . $row['aka_trans'] . '-' . $row['fid'];
-
-            if ($row['cid']) {
-                $films[$row['fid']]['genres'][$row['cid']]['name'] = $row['cname'];
-                $films[$row['fid']]['genres'][$row['cid']]['url'] = $row['curl'];
-            }
-        }
+        $films = MovieModel::resultsetToArray($rows);
 
         return $films;
+    }
+
+
+    public static function getPopular($days = 15, $limit = 4)
+    {
+        $sql = '
+        SELECT f.id fid, f.aka_ru fname, f.aka_en fname_en, f.aka_trans, f.kinopoisk_id, f.imdb_id, f.poster_from, f.year,f.kinopoisk_rating,f.imdb_rating, f.downloads,
+        c.id cid, c.url curl, c.aka_ru cname
+        FROM film f
+        LEFT JOIN film_category fc ON fc.film_id = f.id
+        LEFT JOIN category c ON fc.category_id = c.id
+        WHERE UNIX_TIMESTAMP(NOW())-3600*24*' . $days . ' < date_added
+        AND kinopoisk_rating>0
+        ORDER BY f.kinopoisk_rating DESC LIMIT ' . $limit * 6;
+        $rows = F3::ref('DB')->sql($sql);
+
+        $films = MovieModel::resultsetToArray($rows);
+        return array_chunk($films, $limit)[0];
+
+    }
+
+    public static function mostDownloaded($days = 120, $limit = 8)
+    {
+        $sql = '
+        SELECT f.id fid, f.aka_ru fname, f.aka_en fname_en, f.aka_trans, f.kinopoisk_id, f.imdb_id, f.poster_from, f.year,f.kinopoisk_rating,f.imdb_rating, f.downloads,
+        c.id cid, c.url curl, c.aka_ru cname
+        FROM film f
+        LEFT JOIN film_category fc ON fc.film_id = f.id
+        LEFT JOIN category c ON fc.category_id = c.id
+        WHERE UNIX_TIMESTAMP(NOW())-3600*24*' . $days . ' < date_added
+        ORDER BY f.downloads DESC LIMIT ' . $limit * 6;
+        $rows = F3::ref('DB')->sql($sql);
+
+        $films = MovieModel::resultsetToArray($rows);
+        return array_chunk($films, $limit)[0];
+
     }
 
 }
