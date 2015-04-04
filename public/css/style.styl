@@ -63,6 +63,11 @@ html
 label
   font-weight: bold
 
+*
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
 body
   line-height 1.42857143
   font-family $font
@@ -448,12 +453,18 @@ footer ul li a:hover
   position: static;
   border: 0;
 
-#movie-poster
+.movie-poster
   padding-right 16px
 
-#movie-poster img
+.movie-poster img
   border: 5px solid #fff;
   border-radius(4px);
+
+.movie-poster .button-1-download-big
+  position static
+  text-align center
+  width 100%
+  margin-top 14px
 
 #movie-info
   float: left
@@ -648,7 +659,7 @@ ul.paginator li a:hover, ul.paginator li a.active {
 
 .movie-list-small-item
   float left
-  margin 15px 25px
+  margin 15px 22px
 
 .movie-list-big-item
   float left

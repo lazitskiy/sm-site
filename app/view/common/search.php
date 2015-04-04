@@ -12,6 +12,8 @@ $quality = $_GET['quality'];
 $genre_id = $_GET['genre'];
 $order_by = $_GET['order_by'];
 
+$disable = $this->get('disable');
+
 ?>
 <div id="search-form" class="content-dark">
     <div class="container">
@@ -30,15 +32,20 @@ $order_by = $_GET['order_by'];
                             <option value="3d">3D</option>
                         </select>
                     </div>-->
-                    <div class="selects">
-                        <p><?php echo $_['Genre'] ?></p>
-                        <select name="genre">
-                            <option value=""><?php echo $_['Any'] ?></option>
-                            <?php foreach ($data['genres'] as $genre) { ?>
-                                <option value="<?php echo $genre['id'] ?>" <?php if ($genre_id == $genre['id']) { ?> selected <? } ?>><?php echo $genre['aka_ru'] ?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
+
+                    <?php if (!in_array('genre', $disable)) { ?>
+                        <div class="selects">
+                            <p><?php echo $_['Genre'] ?></p>
+                            <select name="genre">
+                                <option value=""><?php echo $_['Any'] ?></option>
+                                <?php foreach ($data['genres'] as $genre) { ?>
+                                    <option value="<?php echo $genre['id'] ?>" <?php if ($genre_id == $genre['id']) { ?> selected <? } ?>><?php echo $genre['aka_ru'] ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    <?php } ?>
+
+
                     <div class="selects">
                         <p><?php echo $_['Raiting'] ?></p>
                         <select name="rating">

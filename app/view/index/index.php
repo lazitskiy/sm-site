@@ -31,9 +31,6 @@ $soons = $this->get('soons');
             <h2>
                 <span class="icon-star"></span>
                 <?php echo $_['Popular movies'] ?>
-                <a href="rss">
-                    <img title="RSS" src="https://s.ynet.io/assets/images/website/rss-icon.png" alt="RSS">
-                </a>
             </h2>
         </div>
         <div class="row">
@@ -56,7 +53,7 @@ $soons = $this->get('soons');
                     <div class="browse-movie-bottom">
                         <a href="<?php echo $popular['url'] ?>" class="browse-movie-title"><?php echo $popular['name_ru'] ?></a>
 
-                        <div class="browse-movie-year">2014</div>
+                        <div class="browse-movie-year"><?php echo $popular['year'] ?></div>
                         <div class="browse-movie-tags">
                             <a href="<?php echo $popular['url'] ?>">720p</a>
                             <a href="<?php echo $popular['url'] ?>">1080p</a>
@@ -100,9 +97,9 @@ $soons = $this->get('soons');
                         </a>
 
                         <div class="browse-movie-bottom">
-                            <a href="<?php echo $popular['url'] ?>" class="browse-movie-title"><?php echo $popular['aka_ru'] ?></a>
+                            <a href="<?php echo $popular['url'] ?>" class="browse-movie-title"><?php echo $popular['name_ru'] ?></a>
 
-                            <div class="browse-movie-year">2014</div>
+                            <div class="browse-movie-year"><?php echo $popular['year'] ?></div>
                             <div class="browse-movie-tags">
                                 <a href="<?php echo $popular['url'] ?>">720p</a>
                                 <a href="<?php echo $popular['url'] ?>">1080p</a>

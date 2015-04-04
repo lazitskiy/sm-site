@@ -20,15 +20,19 @@ $_ = $this->get('_');
     <div class="row">
 
         <div class="w25">
-            <div id="movie-poster">
-                <img class="img-responsive" src="<?php echo $film['poster'] ?>" alt="<?php echo $film['name_ru'] ?> <?php echo $_['Download'] ?>">
-                <a class="">
-                    Скачать
-                </a>
+            <div class="movie-poster">
+
+                <div id="movie-poster">
+                    <img class="img-responsive" src="<?php echo $film['poster'] ?>" alt="<?php echo $film['name_ru'] ?> <?php echo $_['Download'] ?>">
+                </div>
+                <div>
+                    <a class="button-1-download-big" href="#download"><?php echo $_['Download'] ?></a>
+                </div>
+                <?php if ($film['kinopoisk_id']) { ?>
+
+                <?php } ?>
             </div>
-            <?php if ($film['kinopoisk_id']) { ?>
-                <img src="http://kinopoisk.ru/rating/<?php echo $film['kinopoisk_id'] ?>.gif">
-            <?php } ?>
+
         </div>
         <div id="movie-info" class="movie-info w75">
 
@@ -38,7 +42,7 @@ $_ = $this->get('_');
             <div class="p">
                 <h2>
                     <?php echo $_['Release date'] ?>
-                    <a class="theme" href="index.php">
+                    <a class="theme" href="/<?php echo $film['reliz_year'] ?>">
                         <?php echo $film['reliz'] ?>
                     </a>
                 </h2>
@@ -46,7 +50,7 @@ $_ = $this->get('_');
                 <h2>
                     <?php echo $_['Genres'] ?>
                     <?php foreach ($film['genres'] as $genre) { ?>
-                        <a class="theme" href="<?php echo $genre['url'] ?>"><?php echo $genre['name'] ?></a>
+                        <a class="theme" href="/<?php echo $genre['url'] ?>"><?php echo $genre['name'] ?></a>
                     <?php } ?>
                 </h2>
                 <?php echo $_['Lasted'] ?><?php echo $film['last'] ?>
@@ -129,7 +133,7 @@ $_ = $this->get('_');
 
 </div>
 
-
+<span id="download"></span>
 <div class="content-dark">
     <div class="container home-content">
 
@@ -213,7 +217,44 @@ $_ = $this->get('_');
         </div>
         <div class="clear"></div>
     </div>
+
+
+    <div id="debates">
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+    </div>
+
 </div>
+
 
 <script src="http://cdn.jsdelivr.net/jquery.mixitup/latest/jquery.mixitup.min.js"></script>
 

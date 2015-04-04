@@ -42,6 +42,7 @@ class MovieController extends BaseController
         WHERE f.id=' . $film_id;
         $rows = $this->db->sql($sql);
 
+
         $images = [];
         $genres = [];
         $countries = [];
@@ -71,7 +72,14 @@ class MovieController extends BaseController
 
             if ($row['cid']) {
                 $genres[$row['cid']]['name'] = $row['cname'];
-                $genres[$row['cid']]['url'] = $row['curl'];
+
+                unset($urls);
+                $e = explode('/', $row['curl']);
+                $video_type = $this->video_types[$e[1]];
+                $genre_url = $e[0];
+
+                $url = $video_type . '/genre/' . $genre_url;
+                $genres[$row['cid']]['url'] = $url;
             }
 
             if ($row['coid']) {
@@ -91,6 +99,9 @@ class MovieController extends BaseController
                 $actors[$type][$row['aid']]['url'] = $row['aurl'];
             }
         }
+
+        $film['reliz_year'] = $video_type . '/year/' . array_pop(explode('.', $film['reliz']));
+
 
         $film['images'] = $images;
         $film['genres'] = $genres;
@@ -132,12 +143,13 @@ class MovieController extends BaseController
 
             ];
         }
+
         if ($torrents) {
             TorrentModel::download($torrents, 1, $film_id);
         }
         $film['torrents'] = $torrents;
 
-        TorrentModel::getInfo($torrents[0]['url'], 1);
+        //TorrentModel::getInfo($torrents[0]['url'], 1);
 
 
         $this->set('film', $film);

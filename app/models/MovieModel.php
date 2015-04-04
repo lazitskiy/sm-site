@@ -12,7 +12,7 @@ class MovieModel extends BaseModel
      * @param $film_id
      * return filb by id or array
      */
-    public static function getPreviewByIds(array $film_id)
+    public static function getPreviewByIds(array $film_id, $order_by = 'f.id DESC')
     {
 
         $ids = "'" . implode("','", $film_id) . "'";
@@ -23,9 +23,8 @@ class MovieModel extends BaseModel
         FROM film f
         LEFT JOIN film_category fc ON fc.film_id = f.id
         LEFT JOIN category c ON fc.category_id = c.id
-        WHERE f.id IN(' . $ids . ') ORDER BY f.id DESC';
+        WHERE f.id IN(' . $ids . ') ORDER BY ' . $order_by;
         $rows = F3::ref('DB')->sql($sql);
-
         $films = MovieModel::resultsetToArray($rows);
 
         return $films;

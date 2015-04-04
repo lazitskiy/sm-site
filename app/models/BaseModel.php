@@ -19,7 +19,7 @@ class BaseModel extends F3instance
      * @param string $type
      * Надо передать контекст
      */
-    public static function getIds($_this, $type = 'movies')
+    public static function getIds($_this, $type = 'movies', $params)
     {
         $genre_ids = "'" . implode("','", $_this->genres[$type]['ids']) . "'";
         $limit = $_this->get('page_limit');
@@ -27,7 +27,22 @@ class BaseModel extends F3instance
         $q = $_GET['q'] ? $_GET['q'] : '';
 
         $page = $_GET['page'] ? (int)$_GET['page'] : 1;
-        $genre_id = $_GET['genre'] ? (int)$_GET['genre'] : 0;
+
+
+        /**
+         *
+         */
+        if ($_GET['genre']) {
+            $genre_id = (int)$_GET['genre'];
+        }
+        if ($params['genre_id']) {
+            $genre_id = $params['genre_id'];
+        }
+        if ($params['year']) {
+            $year = $params['year'];
+        }
+
+
         $order_by = $_GET['order_by'] ? $_GET['order_by'] : 'f.id DESC';
 
         switch ($order_by) {
@@ -41,9 +56,8 @@ class BaseModel extends F3instance
             case 'alpha':
                 $order = 'f.aka_ru ASC';
                 break;
-
         }
-
+        $return['order_by'] = $order;
 
         $sql = 'SELECT COUNT(DISTINCT f.id) total FROM film f
                 LEFT JOIN film_category fc ON fc.film_id=f.id
@@ -53,6 +67,10 @@ class BaseModel extends F3instance
             $sql .= ' AND fc.category_id=' . $genre_id;
         } else {
             $sql .= ' AND fc.category_id IN(' . $genre_ids . ')';
+        }
+
+        if ($year) {
+            $sql .= ' AND f.year=' . $year;
         }
 
         if ($q) {
@@ -65,7 +83,7 @@ class BaseModel extends F3instance
         $paginator = (new pagination())->calculate_pages($count, $limit, $page);
         $return['paginator'] = $paginator;
 
-        $sql = 'SELECT f.id FROM film f
+        $sql = 'SELECT f.id, f.aka_ru FROM film f
                 LEFT JOIN film_category fc ON fc.film_id=f.id
                 WHERE uploaded=1';
         if ($genre_id) {
@@ -76,6 +94,10 @@ class BaseModel extends F3instance
         if ($q) {
             $sql .= ' AND f.aka_ru LIKE "%' . $q . '%"';
         }
+        if ($year) {
+            $sql .= ' AND f.year=' . $year;
+        }
+
         $sql .= ' GROUP BY f.id
                 ORDER BY ' . $order . ' ' . $paginator['limit'];
         $_ids = $_this->db->sql($sql);

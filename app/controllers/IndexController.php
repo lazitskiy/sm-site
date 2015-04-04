@@ -12,12 +12,13 @@ class IndexController extends BaseController
     {
         $this->set('title', 'Хуй');
 
-        $popular_month = MovieModel::getPopular();
+        $popular_month = MovieModel::getPopular(120);
         $this->set('populars', $popular_month);
 
 
-        $most_downloaded = MovieModel::mostDownloaded();
+        $most_downloaded = MovieModel::mostDownloaded(120);
         $this->set('most_downloaded', $most_downloaded);
+
 
 
         $this->set('soons', $arr_films);
