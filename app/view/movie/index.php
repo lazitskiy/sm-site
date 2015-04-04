@@ -26,8 +26,20 @@ $_ = $this->get('_');
                     <img class="img-responsive" src="<?php echo $film['poster'] ?>" alt="<?php echo $film['name_ru'] ?> <?php echo $_['Download'] ?>">
                 </div>
                 <div>
-                    <a class="button-1-download-big" href="#download"><?php echo $_['Download'] ?></a>
+                    <a class="button-1-download-big" href="#download">
+                        <?php echo $_['Download'] ?>
+                    </a>
                 </div>
+                <script>
+                    $(document).ready(function () {
+                        $('.button-1-download-big').click(function () {
+                            var yakor = $(this).attr('href');
+                            $('html, body').animate({
+                                scrollTop: $(yakor).offset().top - 40
+                            }, 600);
+                        })
+                    });
+                </script>
                 <?php if ($film['kinopoisk_id']) { ?>
 
                 <?php } ?>
