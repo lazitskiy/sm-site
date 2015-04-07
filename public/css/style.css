@@ -163,7 +163,7 @@ h3 {
   background-color: #000;
 }
 .nagivation {
-  height: 55px;
+  height: 64px;
   padding-top: 8px;
   margin: 0px auto;
   width: 100%;
@@ -846,5 +846,5 @@ ul.paginator li a.active {
 }
 .movie-list-big-item {
   float: left;
-  margin: 15px 45px;
+  margin: 15px 41px;
 }

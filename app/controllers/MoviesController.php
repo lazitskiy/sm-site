@@ -65,7 +65,61 @@ class MoviesController extends BaseController
 
         $this->set('data', $data);
 
-        $this->set('disable', ['genre']);
+        $this->set('disable', ['year']);
+        echo $this->render($this->get('_header'));
+        echo $this->render('/app/view/movies/index.php');
+    }
+
+    public function countryAction()
+    {
+        $country_code = $this->get('PARAMS.country_code');
+
+        $data = MovieModel::getIds($this, 'movies', ['country_code' => $country_code]);
+        $movies = MovieModel::getPreviewByIds($data['ids'], $data['order_by']);
+
+        $data['total'] = $data['total'];
+        $data['movies'] = $movies;
+        $data['paginator'] = $data['paginator'];
+        $data['genres'] = $this->genres['movies']['items'];
+
+        $this->set('data', $data);
+
+        echo $this->render($this->get('_header'));
+        echo $this->render('/app/view/movies/index.php');
+    }
+
+    public function bookmarkAction()
+    {
+        $bookmark = $this->get('PARAMS.bookmark');
+
+        $data = MovieModel::getIds($this, 'movies', ['bookmark' => $bookmark]);
+        $movies = MovieModel::getPreviewByIds($data['ids'], $data['order_by']);
+
+        $data['total'] = $data['total'];
+        $data['movies'] = $movies;
+        $data['paginator'] = $data['paginator'];
+        $data['genres'] = $this->genres['movies']['items'];
+
+        $this->set('data', $data);
+
+        echo $this->render($this->get('_header'));
+        echo $this->render('/app/view/movies/index.php');
+    }
+
+    public function actorAction()
+    {
+        $actor = $this->get('PARAMS.actor');
+
+        $data = MovieModel::getIds($this, 'movies', ['actor' => $actor]);
+        $movies = MovieModel::getPreviewByIds($data['ids'], $data['order_by']);
+
+        $data['total'] = $data['total'];
+        $data['movies'] = $movies;
+        $data['paginator'] = $data['paginator'];
+        $data['genres'] = $this->genres['movies']['items'];
+
+        $this->set('data', $data);
+
         echo $this->render($this->get('_header'));
         echo $this->render('/app/view/movies/index.php');
     }

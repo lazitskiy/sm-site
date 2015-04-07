@@ -24,22 +24,35 @@ class BaseModel extends F3instance
         $genre_ids = "'" . implode("','", $_this->genres[$type]['ids']) . "'";
         $limit = $_this->get('page_limit');
 
-        $q = $_GET['q'] ? $_GET['q'] : '';
 
+        $q = $_GET['q'] ? $_GET['q'] : '';
         $page = $_GET['page'] ? (int)$_GET['page'] : 1;
 
-
-        /**
-         *
-         */
         if ($_GET['genre']) {
             $genre_id = (int)$_GET['genre'];
         }
+        if ($_GET['year']) {
+            $year = $_GET['year'];
+        }
+
+
+        /**
+         * Условия параметрах более приоритетные
+         */
         if ($params['genre_id']) {
             $genre_id = $params['genre_id'];
         }
         if ($params['year']) {
             $year = $params['year'];
+        }
+        if ($params['country_code']) {
+            $country_code = $params['country_code'];
+        }
+        if ($params['bookmark']) {
+            $bookmark = $params['bookmark'];
+        }
+        if ($params['actor']) {
+            $actor = $params['actor'];
         }
 
 
@@ -59,47 +72,70 @@ class BaseModel extends F3instance
         }
         $return['order_by'] = $order;
 
-        $sql = 'SELECT COUNT(DISTINCT f.id) total FROM film f
-                LEFT JOIN film_category fc ON fc.film_id=f.id
-                WHERE f.uploaded=1';
-
-        if ($genre_id) {
-            $sql .= ' AND fc.category_id=' . $genre_id;
-        } else {
-            $sql .= ' AND fc.category_id IN(' . $genre_ids . ')';
+        $sql_start = 'SELECT COUNT(DISTINCT f.id) total FROM film f
+                LEFT JOIN film_category fc ON fc.film_id=f.id';
+        if ($country_code) {
+            $sql_join_country = ' LEFT JOIN film_country fco ON fco.film_id = f.id LEFT JOIN country co ON fco.country_id = co.id';
+            $sql_start .= $sql_join_country;
+        }
+        if ($bookmark) {
+            $sql_join_bookmark = ' LEFT JOIN film_tag ft ON ft.film_id = f.id LEFT JOIN tag t ON ft.tag_id = t.id';
+            $sql_start .= $sql_join_bookmark;
+        }
+        if ($actor) {
+            $sql_join_actor = ' LEFT JOIN film_actor fa ON fa.film_id = f.id LEFT JOIN actor a ON fa.actor_id = a.id';
+            $sql_start .= $sql_join_actor;
         }
 
-        if ($year) {
-            $sql .= ' AND f.year=' . $year;
-        }
 
+        $condition = ' WHERE f.uploaded=1';
         if ($q) {
-            $sql .= ' AND f.aka_ru LIKE "%' . $q . '%"';
+            $condition .= ' AND f.aka_ru LIKE "%' . $q . '%"';
+        }
+        if ($genre_id) {
+            $condition .= ' AND fc.category_id=' . $genre_id;
+        } else {
+            $condition .= ' AND fc.category_id IN(' . $genre_ids . ')';
+        }
+        if ($year) {
+            $ex = explode('-', $year);
+            if (array_key_exists(1, $ex)) {
+                if ($ex[1]) {
+                    $condition .= ' AND f.year>=' . (int)$ex[0] . ' AND f.year<=' . ((int)$ex[0] + (int)$ex[1]);
+                } else {
+                    $condition .= ' AND f.year<=' . (int)$ex[0];
+                }
+            } else {
+                $condition .= ' AND f.year=' . (int)$ex[0];
+            }
+        }
+        if ($country_code) {
+            $condition .= ' AND co.code="' . $country_code . '"';
+        }
+        if ($bookmark) {
+            $condition .= ' AND t.url="' . $bookmark . '"';
+        }
+        if ($actor) {
+            $condition .= ' AND a.aka_en="' . $actor . '"';
         }
 
+
+        $sql = $sql_start . $condition;
         $count = $_this->db->sql($sql)[0]['total'];
         $return['total'] = $count;
 
         $paginator = (new pagination())->calculate_pages($count, $limit, $page);
         $return['paginator'] = $paginator;
 
-        $sql = 'SELECT f.id, f.aka_ru FROM film f
-                LEFT JOIN film_category fc ON fc.film_id=f.id
-                WHERE uploaded=1';
-        if ($genre_id) {
-            $sql .= ' AND fc.category_id=' . $genre_id;
-        } else {
-            $sql .= ' AND fc.category_id IN(' . $genre_ids . ')';
-        }
-        if ($q) {
-            $sql .= ' AND f.aka_ru LIKE "%' . $q . '%"';
-        }
-        if ($year) {
-            $sql .= ' AND f.year=' . $year;
-        }
 
-        $sql .= ' GROUP BY f.id
-                ORDER BY ' . $order . ' ' . $paginator['limit'];
+        $sql_start = 'SELECT f.id, f.aka_ru FROM film f LEFT JOIN film_category fc ON fc.film_id=f.id';
+        $sql_start .= $sql_join_country;
+        $sql_start .= $sql_join_bookmark;
+        $sql_start .= $sql_join_actor;
+
+        $sql_end = ' GROUP BY f.id ORDER BY ' . $order . ' ' . $paginator['limit'];
+        $sql = $sql_start . $condition . $sql_end;
+
         $_ids = $_this->db->sql($sql);
 
         $ids = array_map(function ($el) {

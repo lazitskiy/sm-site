@@ -71,7 +71,7 @@ $_ = $this->get('_');
             <div class="p">
                 <?php echo $_['Countries'] ?>
                 <?php foreach ($film['countries'] as $country) { ?>
-                    <a class="theme" href="<?php echo $country['url'] ?>"><?php echo $country['name'] ?></a>
+                    <a class="theme" href="/<?php echo $country['url'] ?>"><?php echo $country['name'] ?></a>
                 <?php } ?>
             </div>
 
@@ -79,7 +79,7 @@ $_ = $this->get('_');
                 <div class="p">
                     <?php echo $_['Tags'] ?>
                     <?php foreach ($film['tags'] as $tag) { ?>
-                        <a class="theme" href="<?php echo $tag['url'] ?>"><?php echo $tag['name'] ?></a>
+                        <a class="theme" href="/<?php echo $tag['url'] ?>"><?php echo $tag['name'] ?></a>
                     <?php } ?>
                 </div>
             <?php } ?>
@@ -88,7 +88,7 @@ $_ = $this->get('_');
                 <div class="p">
                     <?php echo $_['Directors'] ?>
                     <?php foreach ($film['actors']['director'] as $people) { ?>
-                        <a class="theme" href="<?php echo $people['url'] ?>"><?php echo $people['name'] ?></a>
+                        <a class="theme" href="/<?php echo $people['url'] ?>"><?php echo $people['name'] ?></a>
                     <?php } ?>
                 </div>
             <?php } ?>
@@ -97,7 +97,7 @@ $_ = $this->get('_');
                 <div class="p">
                     <?php echo $_['Producers'] ?>
                     <?php foreach ($film['actors']['producer'] as $people) { ?>
-                        <a class="theme" href="<?php echo $people['url'] ?>"><?php echo $people['name'] ?></a>
+                        <a class="theme" href="/<?php echo $people['url'] ?>"><?php echo $people['name'] ?></a>
                     <?php } ?>
                 </div>
             <?php } ?>
@@ -106,7 +106,7 @@ $_ = $this->get('_');
                 <div class="p">
                     <?php echo $_['Actors'] ?>
                     <?php foreach ($film['actors']['actor'] as $people) { ?>
-                        <a class="theme" href="<?php echo $people['url'] ?>"><?php echo $people['name'] ?></a>
+                        <a class="theme" href="/<?php echo $people['url'] ?>"><?php echo $people['name'] ?></a>
                     <?php } ?>
                 </div>
             <?php } ?>
@@ -139,8 +139,6 @@ $_ = $this->get('_');
                 <?php echo $film['spoiler'] ?>
             </div>
         <?php } ?>
-
-
     </div>
 
 </div>
@@ -205,7 +203,7 @@ $_ = $this->get('_');
 
 
                         <div class="td right w5">
-                            <a href="/static/download/<?php echo $film_id ?>/<?php echo $torrent['hash'] ?>.torrent" class="theme download">
+                            <a href="/static/download/<?php echo $film_id ?>/<?php echo $torrent['name'] ?>" class="theme download">
                                 <?php echo $_['Download'] ?>
                             </a>
                         </div>

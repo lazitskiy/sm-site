@@ -135,86 +135,6 @@ class Fasttorrent extends ParserBase
         vvd('ok');
     }
 
-    public function torrent_download($torrent_urls, $torrent_ids)
-    {
-        $mcurl = new MCurl;
-        $mcurl->threads = 25;
-        $mcurl->timeout = 50000;
-        unset($result);
-
-        $mcurl->multiget($torrent_urls, $results);
-
-        foreach ($results as $k => $torrent) {
-            $torrent_id = $torrent_ids[$k];
-
-            $torrent_model = new Axon('torrent');
-            $torrent_model->load('id=' . $torrent_id);
-
-            $film_id = $torrent_model->film_id;
-            $t = new Torrent($torrent);
-            $hash = $t->hash_info();
-            if ($hash) {
-                $trans = Transliterator::transliterate(str_replace($torrent_model->provider_torrent_id . '/', '', $torrent_model->url));
-                $file_path = dirname(__FILE__) . '/../../../static/download/' . $film_id . '/' . $trans . '.torrent';
-                $dirname = dirname($file_path);
-
-                if (!is_dir($dirname)) {
-                    mkdir($dirname, 0777, true);
-                }
-                file_put_contents($file_path, $torrent);
-                $status = 1;
-            } else {
-                $status = 2;
-            }
-            $torrent_model->uploaded = $status;
-            $torrent_model->name = $trans;
-            $torrent_model->hash = $hash;
-            $torrent_model->save();
-        }
-
-    }
-
-
-    public function parse_raiting($kinopoisk_raiting_urls, $film_ids)
-    {
-
-        $mcurl = new MCurl;
-        $mcurl->threads = 25;
-        $mcurl->timeout = 50000;
-        unset($result);
-
-        $mcurl->multiget($kinopoisk_raiting_urls, $results);
-
-        foreach ($results as $k => $xml) {
-            //  Типа картинка загрузилась
-            $film_id = $film_ids[$k];
-
-            $kp_votes = '';
-            $kp_raiting = '';
-            $imdb_votes = '';
-            $imdb_raiting = '';
-            if (preg_match('/kp_rating[^"]+"(.+?)">(.+?)</', $xml, $kp_matches)) {
-                $kp_votes = $kp_matches[1];
-                $kp_raiting = $kp_matches[2];
-
-            }
-            if (preg_match('/imdb_rating[^"]+"(.+?)">(.+?)</', $xml, $imdb_matches)) {
-                $imdb_votes = $imdb_matches[1];
-                $imdb_raiting = $imdb_matches[2];
-            }
-
-            $image_model = new Axon('film');
-            $image_model->load('id=' . $film_id);
-            $image_model->kinopoisk_rating = $kp_raiting;
-            $image_model->kinopoisk_votes = $kp_votes;
-            $image_model->imdb_rating = $imdb_raiting;
-            $image_model->imdb_votes = $imdb_votes;
-            $image_model->save();
-        }
-
-    }
-
-
     /**
      * Это главная хрень. Дать массив с УРЛами на фильмы
      * @param array $film_main_pages
@@ -727,6 +647,85 @@ class Fasttorrent extends ParserBase
             $image_model->poster_uploaded = $status;
             $image_model->save();
         }
+    }
+
+    public function torrent_download($torrent_urls, $torrent_ids)
+    {
+        $mcurl = new MCurl;
+        $mcurl->threads = 25;
+        $mcurl->timeout = 50000;
+        unset($result);
+
+        $mcurl->multiget($torrent_urls, $results);
+
+        foreach ($results as $k => $torrent) {
+            $torrent_id = $torrent_ids[$k];
+
+            $torrent_model = new Axon('torrent');
+            $torrent_model->load('id=' . $torrent_id);
+
+            $film_id = $torrent_model->film_id;
+            $t = new Torrent($torrent);
+            $hash = $t->hash_info();
+            if ($hash) {
+                $trans = Transliterator::transliterate(str_replace(array($torrent_model->provider_torrent_id . '/', '.torrent'), '', $torrent_model->url));
+                $file_path = dirname(__FILE__) . '/../../../static/download/' . $film_id . '/' . $trans . '.torrent';
+                $dirname = dirname($file_path);
+
+                if (!is_dir($dirname)) {
+                    mkdir($dirname, 0777, true);
+                }
+                file_put_contents($file_path, $torrent);
+                $status = 1;
+            } else {
+                $status = 2;
+            }
+            $torrent_model->uploaded = $status;
+            $torrent_model->name = $trans;
+            $torrent_model->hash = $hash;
+            $torrent_model->save();
+        }
+
+    }
+
+
+    public function parse_raiting($kinopoisk_raiting_urls, $film_ids)
+    {
+
+        $mcurl = new MCurl;
+        $mcurl->threads = 25;
+        $mcurl->timeout = 50000;
+        unset($result);
+
+        $mcurl->multiget($kinopoisk_raiting_urls, $results);
+
+        foreach ($results as $k => $xml) {
+            //  Типа картинка загрузилась
+            $film_id = $film_ids[$k];
+
+            $kp_votes = '';
+            $kp_raiting = '';
+            $imdb_votes = '';
+            $imdb_raiting = '';
+            if (preg_match('/kp_rating[^"]+"(.+?)">(.+?)</', $xml, $kp_matches)) {
+                $kp_votes = $kp_matches[1];
+                $kp_raiting = $kp_matches[2];
+
+            }
+            if (preg_match('/imdb_rating[^"]+"(.+?)">(.+?)</', $xml, $imdb_matches)) {
+                $imdb_votes = $imdb_matches[1];
+                $imdb_raiting = $imdb_matches[2];
+            }
+
+            $image_model = new Axon('film');
+            $image_model->load('id=' . $film_id);
+            $image_model->kinopoisk_rating = $kp_raiting;
+            $image_model->kinopoisk_votes = $kp_votes;
+            $image_model->imdb_rating = $imdb_raiting;
+            $image_model->imdb_votes = $imdb_votes;
+            $image_model->save();
+        }
+
     }
 
 

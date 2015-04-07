@@ -42,13 +42,85 @@ class DocumentaryController extends BaseController
         $data['total'] = $data['total'];
         $data['movies'] = $movies;
         $data['paginator'] = $data['paginator'];
-        $data['genres'] = $this->genres['movies']['items'];
+        $data['genres'] = $this->genres['documentary']['items'];
 
         $this->set('data', $data);
 
         $this->set('disable', ['genre']);
         echo $this->render($this->get('_header'));
         echo $this->render('/app/view/movies/index.php');
+    }
 
+    public function yearAction()
+    {
+        $year = $this->get('PARAMS.year');
+
+        $data = MovieModel::getIds($this, 'documentary', ['year' => $year]);
+        $movies = MovieModel::getPreviewByIds($data['ids'], $data['order_by']);
+
+        $data['total'] = $data['total'];
+        $data['movies'] = $movies;
+        $data['paginator'] = $data['paginator'];
+        $data['genres'] = $this->genres['documentary']['items'];
+
+        $this->set('data', $data);
+
+        $this->set('disable', ['year']);
+        echo $this->render($this->get('_header'));
+        echo $this->render('/app/view/movies/index.php');
+    }
+
+    public function countryAction()
+    {
+        $country_code = $this->get('PARAMS.country_code');
+
+        $data = MovieModel::getIds($this, 'documentary', ['country_code' => $country_code]);
+        $movies = MovieModel::getPreviewByIds($data['ids'], $data['order_by']);
+
+        $data['total'] = $data['total'];
+        $data['movies'] = $movies;
+        $data['paginator'] = $data['paginator'];
+        $data['genres'] = $this->genres['documentary']['items'];
+
+        $this->set('data', $data);
+
+        echo $this->render($this->get('_header'));
+        echo $this->render('/app/view/movies/index.php');
+    }
+
+    public function bookmarkAction()
+    {
+        $bookmark = $this->get('PARAMS.bookmark');
+
+        $data = MovieModel::getIds($this, 'movies', ['documentary' => $bookmark]);
+        $movies = MovieModel::getPreviewByIds($data['ids'], $data['order_by']);
+
+        $data['total'] = $data['total'];
+        $data['movies'] = $movies;
+        $data['paginator'] = $data['paginator'];
+        $data['genres'] = $this->genres['documentary']['items'];
+
+        $this->set('data', $data);
+
+        echo $this->render($this->get('_header'));
+        echo $this->render('/app/view/movies/index.php');
+    }
+
+    public function actorAction()
+    {
+        $actor = $this->get('PARAMS.actor');
+
+        $data = MovieModel::getIds($this, 'documentary', ['actor' => $actor]);
+        $movies = MovieModel::getPreviewByIds($data['ids'], $data['order_by']);
+
+        $data['total'] = $data['total'];
+        $data['movies'] = $movies;
+        $data['paginator'] = $data['paginator'];
+        $data['genres'] = $this->genres['documentary']['items'];
+
+        $this->set('data', $data);
+
+        echo $this->render($this->get('_header'));
+        echo $this->render('/app/view/movies/index.php');
     }
 }

@@ -12,6 +12,10 @@ $quality = $_GET['quality'];
 $genre_id = $_GET['genre'];
 $order_by = $_GET['order_by'];
 
+
+$year_get = $_GET['year'];
+
+
 $disable = $this->get('disable');
 
 ?>
@@ -40,6 +44,30 @@ $disable = $this->get('disable');
                                 <option value=""><?php echo $_['Any'] ?></option>
                                 <?php foreach ($data['genres'] as $genre) { ?>
                                     <option value="<?php echo $genre['id'] ?>" <?php if ($genre_id == $genre['id']) { ?> selected <? } ?>><?php echo $genre['aka_ru'] ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    <?php } ?>
+
+
+                    <?php if (!in_array('year', $disable)) { ?>
+                        <?php
+                        for ($year = date('Y'); $year >= 2010; $year--) {
+                            $years[$year] = $year;
+                        }
+                        $years['2000-10'] = '2000-ые';
+                        $years['1990-10'] = '1990-ые';
+                        $years['1980-10'] = '1980-ые';
+                        $years['1970-10'] = '1970-ые';
+                        $years['1970-'] = '1970 и ранее';
+
+                        ?>
+                        <div class="selects">
+                            <p><?php echo $_['Year'] ?></p>
+                            <select name="year">
+                                <option value=""><?php echo $_['Any'] ?></option>
+                                <?php foreach ($years as $k => $year) { ?>
+                                    <option value="<?= $k ?>" <?php if ($year_get == $k) { ?> selected <? } ?>><?= $year ?></option>
                                 <?php } ?>
                             </select>
                         </div>

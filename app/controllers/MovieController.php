@@ -48,6 +48,12 @@ class MovieController extends BaseController
         $countries = [];
         $tags = [];
         $actors = [];
+
+
+        $e = explode('/', $rows[0]['curl']);
+        $video_type = $this->video_types[$e[1]];
+
+
         foreach ($rows as $row) {
             $film['id'] = $row['fid'];
             $film['name_ru'] = $row['fname'];
@@ -73,30 +79,26 @@ class MovieController extends BaseController
             if ($row['cid']) {
                 $genres[$row['cid']]['name'] = $row['cname'];
 
-                unset($urls);
-                $e = explode('/', $row['curl']);
-                $video_type = $this->video_types[$e[1]];
-                $genre_url = $e[0];
-
+                $genre_url = current(explode('/', $row['curl']));
                 $url = $video_type . '/genre/' . $genre_url;
                 $genres[$row['cid']]['url'] = $url;
             }
 
             if ($row['coid']) {
                 $countries[$row['coid']]['name'] = $row['coname'];
-                $countries[$row['coid']]['url'] = $row['code'];
+                $countries[$row['coid']]['url'] = $video_type . '/country/' . $row['code'];
             }
 
             if ($row['tid']) {
                 $tags[$row['tid']]['name'] = $row['tname'];
-                $tags[$row['tid']]['url'] = $row['turl'];
+                $tags[$row['tid']]['url'] = $video_type . '/bookmark/' . $row['turl'];
             }
 
             if ($row['aid']) {
                 $type = $row['atype'];
 
                 $actors[$type][$row['aid']]['name'] = $row['aname'];
-                $actors[$type][$row['aid']]['url'] = $row['aurl'];
+                $actors[$type][$row['aid']]['url'] = $video_type . '/actor/' . $row['aurl'];
             }
         }
 
@@ -116,7 +118,7 @@ class MovieController extends BaseController
 
 
         $sql = '
-          SELECT q.aka qname, q.description qdescription, t.sezon, t.perevod, t.size, t.date_add, t.downloads, t.seaders, t.leachers, t.url, t.uploaded, t.provider_torrent_id,t.hash
+          SELECT q.aka qname, q.description qdescription, t.sezon, t.perevod, t.size, t.date_add, t.downloads, t.seaders, t.leachers, t.name, t.uploaded, t.provider_torrent_id,t.hash
           FROM torrent t
           LEFT JOIN quality q ON q.id=t.quality_id
           WHERE t.film_id=' . $film_id;
@@ -136,7 +138,7 @@ class MovieController extends BaseController
                 'downloads' => $row['downloads'],
                 'seaders' => $row['seaders'],
                 'leachers' => $row['leachers'],
-                'url' => $row['url'],
+                'name' => $row['name'],
                 'provider_torrent_id' => $row['provider_torrent_id'],
                 'uploaded' => $row['uploaded'],
                 'hash' => $row['hash']
