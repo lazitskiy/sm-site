@@ -624,6 +624,8 @@ class Fasttorrent extends ParserBase
 
         $mcurl->multiget($poster_urls, $results);
 
+        $i = 0;
+        $total = count($results);
         foreach ($results as $k => $image) {
             //  Типа картинка загрузилась
             $image_name = $poster_urls_back[$k];
@@ -646,6 +648,11 @@ class Fasttorrent extends ParserBase
             $image_model->load('id=' . $film_id);
             $image_model->poster_uploaded = $status;
             $image_model->save();
+
+            echo "Saved poster" . $i . " / " . $total . "\n";
+            myflush();
+            $i++;
+
         }
     }
 
@@ -658,6 +665,8 @@ class Fasttorrent extends ParserBase
 
         $mcurl->multiget($torrent_urls, $results);
 
+        $i = 0;
+        $total = count($results);
         foreach ($results as $k => $torrent) {
             $torrent_id = $torrent_ids[$k];
 
@@ -684,6 +693,10 @@ class Fasttorrent extends ParserBase
             $torrent_model->name = $trans;
             $torrent_model->hash = $hash;
             $torrent_model->save();
+
+            echo "Saved torrent" . $i . " / " . $total . "\n";
+            myflush();
+            $i++;
         }
 
     }
@@ -698,7 +711,8 @@ class Fasttorrent extends ParserBase
         unset($result);
 
         $mcurl->multiget($kinopoisk_raiting_urls, $results);
-
+        $i = 0;
+        $total = count($results);
         foreach ($results as $k => $xml) {
             //  Типа картинка загрузилась
             $film_id = $film_ids[$k];
@@ -724,6 +738,10 @@ class Fasttorrent extends ParserBase
             $image_model->imdb_rating = $imdb_raiting;
             $image_model->imdb_votes = $imdb_votes;
             $image_model->save();
+
+            echo "Saved rating" . $i . " / " . $total . "\n";
+            myflush();
+            $i++;
         }
 
     }
