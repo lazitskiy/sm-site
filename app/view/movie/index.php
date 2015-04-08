@@ -203,7 +203,7 @@ $_ = $this->get('_');
 
 
                         <div class="td right w5">
-                            <a href="/static/download/<?php echo $film_id ?>/<?php echo $torrent['name'] ?>" class="theme download">
+                            <a href="/static/download/<?php echo $film_id ?>/<?php echo $torrent['name'] ?>.torrent" class="theme download">
                                 <?php echo $_['Download'] ?>
                             </a>
                         </div>

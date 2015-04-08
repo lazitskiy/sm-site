@@ -322,7 +322,7 @@ a.theme:hover {
 }
 .browse-movie-link {
   display: inline-block;
-  max-width: 220px;
+  width: 100%;
   border: 5px solid #fff;
   -webkit-transition: border 0.15s ease-in-out;
   -moz-transition: border 0.15s ease-in-out;
