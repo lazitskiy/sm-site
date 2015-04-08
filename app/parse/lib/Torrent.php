@@ -855,4 +855,9 @@ class Torrent
         return $list;
     }
 
+    public function __destruct()
+    {
+
+    }
+
 }
