@@ -41,6 +41,7 @@ class MovieModel extends BaseModel
         LEFT JOIN category c ON fc.category_id = c.id
         WHERE UNIX_TIMESTAMP(NOW())-3600*24*' . $days . ' < date_added
         AND kinopoisk_rating>0
+        AND uploaded=1
         ORDER BY f.kinopoisk_rating DESC LIMIT ' . $limit * 6;
         $rows = F3::ref('DB')->sql($sql);
 
@@ -58,6 +59,7 @@ class MovieModel extends BaseModel
         LEFT JOIN film_category fc ON fc.film_id = f.id
         LEFT JOIN category c ON fc.category_id = c.id
         WHERE UNIX_TIMESTAMP(NOW())-3600*24*' . $days . ' < date_added
+        AND uploaded=1
         ORDER BY f.downloads DESC LIMIT ' . $limit * 6;
         $rows = F3::ref('DB')->sql($sql);
         $films = MovieModel::resultsetToArray($rows);
