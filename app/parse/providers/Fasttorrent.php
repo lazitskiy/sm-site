@@ -59,11 +59,11 @@ class Fasttorrent extends ParserBase
             return;
         }
         $parsed = $this->parseFilmsByUrls(array($film['url']));
-        $this->storeFilm($parsed[0], $this->provider_id);
+        // $this->storeFilm($parsed[0], $this->provider_id);
 
         echo "Saved \n";
 
-        //file_put_contents(dirname(__FILE__) . '/../tmp/film' . $film_id . '.txt', print_r($parsed, true));
+        file_put_contents(dirname(__FILE__) . '/../tmp/film' . $film_id . '.txt', print_r($parsed, true));
 
     }
 
@@ -372,10 +372,10 @@ class Fasttorrent extends ParserBase
          */
 
         //Дата выхода
-        if (preg_match_all('/(дата выхода[^\<]+)[^"]+(\d{2}\.\d{2}\.\d{4})/sui', $content, $date_relises, PREG_SET_ORDER)) {
+        if (preg_match_all('/(дата выхода[^\d]+)(\d{2}\.\d{2}\.\d{4})/sui', $content, $date_relises, PREG_SET_ORDER)) {
             foreach ($date_relises as $date_relise) {
                 $relises[] = [
-                    'name' => $date_relise[1],
+                    'name' => strip_tags($date_relise[1]),
                     'date' => $date_relise[2]
                 ];
             }
@@ -401,7 +401,7 @@ class Fasttorrent extends ParserBase
 
 
         // Жанр
-        if (preg_match('/<p>[^"]+жанр(.+?)<\/p>/sui', $content, $genre_match)) {
+        if (preg_match('/жанр(.+?)режиссер/sui', $content, $genre_match)) {
             preg_match_all('/href="\/([^"]+)?\/"[^>]*>([^"]+)?<\/a>/siu', $genre_match[1], $genres, PREG_SET_ORDER);
             foreach ($genres as $genre) {
                 $arr_genr[] = [
@@ -491,7 +491,7 @@ class Fasttorrent extends ParserBase
         $film_current['info'] = $info;
 
         // Режиссеры
-        if (preg_match('/info[^}]+<p[^}]+режиссер(.+?)<\/p>/sui', $content, $people_match)) {
+        if (preg_match('/Режиссер(.+?)В ролях/su', $content, $people_match)) {
             preg_match_all('/href="\/video\/actor\/([^"]+)?\/"[^>]*>([^"]+)?<\/a>/siu', $people_match[1], $peoples, PREG_SET_ORDER);
             foreach ($peoples as $people) {
                 $arr_people[] = [

@@ -135,7 +135,7 @@ class BaseModel extends F3instance
 
         $sql_end = ' GROUP BY f.id ORDER BY ' . $order . ' ' . $paginator['limit'];
         $sql = $sql_start . $condition . $sql_end;
-
+vvd($sql);
         $_ids = $_this->db->sql($sql);
 
         $ids = array_map(function ($el) {
