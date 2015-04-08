@@ -674,11 +674,17 @@ class Fasttorrent extends ParserBase
             $torrent_model->load('id=' . $torrent_id);
 
             $film_id = $torrent_model->film_id;
+            
+            echo "new Torrent\n";
+            myflush();
             $t = new Torrent($torrent);
             $hash = $t->hash_info();
             $t->__destruct();
-            $t=null;
+            $t = null;
             unset($t);
+            echo "desctroyed\n\n";
+            myflush();
+
             if ($hash) {
                 $trans = Transliterator::transliterate(str_replace(array($torrent_model->provider_torrent_id . '/', '.torrent'), '', $torrent_model->url));
                 $file_path = dirname(__FILE__) . '/../../../static/download/' . $film_id . '/' . $trans . '.torrent';
