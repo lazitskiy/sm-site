@@ -677,6 +677,7 @@ class Fasttorrent extends ParserBase
             $t = new Torrent($torrent);
             $hash = $t->hash_info();
             $t->__destruct();
+            $t=null;
             unset($t);
             if ($hash) {
                 $trans = Transliterator::transliterate(str_replace(array($torrent_model->provider_torrent_id . '/', '.torrent'), '', $torrent_model->url));
