@@ -443,7 +443,7 @@ class Fasttorrent extends ParserBase
 
 
         //Продолжительноситб
-        if (preg_match('/продолжительность[^"\d]+([\d:]+)[^\d]/sui', $content, $last)) {
+        if (preg_match('/продолжительность[^":]+(.+?)</sui', $content, $last)) {
             $last = $last[1];
         } else {
             $this->errors['general'][] = 'Last not set';
@@ -492,7 +492,7 @@ class Fasttorrent extends ParserBase
 
         // Режиссеры
         if (preg_match('/Режиссер(.+?)В ролях/su', $content, $people_match)) {
-            preg_match_all('/href="\/video\/actor\/([^"]+)?\/"[^>]*>([^"]+)?<\/a>/siu', $people_match[1], $peoples, PREG_SET_ORDER);
+            preg_match_all('/href="\/video\/actor\/([^"]+)?\/[^}]+itemprop[^>]+>(.+?)</siu', $people_match[1], $peoples, PREG_SET_ORDER);
             foreach ($peoples as $people) {
                 $arr_people[] = [
                     'name' => $people[2],
@@ -525,8 +525,11 @@ class Fasttorrent extends ParserBase
         unset($peoples);
         unset($people_match);
         // В ролях
-        if (preg_match('/info[^}]+<p[^}]+в ролях(.+?)<\/p>/sui', $content, $people_match)) {
+        if (preg_match('/В ролях(.+?)<\/p>/sui', $content, $people_match)) {
             preg_match_all('/href="\/video\/actor\/([^"]+)?\/"[^>]*>([^"]+)?<\/a>/siu', $people_match[1], $peoples, PREG_SET_ORDER);
+            if (!$peoples) {
+                preg_match_all('/href="\/video\/actor\/([^"]+)?\/.*?itemprop="name">(.+?)</siu', $people_match[1], $peoples, PREG_SET_ORDER);
+            }
             foreach ($peoples as $people) {
                 $arr_people[] = [
                     'name' => $people[2],
@@ -540,13 +543,18 @@ class Fasttorrent extends ParserBase
 
 
         //Описание
-        if (preg_match('/<p item.+?description[^>]+>(.*?)</sui', $content, $description)) {
+        preg_match('/<p item.+?description[^>]+>(.*?)</sui', $content, $description);
+        $description = ($description[1]);
+        if (!$description[1]) {
+            preg_match('/<p item.+?description[^>]+>(.*?)<\/p><p>(.*?)</sui', $content, $description);
+            $description = ($description[2]);
+        }
+        if (!$description[1]) {
+            preg_match('/<div item.+?description[^>]+><p>(.*?)(<\/p>|©)/sui', $content, $description);
             $description = ($description[1]);
-            if (!$description[1]) {
-                preg_match('/<p item.+?description[^>]+>(.*?)<\/p><p>(.*?)</sui', $content, $description);
-                $description = ($description[2]);
-            }
+        }
 
+        if ($description) {
             $film_current['description'] = trim(str_replace(array("\r", "\n"), "", html_entity_decode($description)));
         } else {
             $this->errors['general'][] = 'Description not set';
@@ -676,16 +684,8 @@ class Fasttorrent extends ParserBase
             $film_id = $torrent_model->film_id;
 
 
-            /*
-            $t = new Torrent($torrent);
-            $hash = $t->hash_info();
-            $t->__destruct();
-            $t = null;
-            unset($t);
-            */
-
-
-            $hash = true;
+            $t = new BEncoded($torrent);
+            $hash = $t->InfoHash();
             if ($hash) {
                 $trans = Transliterator::transliterate(str_replace(array($torrent_model->provider_torrent_id . '/', '.torrent'), '', $torrent_model->url));
                 $file_path = dirname(__FILE__) . '/../../../static/download/' . $film_id . '/' . $trans . '.torrent';
