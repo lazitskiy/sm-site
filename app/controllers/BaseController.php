@@ -53,27 +53,4 @@ class BaseController extends F3instance
     {
         echo $this->render($this->get('_footer'));
     }
-
-
-    public static function buildTree($categories)
-    {
-        $nodeList = array();
-        $tree = array();
-        foreach ($categories as $item) {
-            $nodeList[$item['node_id']] = array_merge($item, array('children' => array()));
-        }
-
-        foreach ($nodeList as $nodeId => &$node) {
-            if (!$node['parent_id'] || !array_key_exists($node['parent_id'], $nodeList)) {
-                $tree[] = &$node;
-            } else {
-                $nodeList[$node['parent_id']]['children'][] = &$node;
-            }
-        }
-        unset($node);
-        unset($nodeList);
-        return $tree;
-    }
-
-
 }
