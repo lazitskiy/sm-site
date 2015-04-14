@@ -626,7 +626,7 @@ class Fasttorrent extends ParserBase
 
 
         $mcurl = new MCurl;
-        $mcurl->threads = 100;
+        $mcurl->threads = 25;
         $mcurl->timeout = 50000;
         unset($result);
 
@@ -785,7 +785,7 @@ class Fasttorrent extends ParserBase
 
         while (count($results) < count($pages)) {
             $mcurl = new MCurl;
-            $mcurl->threads = 50;
+            $mcurl->threads = 25;
             $mcurl->timeout = 50000;
             unset($results);
             $mcurl->multiget($pages, $results);
