@@ -301,6 +301,9 @@ class ParserBase extends F3instance
 
         foreach ($torrents as $torrent) {
             $provider_torrent_id = $torrent['id'];
+            if (!$provider_torrent_id) {
+                continue;
+            }
 
 
             $quality_model->load('aka="' . $torrent['quality']['short'] . '"');
