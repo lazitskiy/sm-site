@@ -73,64 +73,67 @@ class Fasttorrent extends ParserBase
      */
     public function parseFilms()
     {
-        $limit = $this->get('param');
-        $provider_id = $this->provider_id;
+        while (true) {
 
-        $film_model = new Axon('film');
-        $films = $film_model->afind('provider_id=' . $provider_id . ' AND uploaded="0"', 'id DESC', $limit);
+            $limit = $this->get('param');
+            $provider_id = $this->provider_id;
 
-        if (!$films) {
-            echo "There is not unparsed films. Abort\n";
-            return;
+            $film_model = new Axon('film');
+            $films = $film_model->afind('provider_id=' . $provider_id . ' AND uploaded="0"', 'id DESC', $limit);
+
+            if (!$films) {
+                echo "There is not unparsed films. Abort\n";
+                break;
+                return;
+            }
+
+            $film_ids = array_map(function ($el) {
+                return $el['id'];
+            }, $films);
+
+            $urls = array_map(function ($el) {
+                return $el['url'];
+            }, $films);
+
+            $parsed = $this->parseFilmsByUrls($urls);
+
+            $total = count($parsed);
+            $i = 1;
+
+            foreach ($parsed as $film) {
+                $this->storeFilm($film, $this->provider_id);
+                echo "Saved " . $i . " / " . $total . "\n";
+                myflush();
+                $i++;
+            }
+
+
+            $films = $film_model->afind('id IN(' . "'" . implode("','", $film_ids) . "'" . ')', 'id DESC');
+            $poster_urls = array_map(function ($el) {
+                return $el['poster_from'];
+            }, $films);
+
+            $this->poster_download($poster_urls, 1, $film_ids);
+
+
+            $kinopoisk_raiting_urls = array_map(function ($el) {
+                return 'http://rating.kinopoisk.ru/' . $el['kinopoisk_id'] . '.xml';
+            }, $films);
+            $this->parse_raiting($kinopoisk_raiting_urls, $film_ids);
+
+
+            $torrent_model = new Axon('torrent');
+            $torrents = $torrent_model->afind('film_id IN(' . "'" . implode("','", $film_ids) . "'" . ')', 'id DESC');
+            $torrent_urls = array_map(function ($el) {
+                return 'http://fast-torrent.ru/download/torrent/' . urlencode($el['url']);
+            }, $torrents);
+
+            $torrent_ids = array_map(function ($el) {
+                return $el['id'];
+            }, $torrents);
+
+            $this->torrent_download($torrent_urls, $torrent_ids);
         }
-
-        $film_ids = array_map(function ($el) {
-            return $el['id'];
-        }, $films);
-
-        $urls = array_map(function ($el) {
-            return $el['url'];
-        }, $films);
-
-        $parsed = $this->parseFilmsByUrls($urls);
-
-        $total = count($parsed);
-        $i = 1;
-
-        foreach ($parsed as $film) {
-            $this->storeFilm($film, $this->provider_id);
-            echo "Saved " . $i . " / " . $total . "\n";
-            myflush();
-            $i++;
-        }
-
-
-        $films = $film_model->afind('id IN(' . "'" . implode("','", $film_ids) . "'" . ')', 'id DESC');
-        $poster_urls = array_map(function ($el) {
-            return $el['poster_from'];
-        }, $films);
-
-        $this->poster_download($poster_urls, 1, $film_ids);
-
-
-        $kinopoisk_raiting_urls = array_map(function ($el) {
-            return 'http://rating.kinopoisk.ru/' . $el['kinopoisk_id'] . '.xml';
-        }, $films);
-        $this->parse_raiting($kinopoisk_raiting_urls, $film_ids);
-
-
-        $torrent_model = new Axon('torrent');
-        $torrents = $torrent_model->afind('film_id IN(' . "'" . implode("','", $film_ids) . "'" . ')', 'id DESC');
-        $torrent_urls = array_map(function ($el) {
-            return 'http://fast-torrent.ru/download/torrent/' . urlencode($el['url']);
-        }, $torrents);
-
-        $torrent_ids = array_map(function ($el) {
-            return $el['id'];
-        }, $torrents);
-
-        $this->torrent_download($torrent_urls, $torrent_ids);
-
         //file_put_contents(dirname(__FILE__) . '/../tmp/film' . $film_id . '.txt', print_r($parsed, true));
         vvd('ok');
     }
@@ -680,14 +683,13 @@ class Fasttorrent extends ParserBase
 
             $torrent_model = new Axon('torrent');
             $torrent_model->load('id=' . $torrent_id);
-
             $film_id = $torrent_model->film_id;
 
+            $trans = Transliterator::transliterate(str_replace(array($torrent_model->provider_torrent_id . '/', '.torrent'), '', $torrent_model->url));
 
-            $t = new BEncoded($torrent);
-            $hash = $t->InfoHash();
-            if ($hash) {
-                $trans = Transliterator::transliterate(str_replace(array($torrent_model->provider_torrent_id . '/', '.torrent'), '', $torrent_model->url));
+            if (strpos($torrent, 'announce') !== false) {
+                $t = new BEncoded($torrent);
+                $hash = $t->InfoHash();
                 $file_path = dirname(__FILE__) . '/../../../static/download/' . $film_id . '/' . $trans . '.torrent';
                 $dirname = dirname($file_path);
 
