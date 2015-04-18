@@ -5,7 +5,8 @@
  * Time: 5:45
  */
 $paginator = $this->get('data')['paginator'];
-$additional_url = '/' . $this->get('data')['url'];
+
+$additional_url=BaseModel::setUrl();
 
 if ($paginator['last'] > 1) {
     $_ = $this->get('_');
@@ -15,32 +16,32 @@ if ($paginator['last'] > 1) {
 
     <ul class="paginator">
         <?php if ($paginator['current'] > 1) { ?>
-            <li><a href="<?= $additional_url ?>"><?= $_['First'] ?></a></li>
+            <li><a href="/<?= $additional_url ?>"><?= $_['First'] ?></a></li>
         <?php } ?>
         <?php if ($paginator['current'] > 2) { ?>
-            <li><a href="<?= $additional_url ?>/<?= $paginator['previous'] ?>"><?= $_['Previous'] ?></a></li>
+            <li><a href="/<?= $additional_url ?>/<?= $paginator['previous'] ?>"><?= $_['Previous'] ?></a></li>
         <?php } ?>
 
         <?php foreach ($last as $page) { ?>
             <?php if ($page == 1) { ?>
-                <li><a href="<?= $additional_url ?>"><?= $page ?></a></li>
+                <li><a href="/<?= $additional_url ?>"><?= $page ?></a></li>
             <?php } else { ?>
-                <li><a href="<?= $additional_url ?>/<?= $page ?>"><?= $page ?></a></li>
+                <li><a href="/<?= $additional_url ?>/<?= $page ?>"><?= $page ?></a></li>
             <?php } ?>
         <?php } ?>
 
         <li><a href="javascipt:#;" class="active"><?= $paginator['current'] ?></a></li>
 
         <?php foreach ($next as $page) { ?>
-            <li><a href="<?= $additional_url ?>/<?= $page ?>"><?= $page ?></a></li>
+            <li><a href="/<?= $additional_url ?>/<?= $page ?>"><?= $page ?></a></li>
         <?php } ?>
 
 
         <?php if ($paginator['current'] < $paginator['last'] - 1) { ?>
-            <li><a href="<?= $additional_url ?>/<?= $paginator['next'] ?>"><?= $_['Next'] ?></a></li>
+            <li><a href="/<?= $additional_url ?>/<?= $paginator['next'] ?>"><?= $_['Next'] ?></a></li>
         <?php } ?>
         <?php if ($paginator['current'] < $paginator['last']) { ?>
-            <li><a href="<?= $additional_url ?>/<?= $paginator['last'] ?>"><?= $_['Last'] ?></a></li>
+            <li><a href="/<?= $additional_url ?>/<?= $paginator['last'] ?>"><?= $_['Last'] ?></a></li>
         <?php } ?>
     </ul>
 <?php } ?>

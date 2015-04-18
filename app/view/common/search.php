@@ -9,8 +9,7 @@ $_ = $this->get('_');
 $data = $this->get('data');
 $q = $_GET['q'];
 
-$url = $data['url'];
-
+$url_base = $this->get('data')['url_base'];
 
 ?>
 <div id="search-form" class="content-dark">
@@ -37,10 +36,18 @@ $url = $data['url'];
                 <div class="inner">
                     <p class="browse-movie-title"><?= $_['Genre'] ?></p>
 
-                    <a class="theme" href=""><?= $_['Any'] ?></a>
+                    <?php
+                    $url = BaseModel::setUrl($url_base, ['genre' => null]);
+                    ?>
+                    <div>
+                        <a class="theme" href="/<?= $url ?>"><?= $_['Any'] ?></a>
+                    </div>
                     <?php foreach ($data['genres'] as $genre) { ?>
                         <div>
-                            <a class="theme" href="/<?= $url ?>/<?= $genre['url'] ?>"><?= $genre['aka_ru'] ?></a>
+                            <?php
+                            $url = BaseModel::setUrl($url_base, ['genre' => $genre['url']]);
+                            ?>
+                            <a class="theme" href="/<?= $url ?>"><?= $genre['aka_ru'] ?></a>
                         </div>
                     <?php } ?>
                 </div>
@@ -58,16 +65,25 @@ $url = $data['url'];
             ?>
             <div class="selects" style="width: 180px">
                 <div class="inner">
-                    <p><?= $_['Year'] ?></p>
+                    <p class="browse-movie-title"><?= $_['Year'] ?></p>
+                    <?php
+                    $url = BaseModel::setUrl($url_base, ['year' => null]);
+                    ?>
+                    <div>
+                        <a class="theme" href="/<?= $url ?>"><?= $_['Any'] ?></a>
+                    </div>
                     <?php foreach ($years as $k => $year) { ?>
                         <div>
-                            <a class="theme" href="/<?= $url ?>/<?= $k ?>"><?= $year ?></a>
+                            <?php
+                            $url = BaseModel::setUrl($url_base, ['year' => $k]);
+                            ?>
+                            <a class="theme" href="/<?= $url ?>"><?= $year ?></a>
                         </div>
                     <?php } ?>
                 </div>
             </div>
 
-            <?php $raitings = [
+            <?php $ratings = [
                 '9' => '9+',
                 '8' => '8+',
                 '7' => '7+',
@@ -80,11 +96,19 @@ $url = $data['url'];
             ] ?>
             <div class="selects">
                 <div class="inner">
-                    <p><?= $_['Raiting'] ?></p>
-                    <a class="theme" href=""><?= $_['Any'] ?></a>
-                    <?php foreach ($raitings as $k => $v) { ?>
+                    <p class="browse-movie-title"><?= $_['Raiting'] ?></p>
+                    <?php
+                    $url = BaseModel::setUrl($url_base, ['rating' => null]);
+                    ?>
+                    <div>
+                        <a class="theme" href="/<?= $url ?>"><?= $_['Any'] ?></a>
+                    </div>
+                    <?php foreach ($ratings as $k => $v) { ?>
                         <div>
-                            <a class="theme" href="<?= $k ?>"><?= $v ?></a>
+                            <?php
+                            $url = BaseModel::setUrl($url_base, ['rating' => $k]);;
+                            ?>
+                            <a class="theme" href="/<?= $url ?>"><?= $v ?></a>
                         </div>
                     <?php } ?>
                 </div>

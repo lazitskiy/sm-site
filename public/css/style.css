@@ -753,13 +753,8 @@ footer ul li a:hover {
   text-align: left;
 }
 .selects .inner {
-  height: 280px;
+  height: 287px;
   overflow-y: auto;
-}
-.selects p {
-  font-weight: 700;
-  font-size: 0.9em;
-  color: #919191;
 }
 .movies h2 {
   color: #36bce6;

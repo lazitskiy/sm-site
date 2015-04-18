@@ -28,20 +28,15 @@ class BaseModel extends F3instance
         $q = $_GET['q'] ? $_GET['q'] : '';
         $page = $params['page'] ? $params['page'] : 1;
 
-        if ($_GET['genre']) {
-            $genre_id = (int)$_GET['genre'];
-        }
-        if ($_GET['year']) {
-            $year = $_GET['year'];
-        }
-
-
         /**
          * Условия параметрах более приоритетные
          */
-        if ($params['genre_id']) {
-            $genre_id = $params['genre_id'];
+        if ($params['genre']) {
+            $genre_id = current(array_filter($_this->genres[$type]['items'], function ($el) use ($params) {
+                return $el['url'] == $params['genre'];
+            }))['id'];
         }
+
         if ($params['year']) {
             $year = $params['year'];
         }
@@ -53,6 +48,9 @@ class BaseModel extends F3instance
         }
         if ($params['actor']) {
             $actor = $params['actor'];
+        }
+        if ($params['rating']) {
+            $rating = $params['rating'];
         }
 
 
@@ -118,6 +116,9 @@ class BaseModel extends F3instance
         if ($actor) {
             $condition .= ' AND a.aka_en="' . $actor . '"';
         }
+        if ($rating) {
+            $condition .= ' AND f.kinopoisk_rating IS NOT NULL AND f.kinopoisk_rating>=' . $rating;
+        }
 
 
         $sql = $sql_start . $condition;
@@ -179,5 +180,75 @@ class BaseModel extends F3instance
             }
         }
         return $films;
+    }
+
+    public static function parseParams($params, $delete = true)
+    {
+        $exs = explode('/', $params[0]);
+        unset($exs[0]);
+        if ($delete) {
+            unset($exs[1]);
+        }else{
+            $parameters['base']=$exs[1];
+        }
+
+        foreach ($exs as $ex) {
+            if (is_numeric($ex)) {
+                $parameters['page'] = $ex;
+            } elseif (strpos($ex, 'year') !== false) {
+                $parameters['year'] = str_replace('year', '', $ex);
+            } elseif (strpos($ex, 'rating') !== false) {
+                $parameters['rating'] = str_replace('rating', '', $ex);
+            } else {
+                $parameters['genre'] = $ex;
+            }
+        }
+        return $parameters;
+    }
+
+    public static function setUrl($base = null, $params = array())
+    {
+        if (!$base) {
+            $base = self::parseParams(F3::ref('PARAMS'), false)['base'];
+        }
+
+        $parameters = self::parseParams(F3::ref('PARAMS'));
+
+        if (array_key_exists('genre', $params)) {
+            if (is_null($params['genre'])) {
+                unset($parameters['genre']);
+            } else {
+                $parameters['genre'] = $params['genre'];
+            }
+        }
+        if (array_key_exists('year', $params)) {
+            if (is_null($params['year'])) {
+                unset($parameters['year']);
+            } else {
+                $parameters['year'] = $params['year'];
+            }
+        }
+        if (array_key_exists('rating', $params)) {
+            if (is_null($params['rating'])) {
+                unset($parameters['rating']);
+            } else {
+                $parameters['rating'] = $params['rating'];
+            }
+        }
+
+        $hui[] = $base;
+        if ($parameters['genre']) {
+            $hui[] = $parameters['genre'];
+        }
+        if ($parameters['year']) {
+            $hui[] = 'year' . $parameters['year'];
+        }
+        if ($parameters['rating']) {
+            $hui[] = 'rating' . $parameters['rating'];
+        }
+
+        $hui = implode('/', $hui);
+        return $hui;
+
     }
 }

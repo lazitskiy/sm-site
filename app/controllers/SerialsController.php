@@ -9,11 +9,16 @@
 class SerialsController extends BaseController
 {
 
-    public function indexAction()
+    public function indexAction($page = 1)
     {
+        $params = BaseModel::parseParams($this->get('PARAMS'));
+
+        /**
+         * СЕО
+         */
         $this->set('title', $this->get('_')['serials']['title']);
 
-        $data = MovieModel::getIds($this, 'serials');
+        $data = MovieModel::getIds($this, 'serials', $params);
         $movies = MovieModel::getPreviewByIds($data['ids']);
 
         $data['total'] = $data['total'];
@@ -27,51 +32,6 @@ class SerialsController extends BaseController
         echo $this->render('/app/view/movies/index.php');
     }
 
-    public function genreAction()
-    {
-        $genre_url = $this->get('PARAMS.genre_url');
-        $allow_urls = $this->genres['serials']['urls'];
-
-        if (!in_array($genre_url, $allow_urls)) {
-            return $this->make404('хуй');
-        }
-        $genre_id = array_search($genre_url, $allow_urls);
-
-        $data = MovieModel::getIds($this, 'serials', ['genre_id' => $genre_id]);
-        $movies = MovieModel::getPreviewByIds($data['ids'], $data['order_by']);
-
-        $data['total'] = $data['total'];
-        $data['movies'] = $movies;
-        $data['paginator'] = $data['paginator'];
-        $data['genres'] = $this->genres['serials']['items'];
-
-        $this->set('data', $data);
-
-        $this->set('disable', ['genre']);
-        echo $this->render($this->get('_header'));
-        echo $this->render('/app/view/movies/index.php');
-
-    }
-
-
-    public function yearAction()
-    {
-        $year = $this->get('PARAMS.year');
-
-        $data = MovieModel::getIds($this, 'serials', ['year' => $year]);
-        $movies = MovieModel::getPreviewByIds($data['ids'], $data['order_by']);
-
-        $data['total'] = $data['total'];
-        $data['movies'] = $movies;
-        $data['paginator'] = $data['paginator'];
-        $data['genres'] = $this->genres['serials']['items'];
-
-        $this->set('data', $data);
-
-        $this->set('disable', ['year']);
-        echo $this->render($this->get('_header'));
-        echo $this->render('/app/view/movies/index.php');
-    }
 
     public function countryAction()
     {
@@ -79,6 +39,10 @@ class SerialsController extends BaseController
 
         $data = MovieModel::getIds($this, 'serials', ['country_code' => $country_code]);
         $movies = MovieModel::getPreviewByIds($data['ids'], $data['order_by']);
+
+        /**
+         * СЕО
+         */
 
         $data['total'] = $data['total'];
         $data['movies'] = $movies;
