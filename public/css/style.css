@@ -476,28 +476,6 @@ a.theme:hover {
   font-size: 0.85em;
   color: #919191;
 }
-.browse-movie-tags {
-  overflow: hidden;
-}
-.browse-movie-tags a {
-  background: #111;
-  display: inline-block;
-  color: #575656;
-  font-weight: 700;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-transition: color 0.15s ease-in-out;
-  -moz-transition: color 0.15s ease-in-out;
-  -ms-transition: color 0.15s ease-in-out;
-  -o-transition: color 0.15s ease-in-out;
-  transition: color 0.15s ease-in-out;
-}
-.browse-movie-tags a:hover {
-  color: #fff;
-}
 .content-dark {
   background: #171717;
   width: 100%;

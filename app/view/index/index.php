@@ -18,9 +18,9 @@ $soons = $this->get('soons');
 -->
 <div class="container home-content">
     <div class="hidden-xs hidden-sm">
-        <h1><?php echo $_['Do slogan'] ?></h1>
+        <h1><?= $_['Do slogan'] ?></h1>
 
-        <p><?php echo $_['Intro'] ?></p>
+        <p><?= $_['Intro'] ?></p>
 
         <!--<p class="featured-blog">
             Новое сообщение: <a href="/">link</a>
@@ -30,19 +30,19 @@ $soons = $this->get('soons');
         <div class="row">
             <h2>
                 <span class="icon-star"></span>
-                <?php echo $_['Popular movies'] ?>
+                <?= $_['Popular movies'] ?>
             </h2>
         </div>
         <div class="row">
             <?php foreach ($populars as $popular) { ?>
                 <div class="movie-list-big-item">
-                    <a href="<?php echo $popular['url'] ?>" title="<?php echo $popular['aka_ru'] ?>" class="browse-movie-link">
+                    <a href="<?= $popular['url'] ?>" title="<?= $popular['name_ru'] ?><?= $_['index']['anchor'] ?>" class="browse-movie-link">
                         <div class="smooter">
-                            <img class="img-responsive" src="<?php echo $popular['poster'] ?>">
+                            <img class="img-responsive" src="<?= $popular['poster'] ?>">
 
                             <div class="smootercaption">
                                 <span class="icon-star"><?= $_['Raiting'] ?></span>
-                                <h4 class="rating"><?php echo $popular['rating'] ?></h4>
+                                <h4 class="rating"><?= $popular['rating'] ?></h4>
                                 <?php
                                 $genres = array_chunk(array_filter($popular['genres'], function ($v) {
                                     return (count(explode(' ', $v['name'])) == 1);
@@ -57,13 +57,11 @@ $soons = $this->get('soons');
                     </a>
 
                     <div class="browse-movie-bottom">
-                        <a href="<?php echo $popular['url'] ?>" class="browse-movie-title"><?php echo $popular['name_ru'] ?></a>
+                        <a href="<?= $popular['url'] ?>" class="browse-movie-title" title="<?= $popular['name_ru'] ?><?= $_['index']['anchor'] ?>">
+                            <?= $popular['name_ru'] ?><?= $_['index']['anchor'] ?>
+                        </a>
 
-                        <div class="browse-movie-year"><?php echo $popular['year'] ?></div>
-                        <div class="browse-movie-tags">
-                            <a href="<?php echo $popular['url'] ?>">720p</a>
-                            <a href="<?php echo $popular['url'] ?>">1080p</a>
-                        </div>
+                        <div class="browse-movie-year"><?= $popular['year'] ?></div>
                     </div>
                 </div>
             <?php } ?>
@@ -80,21 +78,21 @@ $soons = $this->get('soons');
         <div class="home-movies">
             <div class="row">
                 <h2>
-                    <?php echo $_['Most downloaded'] ?>
-                    <a href="/movies"><?php echo $_['All'] ?></a>
+                    <?= $_['Most downloaded'] ?>
+                    <a href="/movies"><?= $_['All'] ?></a>
                 </h2>
             </div>
             <div class="row">
 
                 <?php foreach ($most_downloaded as $popular) { ?>
                     <div class="movie-list-big-item">
-                        <a href="<?php echo $popular['url'] ?>" title="<?php echo $popular['aka_ru'] ?>" class="browse-movie-link">
+                        <a href="<?= $popular['url'] ?>" title="<?= $popular['name_ru'] ?><?= $_['index']['anchor'] ?>" class="browse-movie-link">
                             <div class="smooter">
-                                <img class="img-responsive" src="<?php echo $popular['poster'] ?>">
+                                <img class="img-responsive" src="<?= $popular['poster'] ?>">
 
                                 <div class="smootercaption">
                                     <span class="icon-star"><?= $_['Raiting'] ?></span>
-                                    <h4 class="rating"><?php echo $popular['rating'] ?></h4>
+                                    <h4 class="rating"><?= $popular['rating'] ?></h4>
                                     <?php
                                     $genres = array_chunk(array_filter($popular['genres'], function ($v) {
                                         return (count(explode(' ', $v['name'])) == 1);
@@ -109,13 +107,11 @@ $soons = $this->get('soons');
                         </a>
 
                         <div class="browse-movie-bottom">
-                            <a href="<?php echo $popular['url'] ?>" class="browse-movie-title"><?php echo $popular['name_ru'] ?></a>
+                            <a href="<?= $popular['url'] ?>" class="browse-movie-title" title="<?= $popular['name_ru'] ?><?= $_['index']['anchor'] ?>">
+                                <?= $popular['name_ru'] ?><?= $_['index']['anchor'] ?>
+                            </a>
 
-                            <div class="browse-movie-year"><?php echo $popular['year'] ?></div>
-                            <div class="browse-movie-tags">
-                                <a href="<?php echo $popular['url'] ?>">720p</a>
-                                <a href="<?php echo $popular['url'] ?>">1080p</a>
-                            </div>
+                            <div class="browse-movie-year"><?= $popular['year'] ?></div>
                         </div>
                     </div>
                 <?php } ?>
@@ -133,20 +129,20 @@ $soons = $this->get('soons');
     <div class="home-movies">
         <div class="row">
             <h2>
-                <?php echo $_['Soon films'] ?>
-                <a href="/requests"><?php echo $_['Report when release'] ?></a>
+                <?= $_['Soon films'] ?>
+                <a href="/requests"><?= $_['Report when release'] ?></a>
             </h2>
         </div>
         <div class="row">
             <?php foreach ($populars as $popular) { ?>
                 <div class="movie-list-big-item">
-                    <a href="<?php echo $popular['url'] ?>" title="<?php echo $popular['aka_ru'] ?>" class="browse-movie-link">
+                    <a href="<?= $popular['url'] ?>" title="<?= $popular['name_ru'] ?><?= $_['index']['anchor'] ?>" class="browse-movie-link">
                         <div class="smooter">
-                            <img class="img-responsive" src="<?php echo $popular['poster'] ?>">
+                            <img class="img-responsive" src="<?= $popular['poster'] ?>">
 
                             <div class="smootercaption">
                                 <span class="icon-star"><?= $_['Raiting'] ?></span>
-                                <h4 class="rating"><?php echo $popular['rating'] ?></h4>
+                                <h4 class="rating"><?= $popular['rating'] ?></h4>
                                 <?php
                                 $genres = array_chunk(array_filter($popular['genres'], function ($v) {
                                     return (count(explode(' ', $v['name'])) == 1);
@@ -161,13 +157,12 @@ $soons = $this->get('soons');
                     </a>
 
                     <div class="browse-movie-bottom">
-                        <a href="<?php echo $popular['url'] ?>" class="browse-movie-title"><?php echo $popular['aka_ru'] ?></a>
+                        <a href="<?= $popular['url'] ?>" class="browse-movie-title" title="<?= $popular['name_ru'] ?><?= $_['index']['anchor'] ?>">
+                            <?= $popular['name_ru'] ?><?= $_['index']['anchor'] ?>
+                        </a>
 
-                        <div class="browse-movie-year">2014</div>
-                        <div class="browse-movie-tags">
-                            <a href="<?php echo $popular['url'] ?>">720p</a>
-                            <a href="<?php echo $popular['url'] ?>">1080p</a>
-                        </div>
+                        <div class="browse-movie-year"><?= $popular['year'] ?></div>
+
                     </div>
                 </div>
             <?php } ?>
