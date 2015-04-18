@@ -82,7 +82,7 @@ class MovieController extends BaseController
                 $genres[$row['cid']]['name'] = $row['cname'];
 
                 $genre_url = current(explode('/', $row['curl']));
-                $url = $video_type . '/genre/' . $genre_url;
+                $url = $video_type . '/' . $genre_url;
                 $genres[$row['cid']]['url'] = $url;
             }
 

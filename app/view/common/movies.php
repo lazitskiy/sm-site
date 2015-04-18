@@ -10,7 +10,7 @@ $_ = $this->get('_');
 <div class="movie-container">
     <?php foreach ($movies as $movie) { ?>
         <div class="movie-list-small-item">
-            <a href="<?= $movie['url'] ?>" title="<?= $movie['aka_ru'] ?>" class="browse-movie-link">
+            <a href="<?= $movie['url'] ?>" title="<?= $movie['name_ru'] ?><?= $_['index']['anchor'] ?>" class="browse-movie-link">
                 <div class="smooter">
                     <img class="img-responsive" src="<?= $movie['poster'] ?>">
 
@@ -25,19 +25,18 @@ $_ = $this->get('_');
                         foreach ($genres as $genre) { ?>
                             <h4><?= $genre['name'] ?></h4>
                         <?php } ?>
-                        <span class="button-1-download-big">Подробнее</span>
+                        <span class="button-1-download-big"><?= $_['More'] ?></span>
                     </div>
                 </div>
             </a>
 
             <div class="browse-movie-bottom">
-                <a href="<?= $movie['url'] ?>" class="browse-movie-title"><?= $movie['name_ru'] ?></a>
+                <a href="<?= $movie['url'] ?>" class="browse-movie-title" title="<?= $movie['name_ru'] ?><?= $_['index']['anchor'] ?>">
+                    <?= $movie['name_ru'] ?><?= $_['index']['anchor'] ?>
+                </a>
 
                 <div class="browse-movie-year"><?= $movie['year'] ?></div>
-                <div class="browse-movie-tags">
-                    <a href="<?= $movie['url'] ?>">720p</a>
-                    <a href="<?= $movie['url'] ?>">1080p</a>
-                </div>
+
             </div>
         </div>
     <?php } ?>

@@ -26,7 +26,7 @@ class BaseModel extends F3instance
 
 
         $q = $_GET['q'] ? $_GET['q'] : '';
-        $page = $_GET['page'] ? (int)$_GET['page'] : 1;
+        $page = $params['page'] ? $params['page'] : 1;
 
         if ($_GET['genre']) {
             $genre_id = (int)$_GET['genre'];

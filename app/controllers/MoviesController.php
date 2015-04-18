@@ -7,20 +7,22 @@
  */
 class MoviesController extends BaseController
 {
-    public function indexAction()
+
+    public function indexAction($page = 1)
     {
         /**
          * СЕО
          */
         $this->set('title', $this->get('_')['movies']['index']['title']);
 
-        $data = MovieModel::getIds($this, 'movies');
+        $data = MovieModel::getIds($this, 'movies', ['page' => $page]);
         $movies = MovieModel::getPreviewByIds($data['ids'], $data['order_by']);
 
         $data['total'] = $data['total'];
         $data['movies'] = $movies;
         $data['paginator'] = $data['paginator'];
         $data['genres'] = $this->genres['movies']['items'];
+        $data['url'] = 'movies';
 
         $this->set('data', $data);
 
@@ -32,6 +34,11 @@ class MoviesController extends BaseController
     public function genreAction()
     {
         $genre_url = $this->get('PARAMS.genre_url');
+        $page = $this->get('PARAMS.page');
+        if (is_numeric($genre_url)) {
+            return $this->indexAction($genre_url);
+        }
+
         $allow_urls = $this->genres['movies']['urls'];
 
         if (!in_array($genre_url, $allow_urls)) {
@@ -48,18 +55,19 @@ class MoviesController extends BaseController
 
 
         $genre_id = array_search($genre_url, $allow_urls);
-        $data = MovieModel::getIds($this, 'movies', ['genre_id' => $genre_id]);
+        $data = MovieModel::getIds($this, 'movies', ['genre_id' => $genre_id,'page'=>$page]);
         $movies = MovieModel::getPreviewByIds($data['ids'], $data['order_by']);
 
 
         $data['total'] = $data['total'];
         $data['movies'] = $movies;
         $data['paginator'] = $data['paginator'];
-        $data['genres'] = $genres;
+        $data['genres'] = $this->genres['movies']['items'];;
+        $data['url'] = 'movies/'.$genre_url;
 
 
         $this->set('data', $data);
-        $this->set('disable', ['genre']);
+
 
 
         echo $this->render($this->get('_header'));
@@ -80,7 +88,8 @@ class MoviesController extends BaseController
         $data['total'] = $data['total'];
         $data['movies'] = $movies;
         $data['paginator'] = $data['paginator'];
-        $data['genres'] = $this->genres['movies']['items'];
+        $data['genres'] = $this->genres['movies']['items'];;
+        $data['controllerName'] = $this->controllerName;
 
         $this->set('data', $data);
 
@@ -103,7 +112,8 @@ class MoviesController extends BaseController
         $data['total'] = $data['total'];
         $data['movies'] = $movies;
         $data['paginator'] = $data['paginator'];
-        $data['genres'] = $this->genres['movies']['items'];
+        $data['genres'] = $this->genres['movies']['items'];;
+        $data['controllerName'] = $this->controllerName;
 
         $this->set('data', $data);
 
@@ -121,7 +131,8 @@ class MoviesController extends BaseController
         $data['total'] = $data['total'];
         $data['movies'] = $movies;
         $data['paginator'] = $data['paginator'];
-        $data['genres'] = $this->genres['movies']['items'];
+        $data['genres'] = $this->genres['movies']['items'];;
+        $data['controllerName'] = $this->controllerName;
 
         $this->set('data', $data);
 
@@ -140,7 +151,8 @@ class MoviesController extends BaseController
         $data['total'] = $data['total'];
         $data['movies'] = $movies;
         $data['paginator'] = $data['paginator'];
-        $data['genres'] = $this->genres['movies']['items'];
+        $data['genres'] = $this->genres['movies']['items'];;
+        $data['controllerName'] = $this->controllerName;
 
         $this->set('data', $data);
 
