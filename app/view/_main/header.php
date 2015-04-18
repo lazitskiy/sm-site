@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title><?php echo $this->get("title"); ?></title>
-    <meta name="description" content="<?php echo $this->get("description"); ?>">
-    <meta name="keywords" content="<?php echo $this->get("keywords"); ?>">
+    <title><?= $this->get("title"); ?></title>
+    <meta name="description" content="<?= $this->get("description"); ?>">
+    <meta name="keywords" content="<?= $this->get("keywords"); ?>">
     <meta name="robots" content="all">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -29,21 +29,21 @@ $_ = $this->get('_');
             <img src="/images/logo.png" height="50" alt="">
         </a>
     </div>
-    <!--<span class="slogan"><?php /*echo $_['Slogan'] */?></span>-->
+    <!--<span class="slogan"><?php /*echo $_['Slogan'] */ ?></span>-->
 
     <div class="main-nav-links">
 
         <ul class="nav-links">
-            <li><a href="/"><?php echo $_['Main'] ?></a></li>
-            <li><a href="/movies"><?php echo $_['Movies'] ?></a></li>
-            <li><a href="/serials"><?php echo $_['Serials'] ?></a></li>
-            <li><a href="/cartoons"><?php echo $_['Cartoons'] ?></a></li>
-            <li><a href="/documentary"><?php echo $_['Documentary'] ?></a></li>
+            <li><a href="/"><?= $_['Main'] ?></a></li>
+            <li><a href="/movies"><?= $_['Movies'] ?></a></li>
+            <li><a href="/serials"><?= $_['Serials'] ?></a></li>
+            <li><a href="/cartoons"><?= $_['Cartoons'] ?></a></li>
+            <li><a href="/documentary"><?= $_['Documentary'] ?></a></li>
         </ul>
         <!--<ul class="nav-links nav-link-guest">
             <li>
-                <a class="login-nav-btn" href="/login"> <?php /*echo $_['Login'] */?></a> |
-                <a class="register-nav-btn" href="/register"><?php /*echo $_['Register'] */?></a>
+                <a class="login-nav-btn" href="/login"> <?php /*echo $_['Login'] */ ?></a> |
+                <a class="register-nav-btn" href="/register"><?php /*echo $_['Register'] */ ?></a>
             </li>
         </ul>-->
     </div>
