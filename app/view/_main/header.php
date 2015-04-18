@@ -3,8 +3,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title><?php echo $this->get("title"); ?></title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
+    <meta name="description" content="<?php echo $this->get("description"); ?>">
+    <meta name="keywords" content="<?php echo $this->get("keywords"); ?>">
     <meta name="robots" content="all">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>

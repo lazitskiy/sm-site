@@ -11,6 +11,8 @@ class IndexController extends BaseController
     public function indexAction()
     {
         $this->set('title', $this->get('_')['index']['title']);
+        $this->set('description', $this->get('_')['index']['description']);
+        $this->set('keywords', $this->get('_')['index']['keywords']);
 
         $popular_month = MovieModel::getPopular(120);
         $this->set('populars', $popular_month);
