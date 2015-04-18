@@ -10,7 +10,7 @@ class BaseController extends F3instance
 
     public $db;
     protected $trans;
-error    protected $space;
+    protected $space;
 
     function __construct()
     {

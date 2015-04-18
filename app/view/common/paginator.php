@@ -22,28 +22,28 @@ if ($paginator['last'] > 1) {
 
     <ul class="paginator">
         <?php if ($paginator['current'] > 1) { ?>
-            <li><a href="?<?php echo $additional_url ?>"><?php echo $_['First'] ?></a></li>
+            <li><a href="?<?= $additional_url ?>"><?= $_['First'] ?></a></li>
         <?php } ?>
         <?php if ($paginator['current'] > 2) { ?>
-            <li><a href="?<?php echo $additional_url ?>page=<?php echo $paginator['previous'] ?>"><?php echo $_['Previous'] ?></a></li>
+            <li><a href="?<?= $additional_url ?>page=<?= $paginator['previous'] ?>"><?= $_['Previous'] ?></a></li>
         <?php } ?>
 
         <?php foreach ($last as $page) { ?>
-            <li><a href="?<?php echo $additional_url ?>page=<?php echo $page ?>"><?php echo $page ?></a></li>
+            <li><a href="?<?= $additional_url ?>page=<?= $page ?>"><?= $page ?></a></li>
         <?php } ?>
 
-        <li><a href="javascipt:#;" class="active"><?php echo $paginator['current'] ?></a></li>
+        <li><a href="javascipt:#;" class="active"><?= $paginator['current'] ?></a></li>
 
         <?php foreach ($next as $page) { ?>
-            <li><a href="?<?php echo $additional_url ?>page=<?php echo $page ?>"><?php echo $page ?></a></li>
+            <li><a href="?<?= $additional_url ?>page=<?= $page ?>"><?= $page ?></a></li>
         <?php } ?>
 
 
         <?php if ($paginator['current'] < $paginator['last'] - 1) { ?>
-            <li><a href="?<?php echo $additional_url ?>page=<?php echo $paginator['next'] ?>"><?php echo $_['Next'] ?></a></li>
+            <li><a href="?<?= $additional_url ?>page=<?= $paginator['next'] ?>"><?= $_['Next'] ?></a></li>
         <?php } ?>
         <?php if ($paginator['current'] < $paginator['last']) { ?>
-            <li><a href="?<?php echo $additional_url ?>page=<?php echo $paginator['last'] ?>"><?php echo $_['Last'] ?></a></li>
+            <li><a href="?<?= $additional_url ?>page=<?= $paginator['last'] ?>"><?= $_['Last'] ?></a></li>
         <?php } ?>
     </ul>
 <?php } ?>

@@ -10,7 +10,7 @@ class IndexController extends BaseController
 
     public function indexAction()
     {
-        $this->set('title', 'Хуй');
+        $this->set('title', $this->get('_')['index']['title']);
 
         $popular_month = MovieModel::getPopular(120);
         $this->set('populars', $popular_month);
@@ -35,6 +35,8 @@ class IndexController extends BaseController
         $q = preg_replace('#(.+\?)(.+)(\.html)#', '$2', $q);
 
         $this->set('title', 'Поиск ' . $q);
+
+
         echo $this->render($this->get('_header'));
 
         if (strlen($q) < 5) {

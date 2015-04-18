@@ -11,7 +11,7 @@ class SerialsController extends BaseController
 
     public function indexAction()
     {
-        $this->set('title', 'Хуй');
+        $this->set('title', $this->get('_')['serials']['title']);
 
         $data = MovieModel::getIds($this, 'serials');
         $movies = MovieModel::getPreviewByIds($data['ids']);

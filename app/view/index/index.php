@@ -41,11 +41,17 @@ $soons = $this->get('soons');
                             <img class="img-responsive" src="<?php echo $popular['poster'] ?>">
 
                             <div class="smootercaption">
-                                <span class="icon-star">d</span>
+                                <span class="icon-star"><?= $_['Raiting'] ?></span>
                                 <h4 class="rating"><?php echo $popular['rating'] ?></h4>
-                                <h4>Приключения</h4>
-                                <h4>Фантастика</h4>
-                                <span class="button-1-download-big">Подробнее</span>
+                                <?php
+                                $genres = array_chunk(array_filter($popular['genres'], function ($v) {
+                                    return (count(explode(' ', $v['name'])) == 1);
+                                }), 3)[0];
+
+                                foreach ($genres as $genre) { ?>
+                                    <h4><?= $genre['name'] ?></h4>
+                                <?php } ?>
+                                <span class="button-1-download-big"><?= $_['More'] ?></span>
                             </div>
                         </div>
                     </a>
@@ -87,11 +93,17 @@ $soons = $this->get('soons');
                                 <img class="img-responsive" src="<?php echo $popular['poster'] ?>">
 
                                 <div class="smootercaption">
-                                    <span class="icon-star">d</span>
+                                    <span class="icon-star"><?= $_['Raiting'] ?></span>
                                     <h4 class="rating"><?php echo $popular['rating'] ?></h4>
-                                    <h4>Приключения</h4>
-                                    <h4>Фантастика</h4>
-                                    <span class="button-1-download-big">Подробнее</span>
+                                    <?php
+                                    $genres = array_chunk(array_filter($popular['genres'], function ($v) {
+                                        return (count(explode(' ', $v['name'])) == 1);
+                                    }), 3)[0];
+
+                                    foreach ($genres as $genre) { ?>
+                                        <h4><?= $genre['name'] ?></h4>
+                                    <?php } ?>
+                                    <span class="button-1-download-big"><?= $_['More'] ?></span>
                                 </div>
                             </div>
                         </a>
@@ -133,11 +145,17 @@ $soons = $this->get('soons');
                             <img class="img-responsive" src="<?php echo $popular['poster'] ?>">
 
                             <div class="smootercaption">
-                                <span class="icon-star">d</span>
-                                <h4 class="rating">8.8 / 10</h4>
-                                <h4>Приключения</h4>
-                                <h4>Фантастика</h4>
-                                <span class="button-1-download-big">Подробнее</span>
+                                <span class="icon-star"><?= $_['Raiting'] ?></span>
+                                <h4 class="rating"><?php echo $popular['rating'] ?></h4>
+                                <?php
+                                $genres = array_chunk(array_filter($popular['genres'], function ($v) {
+                                    return (count(explode(' ', $v['name'])) == 1);
+                                }), 3)[0];
+
+                                foreach ($genres as $genre) { ?>
+                                    <h4><?= $genre['name'] ?></h4>
+                                <?php } ?>
+                                <span class="button-1-download-big"><?= $_['More'] ?></span>
                             </div>
                         </div>
                     </a>

@@ -10,7 +10,7 @@ class DocumentaryController extends BaseController
 
     public function indexAction()
     {
-        $this->set('title', 'Хуй');
+        $this->set('title', $this->get('_')['documentary']['title']);
 
         $data = MovieModel::getIds($this, 'documentary');
         $movies = MovieModel::getPreviewByIds($data['ids']);

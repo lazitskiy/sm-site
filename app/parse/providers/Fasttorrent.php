@@ -352,7 +352,7 @@ class Fasttorrent extends ParserBase
         $film_current['aka_en'] = $aka_en_match[1];
 
 
-        $film_current['aka_en_row'] = Transliterator::transliterate($film_current['aka_rus']);
+        $film_current['aka_en_row'] = Translit::transliterate($film_current['aka_rus']);
 
         if (!$film_current['aka_rus']) {
             $this->errors['general'][] = 'Name rus not set';
@@ -499,7 +499,7 @@ class Fasttorrent extends ParserBase
             foreach ($peoples as $people) {
                 $arr_people[] = [
                     'name' => $people[2],
-                    'url' => Transliterator::transliterateActor($people[1])
+                    'url' => Translit::transliterateActor($people[1])
                 ];
             }
         } else {
@@ -516,7 +516,7 @@ class Fasttorrent extends ParserBase
             foreach ($peoples as $people) {
                 $arr_people[] = [
                     'name' => $people[2],
-                    'url' => Transliterator::transliterateActor($people[1])
+                    'url' => Translit::transliterateActor($people[1])
                 ];
             }
         } else {
@@ -536,7 +536,7 @@ class Fasttorrent extends ParserBase
             foreach ($peoples as $people) {
                 $arr_people[] = [
                     'name' => $people[2],
-                    'url' => Transliterator::transliterateActor($people[1])
+                    'url' => Translit::transliterateActor($people[1])
                 ];
             }
         } else {
@@ -685,7 +685,7 @@ class Fasttorrent extends ParserBase
             $torrent_model->load('id=' . $torrent_id);
             $film_id = $torrent_model->film_id;
 
-            $trans = Transliterator::transliterate(str_replace(array($torrent_model->provider_torrent_id . '/', '.torrent'), '', $torrent_model->url));
+            $trans = Translit::transliterate(str_replace(array($torrent_model->provider_torrent_id . '/', '.torrent'), '', $torrent_model->url));
 
             if (strpos($torrent, 'announce') !== false) {
                 $t = new BEncoded($torrent);

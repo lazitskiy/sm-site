@@ -9,7 +9,10 @@ class MoviesController extends BaseController
 {
     public function indexAction()
     {
-        $this->set('title', 'Хуй');
+        /**
+         * СЕО
+         */
+        $this->set('title', $this->get('_')['movies']['index']['title']);
 
         $data = MovieModel::getIds($this, 'movies');
         $movies = MovieModel::getPreviewByIds($data['ids'], $data['order_by']);
@@ -34,19 +37,31 @@ class MoviesController extends BaseController
         if (!in_array($genre_url, $allow_urls)) {
             return $this->make404('хуй');
         }
-        $genre_id = array_search($genre_url, $allow_urls);
+        $genre = array_filter($this->genres['movies']['items'], function ($el) use ($genre_url) {
+            return $el['url'] == $genre_url;
+        });
 
+        /**
+         * СЕО
+         */
+        $this->set('title', sprintf($this->get('_')['movies']['genre']['title'], current($genre)['aka_ru']));
+
+
+        $genre_id = array_search($genre_url, $allow_urls);
         $data = MovieModel::getIds($this, 'movies', ['genre_id' => $genre_id]);
         $movies = MovieModel::getPreviewByIds($data['ids'], $data['order_by']);
+
 
         $data['total'] = $data['total'];
         $data['movies'] = $movies;
         $data['paginator'] = $data['paginator'];
-        $data['genres'] = $this->genres['movies']['items'];
+        $data['genres'] = $genres;
+
 
         $this->set('data', $data);
-
         $this->set('disable', ['genre']);
+
+
         echo $this->render($this->get('_header'));
         echo $this->render('/app/view/movies/index.php');
     }
@@ -54,6 +69,10 @@ class MoviesController extends BaseController
     public function yearAction()
     {
         $year = $this->get('PARAMS.year');
+        /**
+         * СЕО
+         */
+        $this->set('title', sprintf($this->get('_')['movies']['year']['title'], $year));
 
         $data = MovieModel::getIds($this, 'movies', ['year' => $year]);
         $movies = MovieModel::getPreviewByIds($data['ids'], $data['order_by']);
@@ -76,6 +95,10 @@ class MoviesController extends BaseController
 
         $data = MovieModel::getIds($this, 'movies', ['country_code' => $country_code]);
         $movies = MovieModel::getPreviewByIds($data['ids'], $data['order_by']);
+
+        /**
+         * СЕО
+         */
 
         $data['total'] = $data['total'];
         $data['movies'] = $movies;
@@ -112,6 +135,7 @@ class MoviesController extends BaseController
 
         $data = MovieModel::getIds($this, 'movies', ['actor' => $actor]);
         $movies = MovieModel::getPreviewByIds($data['ids'], $data['order_by']);
+
 
         $data['total'] = $data['total'];
         $data['movies'] = $movies;

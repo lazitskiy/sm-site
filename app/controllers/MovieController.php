@@ -15,7 +15,6 @@ class MovieController extends BaseController
 
     public function indexAction()
     {
-        $this->set('title', 'Хуй');
 
         $film_id = array_pop(explode('-', $this->get('PARAMS.film_trans_id')));
         if (!$film_id) {
@@ -41,6 +40,9 @@ class MovieController extends BaseController
         LEFT JOIN actor a ON fa.actor_id = a.id
         WHERE f.id=' . $film_id;
         $rows = $this->db->sql($sql);
+
+
+        $this->set('title', sprintf($this->get('_')['movie']['title'], $rows[0]['fname']));
 
 
         $images = [];

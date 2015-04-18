@@ -441,7 +441,7 @@ class ParserBase extends F3instance
 
 }
 
-class Transliterator
+class Translit
 {
     public static function transliterate($str)
     {

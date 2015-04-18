@@ -9,7 +9,7 @@ class CartoonsController extends BaseController
 {
     public function indexAction()
     {
-        $this->set('title', 'Хуй');
+        $this->set('title', $this->get('_')['cartoons']['title']);
 
         $data = MovieModel::getIds($this, 'cartoons');
         $movies = MovieModel::getPreviewByIds($data['ids']);
