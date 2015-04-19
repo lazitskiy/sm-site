@@ -40,10 +40,11 @@ if ($languages[$browser_language]) {
     $lang = $browser_language;
 } else {
     $lang = 'en-GB';
+    $lang = 'ru-RU';
 }
 
 
-$lang = require_once 'app/language/' . $browser_language . '.php';
+$lang = require_once 'app/language/' . $lang . '.php';
 $app->set('_', $lang);
 
 

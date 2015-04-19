@@ -165,8 +165,8 @@ class BaseModel extends F3instance
             }
             if (!$rating) {
                 $rating = 'n/a';
-                $rating_int = $rating;
             } else {
+                $rating_int = $rating;
                 $rating .= ' / 10';
             }
 
