@@ -120,7 +120,7 @@ class MovieController extends BaseController
 
 
         $sql = '
-          SELECT q.aka qname, q.description qdescription, t.sezon, t.perevod, t.size, t.date_add, t.downloads, t.seaders, t.leachers, t.name, t.uploaded, t.provider_torrent_id,t.hash
+          SELECT q.aka qname, q.description qdescription,t.id, t.sezon, t.perevod, t.size, t.date_add, t.downloads, t.seaders, t.leachers, t.name, t.uploaded, t.provider_torrent_id,t.hash
           FROM torrent t
           LEFT JOIN quality q ON q.id=t.quality_id
           WHERE t.film_id=' . $film_id;
@@ -131,6 +131,7 @@ class MovieController extends BaseController
                 continue;
             }
             $torrents[] = [
+                'id' => $row['id'],
                 'quality' => $row['qname'],
                 'quality_desc' => $row['qdescription'],
                 'sezon' => $row['sezon'],

@@ -10,10 +10,11 @@ class Api extends F3instance
     /**
      * Увеличиваем счетчик скачивания торрента
      */
-    public function countup($d)
+    public function countup()
     {
-        $hash = $this->get('PARAMS.hash');
-        if (!$hash) {
+        $torrent_id = $this->get('PARAMS.torrent_id');
+
+        if (!$torrent_id) {
             $return['status'] = 'error';
             $return['error'] = 'No hash';
             echo json_encode($return);
@@ -21,9 +22,15 @@ class Api extends F3instance
         }
 
         $torrent_model = new Axon('torrent');
-        $torrent_model->load('hash="' . $hash . '"');
+        $torrent_model->load('id=' . $torrent_id);
         $torrent_model->downloads = $torrent_model->downloads + 1;
         $torrent_model->save();
+
+        $film_model = new Axon('film');
+        $film_model->load('id='.$torrent_model->film_id);
+        $film_model->downloads = $film_model->downloads + 1;
+        $film_model->save();
+
         $return['status'] = 'ok';
         $return['data']['downloads'] = $torrent_model->downloads;
 

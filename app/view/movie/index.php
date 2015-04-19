@@ -23,11 +23,11 @@ $_ = $this->get('_');
             <div class="movie-poster">
 
                 <div id="movie-poster">
-                    <img class="img-responsive" src="<?php echo $film['poster'] ?>" alt="<?php echo $film['name_ru'] ?> <?php echo $_['Download'] ?>">
+                    <img class="img-responsive" src="<?= $film['poster'] ?>" alt="<?= $film['name_ru'] ?> <?= $_['Download'] ?>">
                 </div>
                 <div>
                     <a class="button-1-download-big" href="#download">
-                        <?php echo $_['Download'] ?>
+                        <?= $_['Download'] ?>
                     </a>
                 </div>
                 <script>
@@ -49,64 +49,64 @@ $_ = $this->get('_');
         <div id="movie-info" class="movie-info w75">
 
 
-            <h1><?php echo $film['name_full'] ?></h1>
+            <h1><?= $film['name_full'] ?></h1>
 
             <div class="p">
                 <h2>
-                    <?php echo $_['Release date'] ?>
-                    <a class="theme" href="/<?php echo $film['reliz_year'] ?>">
-                        <?php echo $film['reliz'] ?>
+                    <?= $_['Release date'] ?>
+                    <a class="theme" href="/<?= $film['reliz_year'] ?>">
+                        <?= $film['reliz'] ?>
                     </a>
                 </h2>
 
                 <h2>
-                    <?php echo $_['Genres'] ?>
+                    <?= $_['Genres'] ?>
                     <?php foreach ($film['genres'] as $genre) { ?>
-                        <a class="theme" href="/<?php echo $genre['url'] ?>"><?php echo $genre['name'] ?></a>
+                        <a class="theme" href="/<?= $genre['url'] ?>"><?= $genre['name'] ?></a>
                     <?php } ?>
                 </h2>
-                <?php echo $_['Lasted'] ?><?php echo $film['last'] ?>
+                <?= $_['Lasted'] ?><?= $film['last'] ?>
             </div>
 
             <div class="p">
-                <?php echo $_['Countries'] ?>
+                <?= $_['Countries'] ?>
                 <?php foreach ($film['countries'] as $country) { ?>
-                    <a class="theme" href="/<?php echo $country['url'] ?>"><?php echo $country['name'] ?></a>
+                    <a class="theme" href="/<?= $country['url'] ?>"><?= $country['name'] ?></a>
                 <?php } ?>
             </div>
 
             <?php if ($film['tags']) { ?>
                 <div class="p">
-                    <?php echo $_['Tags'] ?>
+                    <?= $_['Tags'] ?>
                     <?php foreach ($film['tags'] as $tag) { ?>
-                        <a class="theme" href="/<?php echo $tag['url'] ?>"><?php echo $tag['name'] ?></a>
+                        <a class="theme" href="/<?= $tag['url'] ?>"><?= $tag['name'] ?></a>
                     <?php } ?>
                 </div>
             <?php } ?>
 
             <?php if ($film['actors']['director']) { ?>
                 <div class="p">
-                    <?php echo $_['Directors'] ?>
+                    <?= $_['Directors'] ?>
                     <?php foreach ($film['actors']['director'] as $people) { ?>
-                        <a class="theme" href="/<?php echo $people['url'] ?>"><?php echo $people['name'] ?></a>
+                        <a class="theme" href="/<?= $people['url'] ?>"><?= $people['name'] ?></a>
                     <?php } ?>
                 </div>
             <?php } ?>
 
             <?php if ($film['actors']['producer']) { ?>
                 <div class="p">
-                    <?php echo $_['Producers'] ?>
+                    <?= $_['Producers'] ?>
                     <?php foreach ($film['actors']['producer'] as $people) { ?>
-                        <a class="theme" href="/<?php echo $people['url'] ?>"><?php echo $people['name'] ?></a>
+                        <a class="theme" href="/<?= $people['url'] ?>"><?= $people['name'] ?></a>
                     <?php } ?>
                 </div>
             <?php } ?>
 
             <?php if ($film['actors']['actor']) { ?>
                 <div class="p">
-                    <?php echo $_['Actors'] ?>
+                    <?= $_['Actors'] ?>
                     <?php foreach ($film['actors']['actor'] as $people) { ?>
-                        <a class="theme" href="/<?php echo $people['url'] ?>"><?php echo $people['name'] ?></a>
+                        <a class="theme" href="/<?= $people['url'] ?>"><?= $people['name'] ?></a>
                     <?php } ?>
                 </div>
             <?php } ?>
@@ -118,9 +118,9 @@ $_ = $this->get('_');
 
         <?php if ($film['images']) { ?>
             <div class="movie-images pb">
-                <h3><?php echo $_['Screenshots'] ?></h3>
+                <h3><?= $_['Screenshots'] ?></h3>
                 <?php foreach ($film['images'] as $image) { ?>
-                    <img height="140" src="/static/images/<?php echo $image['url'] ?>">
+                    <img height="140" src="/static/images/<?= $image['url'] ?>">
                 <?php } ?>
                 <div class="clear"></div>
             </div>
@@ -128,15 +128,15 @@ $_ = $this->get('_');
 
 
         <div class="pb">
-            <h3><?php echo $_['Description'] ?></h3>
-            <?php echo $film['description'] ?>
+            <h3><?= $_['Description'] ?></h3>
+            <?= $film['description'] ?>
         </div>
 
 
         <?php if ($film['spoiler']) { ?>
             <div class="pb">
-                <h3><?php echo $_['Spoiler'] ?></h3>
-                <?php echo $film['spoiler'] ?>
+                <h3><?= $_['Spoiler'] ?></h3>
+                <?= $film['spoiler'] ?>
             </div>
         <?php } ?>
     </div>
@@ -147,7 +147,7 @@ $_ = $this->get('_');
 <div class="content-dark">
     <div class="container home-content">
 
-        <h3><?php echo $_['Download'] ?></h3>
+        <h3><?= $_['Download'] ?></h3>
         <!--
                 <div class="control">
                     <div class="sort" data-sort="default">Default</div>
@@ -160,13 +160,13 @@ $_ = $this->get('_');
         <div class="table">
             <div class="tr odd head">
                 <div class="th w6">
-                    <?php echo $_['Quality'] ?>
+                    <?= $_['Quality'] ?>
                 </div>
                 <div class="th w6">
-                    <?php echo $_['Size'] ?>
+                    <?= $_['Size'] ?>
                 </div>
                 <div class="th w6">
-                    <?php echo $_['Perevod'] ?>
+                    <?= $_['Perevod'] ?>
                 </div>
 
 
@@ -174,13 +174,13 @@ $_ = $this->get('_');
                     &nbsp;
                 </div>
                 <div class="th right w5">
-                    <?php echo $_['Downloads'] ?>
+                    <?= $_['Downloads'] ?>
                 </div>
                 <div class="th right w5">
-                    <?php echo $_['Leachers'] ?>
+                    <?= $_['Leachers'] ?>
                 </div>
                 <div class="th right w5">
-                    <?php echo $_['Seaders'] ?>
+                    <?= $_['Seaders'] ?>
                 </div>
 
                 <div class="clear"></div>
@@ -190,31 +190,31 @@ $_ = $this->get('_');
                 <?php
                 $i = 0;
                 foreach ($film['torrents'] as $torrent) { ?>
-                    <div class="tr body <?php echo $i % 2 == 0 ? 'even' : 'odd' ?> mix" data-myorder="<?php echo $i ?>">
+                    <div class="tr body <?= $i % 2 == 0 ? 'even' : 'odd' ?> mix" data-myorder="<?= $i ?>">
                         <div class="td w6">
-                            <?php echo $torrent['quality'] ?>
+                            <?= $torrent['quality'] ?>
                         </div>
                         <div class="td w6">
-                            <?php echo $torrent['size'] ?>
+                            <?= $torrent['size'] ?>
                         </div>
                         <div class="td">
-                            <?php echo $torrent['perevod'] ?>
+                            <?= $torrent['perevod'] ?>
                         </div>
 
 
                         <div class="td right w5">
-                            <a href="/static/download/<?php echo $film_id ?>/<?php echo $torrent['name'] ?>.torrent" class="theme download">
-                                <?php echo $_['Download'] ?>
+                            <a href="/static/download/<?= $film_id ?>/<?= $torrent['name'] ?>.torrent" class="theme download" data-id="<?= $torrent['id'] ?>">
+                                <?= $_['Download'] ?>
                             </a>
                         </div>
                         <div class="td right w5">
-                            <?php echo $torrent['downloads'] ?>
+                            <?= $torrent['downloads'] ?>
                         </div>
                         <div class="td right w5">
-                            <?php echo $torrent['leachers'] ?>
+                            <?= $torrent['leachers'] ?>
                         </div>
                         <div class="td right w5">
-                            <?php echo $torrent['seaders'] ?>
+                            <?= $torrent['seaders'] ?>
                         </div>
 
 
@@ -273,10 +273,10 @@ $_ = $this->get('_');
 
         $('.download').click(function () {
             var film_id = $(this).attr('href').split('/')[3];
-            var hash = $(this).attr('href').split('/')[4].split('.')[0];
+            var torrent_id = $(this).data('id');
 
             var _this = this;
-            $.getJSON('/api/countup/' + hash, function (data) {
+            $.getJSON('/api/countup/' + torrent_id, function (data) {
                 if (data.status == 'ok') {
                     $(_this).parent().next().html(data.data.downloads);
                 }
