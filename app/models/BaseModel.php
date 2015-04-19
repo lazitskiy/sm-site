@@ -33,7 +33,7 @@ class BaseModel extends F3instance
          */
         if ($params['genre']) {
             $genre_id = current(array_filter($_this->genres[$type]['items'], function ($el) use ($params) {
-                return $el['url'] == $params['genre'];
+                return $el['url_clean'] == $params['genre'];
             }))['id'];
         }
 

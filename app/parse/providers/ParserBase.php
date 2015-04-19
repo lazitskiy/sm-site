@@ -106,6 +106,7 @@ class ParserBase extends F3instance
             } else {
                 $category_model->aka_ru = $genre['name'];
                 $category_model->url = $genre['url'];
+                $category_model->url_clean = explode('/', $genre['url'])[0];
                 $category_model->save();
 
                 $category_id = $category_model->_id;

@@ -45,7 +45,7 @@ $url_base = $this->get('data')['url_base'];
                     <?php foreach ($data['genres'] as $genre) { ?>
                         <div>
                             <?php
-                            $url = BaseModel::setUrl($url_base, ['genre' => $genre['url']]);
+                            $url = BaseModel::setUrl($url_base, ['genre' => $genre['url_clean']]);
                             ?>
                             <a class="theme" href="/<?= $url ?>"><?= $genre['aka_ru'] ?></a>
                         </div>

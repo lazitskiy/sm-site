@@ -10,9 +10,14 @@ class DocumentaryController extends BaseController
 
     public function indexAction()
     {
+        $params = BaseModel::parseParams($this->get('PARAMS'));
+
+        /**
+         * СЕО
+         */
         $this->set('title', $this->get('_')['documentary']['title']);
 
-        $data = MovieModel::getIds($this, 'documentary');
+        $data = MovieModel::getIds($this, 'documentary', $params);
         $movies = MovieModel::getPreviewByIds($data['ids']);
 
         $data['total'] = $data['total'];

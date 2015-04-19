@@ -404,7 +404,7 @@ class Fasttorrent extends ParserBase
 
 
         // Жанр
-        if (preg_match('/жанр(.+?)режиссер/sui', $content, $genre_match)) {
+        if (preg_match('/жанр(.+?)<\/p>/sui', $content, $genre_match)) {
             preg_match_all('/href="\/([^"]+)?\/"[^>]*>([^"]+)?<\/a>/siu', $genre_match[1], $genres, PREG_SET_ORDER);
             foreach ($genres as $genre) {
                 $arr_genr[] = [

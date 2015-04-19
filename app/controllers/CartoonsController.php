@@ -9,9 +9,14 @@ class CartoonsController extends BaseController
 {
     public function indexAction()
     {
+        $params = BaseModel::parseParams($this->get('PARAMS'));
+
+        /**
+         * СЕО
+         */
         $this->set('title', $this->get('_')['cartoons']['title']);
 
-        $data = MovieModel::getIds($this, 'cartoons');
+        $data = MovieModel::getIds($this, 'cartoons',$params);
         $movies = MovieModel::getPreviewByIds($data['ids']);
 
         $data['total'] = $data['total'];
