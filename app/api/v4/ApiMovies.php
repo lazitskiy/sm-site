@@ -18,12 +18,12 @@ class ApiMovies extends Api
     public function getListAction()
     {
 
-        $popular = MovieModel::getPopular(30,40);
+        $popular = MovieModel::getPopular(30, 40);
         $movies = $this->prepareForOutput($popular);
 
         $data['status'] = 'ok';
         $data['status_text'] = 'Succesful';
-        $data['data']['movies']=$movies;
+        $data['data']['movies'] = $movies;
         echo json_encode($data);
     }
 

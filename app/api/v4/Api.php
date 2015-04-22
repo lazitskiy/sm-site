@@ -19,6 +19,8 @@ class Api extends F3instance
     public function prepareForOutput($lists)
     {
         foreach ($lists as &$row) {
+            $row['id'] = (int)$row['id'];
+            $row['year'] = (int)$row['year'];
             $row['poster'] = $this->apiServer . $row['poster'];
             $row['url'] = $this->apiServer . $row['url'];
         }
